@@ -30,10 +30,12 @@ export default class AppView {
 
 		this.sketch.update = () => {
 			// this.ui.stats.begin();
+			this.audio.update();
 			this.webgl.update();
 		};
 
 		this.sketch.draw = () => {
+			this.ui.draw();
 			this.webgl.draw();
 			// this.ui.stats.end();
 		};
@@ -50,6 +52,17 @@ export default class AppView {
 		};
 
 		this.sketch.touchend = () => {
+		};
+
+		this.sketch.keyup = (e) => {
+			if (e.keyCode == 71) { // g
+				this.ui.toggle();
+			}
+
+			if (e.keyCode === 32) { // space
+				if (this.audio.paused) this.audio.play();
+				else this.audio.pause();
+			}
 		};
 	}
 
