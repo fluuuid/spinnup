@@ -4,13 +4,18 @@ import TrackballControls from 'three-trackballcontrols';
 
 export default class WebGLView {
 
-	constructor(view) {
+	constructor(view, audio) {
 		this.view = view;
+		this.audio = audio;
 		this.renderer = this.view.renderer;
 
+		this.peakScale = 1.0;
+
 		this.initThree();
-		this.initControls();
+		// this.initControls();
 		this.initObject();
+
+		this.audio.on('audio:peak', this.onAudioPeak.bind(this));
 	}
 
 	initThree() {
@@ -37,8 +42,7 @@ export default class WebGLView {
 	}
 
 	initObject() {
-		const geometry = new THREE.BoxGeometry(200, 200, 200);
-		// const geometry = new THREE.PlaneGeometry(400, 400, 20, 20);
+		const geometry = new THREE.BoxGeometry(100, 100, 100);
 
 		const material = new THREE.ShaderMaterial({
 			uniforms: {},
@@ -49,6 +53,8 @@ export default class WebGLView {
 
 		const mesh = new THREE.Mesh(geometry, material);
 		this.scene.add(mesh);
+
+		this.mesh = mesh;
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -56,7 +62,13 @@ export default class WebGLView {
 	// ---------------------------------------------------------------------------------------------
 
 	update() {
-		this.controls.update();
+		if (this.controls) this.controls.update();
+
+		if (this.peakScale > 1.0) this.peakScale *= 0.98;
+
+		const data = this.audio.levelsData[5] || 0.1;
+		const value = data * this.peakScale;
+		this.mesh.scale.set(value, value, value);
 	}
 
 	draw() {
@@ -73,5 +85,14 @@ export default class WebGLView {
 		this.camera.updateProjectionMatrix();
 
 		this.renderer.setSize(this.view.sketch.width, this.view.sketch.height);
+	}
+
+	onAudioPeak(e) {
+		this.camera.position.x = random(-100, 100);
+		this.camera.position.y = random(-100, 100);
+
+		this.peakScale += 1.0;
+
+		this.camera.lookAt(new THREE.Vector3());
 	}
 }

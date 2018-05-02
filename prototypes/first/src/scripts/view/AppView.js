@@ -70,10 +70,10 @@ export default class AppView {
 		// move canvas to container
 		document.querySelector('#container').appendChild(this.renderer.domElement);
 		
-		this.webgl = new WebGLView(this);
+		this.webgl = new WebGLView(this, this.audio);
 	}
 
 	initUI() {
-		this.ui = new UIView(this);
+		this.ui = new UIView(this, this.audio);
 	}
 }

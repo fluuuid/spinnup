@@ -53,7 +53,7 @@ export default class AppAudio extends EventEmitter {
 		// create an analyser node
 		this.analyserNode = this.context.createAnalyser();
 		this.analyserNode.fftSize = this.FFT_SIZE;
-		this.analyserNode.smoothingTimeConstant = 0.85;
+		this.analyserNode.smoothingTimeConstant = 0.95;
 		this.analyserNode.connect(this.gainNode);
 
 		this.levelsDistribution = this.DISTRIBUTION_LINEAR;
@@ -66,12 +66,12 @@ export default class AppAudio extends EventEmitter {
 		// frequency domain
 		this.freqByteData = new Uint8Array(this.binCount);
 
-		this.peakCutOff = 0.25;
+		this.peakCutOff = 0.52;
 		this.peakLast = 0;
 		this.peakDecay = 0.99;
 		this.peakInterval = 30; // frames
 		this.peakElapsed = 0;
-		this.peakDetectIndex = -1; // average = -1
+		this.peakDetectIndex = 18; // average = -1
 
 		this.sampleBands = [];
 		// this.sampleBands = [1, 1, 2, 2, 4, 4, 8, 8, 16, 16, 32, 32, 64, 64, 128, 128]; // 16

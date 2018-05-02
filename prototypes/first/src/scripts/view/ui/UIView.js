@@ -5,11 +5,13 @@ import UIAudioBars from './UIAudioBars';
 
 export default class UIView {
 
-	constructor(view) {
+	constructor(view, audio) {
 		this.view = app.view;
 		this.audio = app.audio;
 
 		this.audioSmoothing = this.audio.analyserNode.smoothingTimeConstant;
+		this.audioPeakDecay = this.audio.peakDecay;
+		this.audioPeakInterval = this.audio.peakInterval;
 		this.audioPeakCutOff = this.audio.peakCutOff;
 		this.audioPeakDetectIndex = this.audio.peakDetectIndex;
 		this.audioDistributionOptions = ['linear', 'exponential'];
@@ -17,6 +19,7 @@ export default class UIView {
 
 		this.range = [0, 1];
 		this.rangeDecay = [0.9, 1.0];
+		this.rangeInterval = [0, 60];
 		this.rangeDetect = [-1, this.audio.levelsCount - 1];
 
 		this.initControlKit();
@@ -34,6 +37,8 @@ export default class UIView {
 		.addSelect(this, 'audioDistributionOptions', { label: 'distribution', selected: this.audioDistribution, onChange: (index) => { that.onAudioDistributionChange(index); } })
 		.addCanvas({ label: 'bars', height: 100 })
 		.addSlider(this, 'audioSmoothing', 'range', { label: 'smoothing', onChange: () => { that.onAudioChange(); } })
+		.addSlider(this, 'audioPeakDecay', 'rangeDecay', { label: 'peak decay', dp: 3, onChange: () => { that.onAudioChange(); } })
+		.addSlider(this, 'audioPeakInterval', 'rangeInterval', { label: 'peak interval', onChange: () => { that.onAudioChange(); } })
 		.addSlider(this, 'audioPeakCutOff', 'range', { label: 'peak cutoff', onChange: () => { that.onAudioChange(); } })
 		.addSlider(this, 'audioPeakDetectIndex', 'rangeDetect', { label: 'peak index', step: 1, dp: 0, onChange: () => { that.onAudioChange(); } })
 		// .addCanvas({ label: 'wave', height: 60 })
@@ -74,6 +79,8 @@ export default class UIView {
 
 	onAudioChange() {
 		this.audio.analyserNode.smoothingTimeConstant = this.audioSmoothing;
+		this.audio.peakDecay = this.audioPeakDecay;
+		this.audio.peakInterval = this.audioPeakInterval;
 		this.audio.peakCutOff = this.audioPeakCutOff;
 		this.audio.peakDetectIndex = floor(this.audioPeakDetectIndex);
 	}
