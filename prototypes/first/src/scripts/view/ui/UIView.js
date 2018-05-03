@@ -17,7 +17,7 @@ export default class UIView {
 		this.audioPeakCutOff = this.audio.peakCutOff;
 		this.audioPeakDetectIndex = this.audio.peakDetectIndex;
 		this.audioDistributionOptions = ['linear', 'exponential'];
-		this.audioDistribution = 0;
+		this.audioDistribution = 1;
 
 		this.range = [0, 1];
 		this.rangeDecay = [0.9, 1.0];
@@ -27,6 +27,8 @@ export default class UIView {
 		this.initControlKit();
 		// this.initStats();
 		this.initAudioBars();
+
+		this.onAudioDistributionChange(this.audioDistribution);
 	}
 
 	initControlKit() {

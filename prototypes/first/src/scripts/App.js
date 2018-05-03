@@ -16,6 +16,10 @@ class App {
 		.then(items => {
 			this.initAudio();
 			this.initFileReader();
+
+			// DEBUG
+			this.audio = AppAudio;
+			this.view = AppView;
 		})
 		.catch(err => {
 			console.log('AsyncPreloader error', err);
