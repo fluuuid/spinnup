@@ -1,0 +1,56 @@
+# if [ "${CIRCLE_BRANCH}" == "master" ]; then
+#   SENTRY_DSN=https://ce6ebacee6b244cc9f8e68a73c916b6c@sentry.io/156698 NODE_ENV=production CDN_URL=https://static.woala.com/master/ babel-node tasks/run build
+#   yarn run build:server
+#   eb deploy beta --profile eb-cli
+#   aws s3 sync build/app/static s3://woala/static/master --delete --exclude \"*.git/*\" --exclude \"*/node_modules/*\" --exclude \"npm-debug.log\" --exclude \"*/jspm_packages/*\" --region eu-west-2 --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+# fi
+#
+# if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+#   SENTRY_DSN=https://ce6ebacee6b244cc9f8e68a73c916b6c@sentry.io/156698 NODE_ENV=staging CDN_URL=https://static.woala.com/staging/ babel-node tasks/run build
+#   yarn run build:server
+#   eb deploy woala-dev --profile eb-cli
+#   aws s3 sync build/app/static s3://woala/static/staging --delete --exclude \"*.git/*\" --exclude \"*/node_modules/*\" --exclude \"npm-debug.log\" --exclude \"*/jspm_packages/*\" --region eu-west-2 --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+# fi
+#
+# if [ "${CIRCLE_BRANCH}" != "develop" ] && [ "${CIRCLE_BRANCH}" != "master" ]; then
+#   SENTRY_DSN=https://ce6ebacee6b244cc9f8e68a73c916b6c@sentry.io/156698 NODE_ENV=new-feature CDN_URL=https://static.woala.com/new-feature/ babel-node tasks/run build
+#   yarn run build:server
+#   eb deploy woala-new-feature --profile eb-cli
+#   aws s3 sync build/app/static s3://woala/static/new-feature --delete --exclude \"*.git/*\" --exclude \"*/node_modules/*\" --exclude \"npm-debug.log\" --exclude \"*/jspm_packages/*\" --region eu-west-2 --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+# fi
+
+version: 2
+jobs:
+  build:
+    working_directory: ~/spinnup
+    docker:
+      - image: fluuuid/circleci:latest
+    branches:
+      only:
+        - master
+        - develop
+        - /feature.*/
+    steps:
+      - checkout
+      - run:
+          name: "Check Dependencies version"
+          command: |
+            node --version
+            yarn --version
+            aws --version
+      - run:
+          name: "Install dependencies"
+          command: yarn
+      - run:
+          name: "Run tests"
+          command: yarn test
+      - run:
+          name: Setup AWS credentials
+          command: |
+            mkdir ~/.aws && printf "[profile eb-cli]\naws_access_key_id = ${AWS_ACCESS_KEY_ID}\naws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" > ~/.aws/config
+      - deploy:
+          name: "Deploy to S3"
+          command: |
+            export PATH="./node_modules/.bin/:$PATH"
+            yarn build
+            aws s3 sync dist s3://fluuu.id/projects/spinnup --exclude \"*.git/*\" --exclude \"*/node_modules/*\" --exclude \"npm-debug.log\" --exclude \"*/jspm_packages/*\" --delete

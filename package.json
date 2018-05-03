@@ -1,0 +1,42 @@
+{
+  "name": "spinnup",
+  "version": "1.0.0",
+  "author": "Bruno Imbrizi & Silvio Paganini",
+  "license": "ISC",
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fluuuid/spinnup.git"
+  },
+  "scripts": {
+    "start": "webpack-dev-server",
+    "serve:local": "http-server dist",
+    "test": "eslint ./src --fix",
+    "build": "NODE_ENV=production webpack"
+  },
+  "dependencies": {
+    "@brunoimbrizi/controlkit": "0.1.92",
+    "async-preloader": "3.0.1",
+    "domready": "1.0.8",
+    "gsap": "1.18.2",
+    "npm-run-all": "4.1.2",
+    "sketch-js": "1.1.1",
+    "stats.js": "0.17.0",
+    "three": "0.92.0",
+    "three-trackballcontrols": "0.0.7"
+  },
+  "devDependencies": {
+    "babel-cli": "6.6.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-polyfill": "6.7.4",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.19.1",
+    "glslify": "^6.1.1",
+    "glslify-loader": "^1.0.2",
+    "raw-loader": "^0.5.1",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.1.2",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
