@@ -41,9 +41,9 @@ jobs:
       - run:
           name: "Install dependencies"
           command: yarn
-      # - run:
-      #     name: "Run tests"
-      #     command: yarn test
+      - run:
+          name: "Run tests"
+          command: yarn test
       - run:
           name: Setup AWS credentials
           command: |
@@ -52,5 +52,5 @@ jobs:
           name: "Deploy to S3"
           command: |
             export PATH="./node_modules/.bin/:$PATH"
-            yarn prod
+            yarn build
             aws s3 sync dist s3://fluuu.id/projects/spinnup --exclude \"*.git/*\" --exclude \"*/node_modules/*\" --exclude \"npm-debug.log\" --exclude \"*/jspm_packages/*\" --delete
