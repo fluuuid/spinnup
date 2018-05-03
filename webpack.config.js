@@ -27,21 +27,6 @@ module.exports = {
                     loader: 'babel-loader',
                 }
             },
-            // {
-            //     test: /\.(glsl|frag|vert)$/,
-            //     exclude: /node_modules/,
-            //     use: {
-            //         loader: 'glslify-import-loader'
-            //     }
-            // },
-            // {
-            //     test: /\.(glsl|frag|vert)$/,
-            //     exclude: /node_modules/,
-            //     use: {
-            //         loader: 'raw-loader'
-            //     }
-            // },
-
         ]
     },
     stats: {
