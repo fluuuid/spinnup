@@ -15,6 +15,7 @@ class App {
         AsyncPreloader.loadManifest('data/manifest.json')
             .then(items => {
                 this.initAudio();
+                this.initView();
                 this.initFileReader();
 
                 // DEBUG
@@ -31,6 +32,10 @@ class App {
         AppAudio.decode(AsyncPreloader.items.get('track'), () => {
             AppAudio.play();
         });
+    }
+
+    initView() {
+        AppView.init();
     }
 
     initFileReader() {

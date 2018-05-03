@@ -1,5 +1,6 @@
 {
 	"items": [
-		{ "id": "track", "src": "audio/INDIGO PALACE - FIVERS.mp3", "body": "arrayBuffer" }
+		{ "id": "track", "src": "audio/INDIGO PALACE - FIVERS.mp3", "body": "arrayBuffer" },
+		{ "id": "Texture_06", "src": "images/Texture_06.jpg" }
 	]
 }

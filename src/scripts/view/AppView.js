@@ -11,11 +11,9 @@ class AppView {
     constructor() {
         this.renderer = new WebGLRenderer({ antialias: true, alpha: true });
         this.audio = AppAudio;
-
-        this.initSketch();
     }
 
-    initSketch() {
+    init() {
         this.sketch = Sketch.create({
             type: Sketch.WEBGL,
             element: this.renderer.domElement,

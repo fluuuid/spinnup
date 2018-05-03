@@ -18,6 +18,7 @@
     "@brunoimbrizi/controlkit": "0.1.92",
     "async-preloader": "3.0.1",
     "domready": "1.0.8",
+    "glsl-noise": "0.0.0",
     "gsap": "1.18.2",
     "npm-run-all": "4.1.2",
     "sketch-js": "1.1.1",

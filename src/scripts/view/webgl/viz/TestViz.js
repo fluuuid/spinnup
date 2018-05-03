@@ -1,8 +1,13 @@
 import {
-  ShaderMaterial,
-  PlaneGeometry,
+  LinearFilter,
   Mesh,
+  PlaneGeometry,
+  RGBFormat,
+  ShaderMaterial,
+  Texture,
 } from 'three';
+
+import AsyncPreloader from 'async-preloader';
 
 import glsl from '../../../utils/glsl';
 
@@ -17,18 +22,26 @@ export default class TestViz {
     }
 
     initAudio() {
+        this.kick = 0.0;
+
         AppAudio.on('audio:peak', this.onAudioPeak.bind(this));
     }
 
     initQuad() {
+        const texture = new Texture(AsyncPreloader.items.get('Texture_06'));
+        texture.minFilter = LinearFilter;
+        texture.magFilter = LinearFilter;
+        texture.format = RGBFormat;
+        texture.needsUpdate = true;
+
         const uniforms = {
             uTime: { value: 0 },
-            uGlob: { value: 2.5 },
+            uTexture: { value: texture },
         };
 
         const material = new ShaderMaterial({
             vertexShader: glsl('default.vert'),
-            fragmentShader: glsl('voronoi-water.frag'),
+            fragmentShader: glsl('color-step.frag'),
             uniforms,
             // wireframe: true,
         });
@@ -44,12 +57,17 @@ export default class TestViz {
     // ---------------------------------------------------------------------------------------------
 
     update() {
-        this.object3D.material.uniforms.uGlob.value *= 0.9;
-        if (this.object3D.material.uniforms.uGlob.value < 2.0) this.object3D.material.uniforms.uGlob.value = 2.0;
+        // this.object3D.material.uniforms.uGlob.value *= 0.9;
+        // if (this.object3D.material.uniforms.uGlob.value < 2.0) this.object3D.material.uniforms.uGlob.value = 2.0;
 
         const level = AppAudio.levelsData[5] || 0.01;
         const elapsed = AppView.sketch.millis * 0.001;
-        this.object3D.material.uniforms.uTime.value = level * level * 10 + elapsed;
+        const intensity = 1;
+        const factor = (this.kick + 1) * pow(intensity, level * 10) + elapsed;
+        
+        this.object3D.material.uniforms.uTime.value = factor;
+
+        // this.kick *= 0.9;
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -57,7 +75,8 @@ export default class TestViz {
     // ---------------------------------------------------------------------------------------------
 
     resize(textureAspect = 1) {
-        // return;
+        
+        textureAspect = 1.4;
         const screenAspect = window.innerWidth / window.innerHeight;
 
         // portrait
@@ -72,7 +91,8 @@ export default class TestViz {
     }
 
     onAudioPeak(e) {
-        this.object3D.material.uniforms.uGlob.value += 2.0;
+        // this.object3D.material.uniforms.uGlob.value += 2.0;
+        // this.kick += 0.5;
     }
 
 }
