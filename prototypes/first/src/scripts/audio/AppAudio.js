@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 // import 'visibly.js';
 
-export default class AppAudio extends EventEmitter {
+class AppAudio extends EventEmitter {
 
 	get FFT_SIZE() { return 1024; }
 	get DISTRIBUTION_LINEAR() { return 0; }
@@ -296,51 +296,6 @@ export default class AppAudio extends EventEmitter {
 			this.levelsData[i] = 0;
 		}
 	}
-
-	/*
-	onRequestProgress(e) {
-		// console.log('AppAudio.onRequestProgress', e, app.view.ui)
-		// if (app.view.ui) app.view.ui.loader.onLoadProgress(e);
-	}
-
-	onRequestLoad(e) {
-		// console.log('AppAudio.onRequestLoad', e);
-		// if (app.view.ui) app.view.ui.loader.onLoadComplete(e);
-
-		this.ctx.decodeAudioData(e.target.response, this.onBufferLoaded.bind(this), this.onBufferError.bind(this));
-
-		this.emit(AppAudio.AUDIO_LOAD);
-	}
-
-	onBufferLoaded(buffer) {
-		this.buffer = buffer;
-
-		// app.view.ui.loader.onDecodeComplete()
-		// app.view.ui.player.show()
-
-		this.loaded = true;
-		this.duration = this.buffer.duration * 1000;
-		// this.duration = this.buffer.duration * 1000 * this.playbackRate;
-		// this.play();
-
-		this.emit(AppAudio.AUDIO_DECODE);
-	}
-
-	onBufferError(e) {
-		// console.log('AppAudio.onBufferError', e)
-		// app.view.ui.loader.onError(e);
-	}
-
-	onSourceEnded(e) {
-		// console.log('AppAudio.onSourceEnded', this.paused)
-		if (this.paused) return;
-		this.currentTime = this.duration;
-		this.ended = true;
-		this.paused = true;
-		this.pausedAt = 0;
-
-		// window.dispatchEvent(new Event(this.EVENT_AUDIO_ENDED));
-	}
-	*/
-
 }
+
+export default new AppAudio();

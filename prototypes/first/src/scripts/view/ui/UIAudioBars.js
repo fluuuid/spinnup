@@ -1,8 +1,8 @@
 export default class UIAudioBars {
 
-	constructor(canvas) {
+	constructor(canvas, audio) {
 		this.canvas = canvas;
-		this.audio = app.audio;
+		this.audio = audio;
 
 		this.audio.on('audio:peak', this.onAudioPeak.bind(this));
 

@@ -1,12 +1,16 @@
 const glslify = require('glslify');
+
 import * as THREE from 'three';
-import TrackballControls from 'three-trackballcontrols';
+
+import AppAudio from '../../audio/AppAudio';
+import AppView from '../../view/AppView';
+import TestViz from './viz/TestViz';
 
 export default class WebGLView {
 
-	constructor(view, audio) {
-		this.view = view;
-		this.audio = audio;
+	constructor() {
+		this.view = AppView;
+		this.audio = AppAudio;
 		this.renderer = this.view.renderer;
 
 		this.peakScale = 1.0;

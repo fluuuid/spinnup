@@ -2,13 +2,15 @@ import * as THREE from 'three';
 import TweenMax from 'gsap';
 import Sketch from 'sketch-js';
 
+import AppAudio from '../audio/AppAudio';
 import WebGLView from './webgl/WebGLView';
 import UIView from './ui/UIView';
 
-export default class AppView {
+class AppView {
 
 	constructor() {
 		this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+		this.audio = AppAudio;
 
 		this.initSketch();
 	}
@@ -70,10 +72,12 @@ export default class AppView {
 		// move canvas to container
 		document.querySelector('#container').appendChild(this.renderer.domElement);
 		
-		this.webgl = new WebGLView(this, this.audio);
+		this.webgl = new WebGLView();
 	}
 
 	initUI() {
-		this.ui = new UIView(this, this.audio);
+		this.ui = new UIView();
 	}
 }
+
+export default new AppView();

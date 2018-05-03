@@ -1,13 +1,15 @@
 import ControlKit from '@brunoimbrizi/controlkit';
 import Stats from 'stats.js';
 
+import AppAudio from '../../audio/AppAudio';
+import AppView from '../../view/AppView';
 import UIAudioBars from './UIAudioBars';
 
 export default class UIView {
 
-	constructor(view, audio) {
-		this.view = app.view;
-		this.audio = app.audio;
+	constructor() {
+		this.view = AppView;
+		this.audio = AppAudio;
 
 		this.audioSmoothing = this.audio.analyserNode.smoothingTimeConstant;
 		this.audioPeakDecay = this.audio.peakDecay;
@@ -56,7 +58,7 @@ export default class UIView {
 		const canvasComponent = this.controlKit._panels[0]._groups[0]._components[1];
 		const canvas = canvasComponent.getCanvas();
 
-		this.audioBars = new UIAudioBars(canvas);
+		this.audioBars = new UIAudioBars(canvas, this.audio);
 	}
 
 	// ---------------------------------------------------------------------------------------------

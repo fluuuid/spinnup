@@ -5,7 +5,7 @@ import { addFileDropListener } from './utils/file.utils';
 import AppAudio from './audio/AppAudio';
 import AppView from './view/AppView';
 
-export default class App {
+class App {
 
 	constructor() {
 		this.initLoader();
@@ -15,7 +15,6 @@ export default class App {
 		AsyncPreloader.loadManifest('data/manifest.json')
 		.then(items => {
 			this.initAudio();
-			this.initView();
 			this.initFileReader();
 		})
 		.catch(err => {
@@ -24,17 +23,10 @@ export default class App {
 	}
 
 	initAudio() {
-		this.audio = new AppAudio();
-
 		// play loaded track
-		this.audio.decode(AsyncPreloader.items.get('track'), () => {
-			this.audio.play();
+		AppAudio.decode(AsyncPreloader.items.get('track'), () => {
+			AppAudio.play();
 		})
-	}
-
-	initView() {
-		this.view = new AppView();
-		this.view.audio = this.audio;
 	}
 
 	initFileReader() {
@@ -44,6 +36,8 @@ export default class App {
 
 	onFileDrop(file, result) {
 		console.log('App.onFileDrop', file, result);
-		this.audio.onFileDrop(file, result);
+		AppAudio.onFileDrop(file, result);
 	}
 }
+
+export default new App();
