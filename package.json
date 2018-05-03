@@ -34,7 +34,6 @@
     "gulp": "3.9.1",
     "gulp-minify": "2.1.0",
     "gulp-util": "3.0.7",
-    "npm-run-all": "1.5.2",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "2.0.0",
     "watchify": "3.7.0"
