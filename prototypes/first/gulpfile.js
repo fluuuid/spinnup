@@ -27,7 +27,7 @@ function logError(msg) {
 
 function bundle() {
 	var b = bundler
-		.transform(babelify, { presets: [env], plugins: [addModuleExports] })
+		.transform(babelify, { presets: [env] })
 		.transform(glslify)
 		.bundle()
 		.on('error', logError)
@@ -65,7 +65,7 @@ gulp.task('serve', function() {
 		server: {
 			baseDir: './dist/'
 		},
-		reloadDebounce: 500
+		// reloadDebounce: 500
 	});
 });
 
