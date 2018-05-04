@@ -10,6 +10,7 @@ import {
 import AsyncPreloader from 'async-preloader';
 
 import glsl from '../../../utils/glsl';
+import { random } from '../../../utils/math.utils';
 
 import AppAudio from '../../../audio/AppAudio';
 import AppView from '../../../view/AppView';
@@ -19,6 +20,8 @@ export default class TestViz {
     constructor() {
         this.initAudio();
         this.initQuad();
+
+        this.startTime = Date.now();
     }
 
     initAudio() {
@@ -64,9 +67,9 @@ export default class TestViz {
         // if (this.object3D.material.uniforms.uGlob.value < 2.0) this.object3D.material.uniforms.uGlob.value = 2.0;
 
         const level = AppAudio.levelsData[5] || 0.01;
-        const elapsed = AppView.sketch.millis * 0.001;
+        const elapsed = (Date.now() - this.startTime) * 0.001;
         const intensity = 1;
-        const factor = (this.kick + 1) * pow(intensity, level * 10) + elapsed;
+        const factor = (this.kick + 1) * Math.pow(intensity, level * 10) + elapsed;
         
         this.object3D.material.uniforms.uTime.value = factor;
 
@@ -78,15 +81,15 @@ export default class TestViz {
     // ---------------------------------------------------------------------------------------------
 
     resize(textureAspect = 1) {
-        
         textureAspect = 2;
+
         const screenAspect = window.innerWidth / window.innerHeight;
 
         // portrait
         if (screenAspect < textureAspect) {
             this.object3D.scale.y = window.innerHeight;
             this.object3D.scale.x = window.innerHeight * textureAspect;
-            // landscape
+        // landscape
         } else {
             this.object3D.scale.x = window.innerWidth;
             this.object3D.scale.y = window.innerWidth / textureAspect;
@@ -100,5 +103,4 @@ export default class TestViz {
         
         this.kick += 0.4;
     }
-
 }

@@ -52,7 +52,7 @@ export default class UIAudioBars {
         const levels = this.audio.levelsData;
         const levelsOffset = 2;
         const levelsTotalWidth = this.ctx.width - avgW - avgOffset * 2;
-        const levelsW = floor((levelsTotalWidth - levels.length * levelsOffset) / levels.length);
+        const levelsW = Math.floor((levelsTotalWidth - levels.length * levelsOffset) / levels.length);
 		
         for (let i = 0; i < levels.length; i++) {
             const h = levels[i] * height + 2;
