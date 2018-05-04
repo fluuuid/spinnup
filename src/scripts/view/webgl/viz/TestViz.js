@@ -14,6 +14,8 @@ export default class TestViz {
     constructor() {
         this.initAudio();
         this.initQuad();
+
+        this.startTime = Date.now();
     }
 
     initAudio() {
@@ -48,7 +50,7 @@ export default class TestViz {
         if (this.object3D.material.uniforms.uGlob.value < 2.0) this.object3D.material.uniforms.uGlob.value = 2.0;
 
         const level = AppAudio.levelsData[5] || 0.01;
-        const elapsed = AppView.sketch.millis * 0.001;
+        const elapsed = (Date.now() - this.startTime) * 0.001;
         this.object3D.material.uniforms.uTime.value = level * level * 10 + elapsed;
     }
 
