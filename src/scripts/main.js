@@ -6,4 +6,5 @@ import App from './App';
 
 ready(() => {
     window.app = App;
+    if(window.parent) window.parent.visLoaded();
 });

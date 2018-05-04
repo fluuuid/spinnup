@@ -11,6 +11,30 @@ class App {
         this.initLoader();
     }
 
+    // API
+
+    pause () {
+      console.log('pause');
+    }
+
+    play () {
+      console.log('play');
+    }
+
+    changeMusic () {
+      console.log('changeMusic');
+    }
+
+    mute () {
+      console.log('mute');
+    }
+
+    changeStyle () {
+      console.log('changeStyle');
+    }
+
+    //
+
     initLoader() {
         AsyncPreloader.loadManifest('data/manifest.json')
             .then(items => {
