@@ -1,4 +1,5 @@
 node_modules/
-dist/scripts/main.js
-dist/scripts/main.js.map
+dist/scripts/*.js
+dist/scripts/*.js.map
+dist/index.html
 yarn-error.log
