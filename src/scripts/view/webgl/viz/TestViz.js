@@ -41,7 +41,7 @@ export default class TestViz {
 
         const material = new ShaderMaterial({
             vertexShader: glsl('default.vert'),
-            fragmentShader: glsl('color-step.frag'),
+            fragmentShader: glsl('warping.frag'),
             uniforms,
             // wireframe: true,
         });
@@ -76,7 +76,7 @@ export default class TestViz {
 
     resize(textureAspect = 1) {
         
-        textureAspect = 1.4;
+        textureAspect = 2;
         const screenAspect = window.innerWidth / window.innerHeight;
 
         // portrait
