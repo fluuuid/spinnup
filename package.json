@@ -21,7 +21,6 @@
     "domready": "1.0.8",
     "gsap": "1.18.2",
     "moment": "^2.22.1",
-    "npm-run-all": "4.1.2",
     "sketch-js": "1.1.1",
     "stats.js": "0.17.0",
     "three": "0.92.0",
@@ -29,8 +28,8 @@
   },
   "devDependencies": {
     "babel-cli": "6.6.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.4",
+    "babel-core": "6.26.3",
+    "babel-loader": "7.1.4",
     "babel-polyfill": "6.7.4",
     "babel-preset-env": "^1.6.1",
     "eslint": "^4.19.1",
