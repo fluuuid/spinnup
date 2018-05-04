@@ -36,6 +36,9 @@ export default class TestViz {
 
         const uniforms = {
             uTime: { value: 0 },
+            uKnobA: { value: 1 },
+            uKnobB: { value: 1 },
+            uKnobC: { value: 0.5 },
             uTexture: { value: texture },
         };
 
@@ -91,8 +94,11 @@ export default class TestViz {
     }
 
     onAudioPeak(e) {
-        // this.object3D.material.uniforms.uGlob.value += 2.0;
-        // this.kick += 0.5;
+        this.object3D.material.uniforms.uKnobA.value = random(0.6, 1.0);
+        this.object3D.material.uniforms.uKnobB.value = random(0.6, 1.2);
+        this.object3D.material.uniforms.uKnobC.value = random(0.35, 0.5);
+        
+        this.kick += 0.4;
     }
 
 }

@@ -19,7 +19,12 @@ export default class UIView {
         this.audioDistributionOptions = ['linear', 'exponential'];
         this.audioDistribution = 1;
 
+        this.vizKnobA = 1;
+        this.vizKnobB = 1;
+        this.vizKnobC = 1;
+
         this.range = [0, 1];
+        this.rangeKnob = [0, 5];
         this.rangeDecay = [0.9, 1.0];
         this.rangeInterval = [0, 60];
         this.rangeDetect = [-1, this.audio.levelsCount - 1];
@@ -37,15 +42,19 @@ export default class UIView {
         this.controlKit = new ControlKit();
         this.controlKit.addPanel({ width: 300, enable: true })
 
-            .addGroup({ label: 'Audio', enable: true })
-            .addSelect(this, 'audioDistributionOptions', { label: 'distribution', selected: this.audioDistribution, onChange: (index) => { that.onAudioDistributionChange(index); } })
-            .addCanvas({ label: 'bars', height: 100 })
-            .addSlider(this, 'audioSmoothing', 'range', { label: 'smoothing', onChange: () => { that.onAudioChange(); } })
-            .addSlider(this, 'audioPeakDecay', 'rangeDecay', { label: 'peak decay', dp: 3, onChange: () => { that.onAudioChange(); } })
-            .addSlider(this, 'audioPeakInterval', 'rangeInterval', { label: 'peak interval', onChange: () => { that.onAudioChange(); } })
-            .addSlider(this, 'audioPeakCutOff', 'range', { label: 'peak cutoff', onChange: () => { that.onAudioChange(); } })
-            .addSlider(this, 'audioPeakDetectIndex', 'rangeDetect', { label: 'peak index', step: 1, dp: 0, onChange: () => { that.onAudioChange(); } });
-        // .addCanvas({ label: 'wave', height: 60 })
+        .addGroup({ label: 'Audio', enable: true })
+        .addSelect(this, 'audioDistributionOptions', { label: 'distribution', selected: this.audioDistribution, onChange: (index) => { that.onAudioDistributionChange(index); } })
+        .addCanvas({ label: 'bars', height: 100 })
+        .addSlider(this, 'audioSmoothing', 'range', { label: 'smoothing', onChange: () => { that.onAudioChange(); } })
+        .addSlider(this, 'audioPeakDecay', 'rangeDecay', { label: 'peak decay', dp: 3, onChange: () => { that.onAudioChange(); } })
+        .addSlider(this, 'audioPeakInterval', 'rangeInterval', { label: 'peak interval', onChange: () => { that.onAudioChange(); } })
+        .addSlider(this, 'audioPeakCutOff', 'range', { label: 'peak cutoff', onChange: () => { that.onAudioChange(); } })
+        .addSlider(this, 'audioPeakDetectIndex', 'rangeDetect', { label: 'peak index', step: 1, dp: 0, onChange: () => { that.onAudioChange(); } })
+        
+        // .addGroup({ label: 'Viz', enable: true })
+        // .addSlider(this, 'vizKnobA', 'rangeKnob', { label: 'knob A', onChange: () => { that.onVizChange(); } })
+        // .addSlider(this, 'vizKnobB', 'rangeKnob', { label: 'knob B', onChange: () => { that.onVizChange(); } })
+        // .addSlider(this, 'vizKnobC', 'rangeKnob', { label: 'knob C', onChange: () => { that.onVizChange(); } })
 
         // .addCheckbox(this, 'camStoryboard', { label: 'storyboard', onChange: () => { that.onCameraChange(); } })
     }
@@ -92,5 +101,13 @@ export default class UIView {
     onAudioDistributionChange(index) {
         this.audioDistribution = index || 0;
         this.audio.levelsDistribution = index || 0;
+    }
+
+    onVizChange() {
+        const uniforms = this.view.webgl.viz.object3D.material.uniforms;
+        
+        uniforms.uKnobA.value = this.vizKnobA;
+        uniforms.uKnobB.value = this.vizKnobB;
+        uniforms.uKnobC.value = this.vizKnobC;
     }
 }

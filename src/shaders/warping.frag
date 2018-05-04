@@ -6,7 +6,18 @@
 varying vec2 vUv;
 
 uniform float uTime;
+uniform float uKnobA;
+uniform float uKnobB;
+uniform float uKnobC;
 uniform sampler2D uTexture;
+
+vec2 barrelDistort(vec2 pos, float power) {
+	float t = atan(pos.y, pos.x);
+	float r = pow(length(pos), power);
+	pos.x   = r * cos(t) * uKnobC;
+	pos.y   = r * sin(t) * uKnobC * 2.0;
+	return uKnobC * (pos + 1.0);
+}
 
 const mat2 m = mat2(0.80,  0.60, -0.60,  0.80);
 
@@ -38,7 +49,7 @@ float func(vec2 q) {
     float ql = length(q);
     q.x += 0.05 * sin(0.27 * uTime + ql * 4.1);
     q.y += 0.05 * sin(0.23 * uTime + ql * 4.3);
-    q *= 0.5;
+    q *= 0.5 * uKnobB;
 
 	vec2 o = vec2(0.0);
     o.x = 0.5 + 0.5 * fbm4(vec2(2.0 * q));
@@ -68,18 +79,29 @@ void main() {
     vec2 uv = vUv;
 
     // color A
+    float barrel_pow = min(1.0, 1.2 * uKnobB);
+    vec2 p = -1.0 + 2.0 * uv;
+    float d = length(p);
+    float s = 1.0 - min(1.0, d * d);
+
+	p = barrelDistort(p, barrel_pow);
+
     float t = snoise2(uv + uTime * 0.25);
-    vec3 colA = texture2D(uTexture, uv + t * 0.01).rgb;
+
+    vec2 uvA = (p-uv) + uv;
+    vec3 colA = texture2D(uTexture, uvA * 1.0 + t * 0.01).rgb;
 
     // color B
-    vec2 p = -1.0 + 1.0 * uv;
-    // p.x *= -2.0;
-    p *= 0.1;
-    float f = func(p);
-    vec3 colB = texture2D(uTexture, uv * -0.8 + 0.6 + f).rgb;
+    vec2 q = -1.0 + 1.0 * uv;
+    // q.x *= -2.0;
+    q *= 0.1;
+    float f = func(q);
+    vec2 uvB = uv * uKnobA + (1.0 - uKnobA) / 2.0;
+    vec3 colB = texture2D(uTexture, uvB * -0.8 + 0.6 + f).rgb;
 
     // final color
     vec3 color = mix(colA, colB, (t + 1.0) / 2.0);
+    // color = colA;
 
     gl_FragColor = vec4( color, 1.0 );
 }
