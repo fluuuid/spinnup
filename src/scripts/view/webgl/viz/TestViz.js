@@ -1,12 +1,14 @@
 import {
-  LinearFilter,
-  Mesh,
-  PlaneGeometry,
-  RGBFormat,
-  ShaderMaterial,
-  Texture,
+    LinearFilter,
+    Mesh,
+    PlaneGeometry,
+    RGBFormat,
+    ShaderMaterial,
+    Texture,
 } from 'three';
 
+import SVGLoader from 'imports-loader?THREE=three!exports-loader?THREE.SVGLoader!threeX/loaders/SVGLoader';
+console.log(SVGLoader);
 import AsyncPreloader from 'async-preloader';
 
 import glsl from '../../../utils/glsl';
@@ -70,7 +72,7 @@ export default class TestViz {
         const elapsed = (Date.now() - this.startTime) * 0.001;
         const intensity = 1;
         const factor = (this.kick + 1) * Math.pow(intensity, level * 10) + elapsed;
-        
+
         this.object3D.material.uniforms.uTime.value = factor;
 
         // this.kick *= 0.9;
@@ -100,7 +102,7 @@ export default class TestViz {
         this.object3D.material.uniforms.uKnobA.value = random(0.6, 1.0);
         this.object3D.material.uniforms.uKnobB.value = random(0.6, 1.2);
         this.object3D.material.uniforms.uKnobC.value = random(0.35, 0.5);
-        
+
         this.kick += 0.4;
     }
 }
