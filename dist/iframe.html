@@ -21,6 +21,10 @@
     var iframe = document.querySelector('#vis');
     var app;
 
+    function onEvent(event) {
+      console.log(event);
+    }
+
     function visLoaded() {
       app = iframe.contentWindow.app;
       app.pause();
@@ -28,6 +32,11 @@
       app.changeMusic();
       app.mute();
       app.changeStyle();
+
+      iframe.contentWindow.addEventListener('onFilesLoaded', onEvent, false);
+      iframe.contentWindow.addEventListener('onMusicEnd', onEvent, false);
+      iframe.contentWindow.addEventListener('onMusicLoaded', onEvent, false);
+
     }
   </script>
 </html>
