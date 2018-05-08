@@ -36,7 +36,7 @@ export default class UIAudioBars {
         this.clear();
 
         const height = this.ctx.height * 0.8;
-        const peakDetectIndex = this.audio.peakDetectIndex;
+        const peakDetectIndex = -1;
 
         // average
         const avgLevel = this.audio.avgLevel;
@@ -49,13 +49,13 @@ export default class UIAudioBars {
         this.ctx.fillRect(avgX, this.ctx.height - avgH, avgW, avgH);
 
         // levels
-        const levels = this.audio.levelsData;
+        const levels = this.audio.levels;
         const levelsOffset = 2;
         const levelsTotalWidth = this.ctx.width - avgW - avgOffset * 2;
         const levelsW = Math.floor((levelsTotalWidth - levels.length * levelsOffset) / levels.length);
 		
         for (let i = 0; i < levels.length; i++) {
-            const h = levels[i] * height + 2;
+            const h = levels[i].value * height + 2;
             const x = i * (levelsW + levelsOffset);
             const y = this.ctx.height - h;
 
@@ -86,6 +86,6 @@ export default class UIAudioBars {
     }
 
     onAudioPeak(e) {
-        this.peakDetectColor = this.peakDetectedColor;
+        // this.peakDetectColor = this.peakDetectedColor;
     }
 }

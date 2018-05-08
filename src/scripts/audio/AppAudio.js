@@ -1,6 +1,8 @@
 import EventEmitter from 'events';
 // import 'visibly.js';
 
+import AudioLevel from './AudioLevel';
+
 class AppAudio extends EventEmitter {
 
     get FFT_SIZE() { return 1024; }
@@ -56,9 +58,14 @@ class AppAudio extends EventEmitter {
         this.analyserNode.smoothingTimeConstant = 0.95;
         this.analyserNode.connect(this.gainNode);
 
+        this.sampleBands = [];
+        // this.sampleBands = [1, 1, 2, 2, 4, 4, 8, 8, 16, 16, 32, 32, 64, 64, 128, 128]; // 16
+        this.sampleBands = [1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 16, 16, 16, 16, 16, 16, 32, 32, 32, 32, 32, 32, 64]; // 32
+
         this.levelsDistribution = this.DISTRIBUTION_LINEAR;
-        this.levelsCount = 32;
-        this.levelsData = [];
+        this.levelsCount = this.sampleBands.length;
+        this.levels = [];
+        for (let i = 0; i < this.levelsCount; i++) { this.levels.push(new AudioLevel(i)); }
 
         this.binCount = this.analyserNode.frequencyBinCount; // FFT_SIZE / 2 
         this.binsPerLevel = Math.floor(this.binCount / this.levelsCount);
@@ -67,15 +74,8 @@ class AppAudio extends EventEmitter {
         this.freqByteData = new Uint8Array(this.binCount);
 
         this.peakCutOff = 0.52;
-        this.peakLast = 0;
         this.peakDecay = 0.99;
         this.peakInterval = 30; // frames
-        this.peakElapsed = 0;
-        this.peakDetectIndex = 18; // average = -1
-
-        this.sampleBands = [];
-        // this.sampleBands = [1, 1, 2, 2, 4, 4, 8, 8, 16, 16, 32, 32, 64, 64, 128, 128]; // 16
-        this.sampleBands = [1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 16, 16, 16, 16, 16, 16, 32, 32, 32, 32, 32, 32, 64]; // 32
 
         // time domain
         this.amplitudeData = [];
@@ -182,7 +182,7 @@ class AppAudio extends EventEmitter {
 
         this.updateFrequencyData();
         this.updateTimeData();
-        this.detectPeak(this.peakDetectIndex);
+        this.detectPeak();
 
         // set current time
         if (!this.ended) {
@@ -205,7 +205,7 @@ class AppAudio extends EventEmitter {
 
                 // normalize
                 // freqByteData values go from 0 to 256
-                this.levelsData[i] = sum / this.binsPerLevel / 256;
+                this.levels[i].value = sum / this.binsPerLevel / 256;
                 // this.levelsData[i] = this.dB(sum / this.binsPerLevel) / 256;
                 // if (!i) console.log(sum, sum / this.binsPerLevel, this.dB(sum / this.binsPerLevel));
             }
@@ -219,7 +219,7 @@ class AppAudio extends EventEmitter {
                     sum += this.freqByteData[j + totalBands];
                 }
 
-                this.levelsData[i] = sum / bands / 256;
+                this.levels[i].value = sum / bands / 256;
 
                 totalBands += bands;
             }
@@ -228,7 +228,7 @@ class AppAudio extends EventEmitter {
         // average
         let sum = 0;
         for(let i = 0; i < this.levelsCount; i++) {
-            sum += this.levelsData[i];
+            sum += this.levels[i].value;
         }
 
         this.avgLevel = sum / this.levelsCount;
@@ -242,37 +242,66 @@ class AppAudio extends EventEmitter {
         }
     }
 
-    detectPeak(index) {
-        // default is average
-        let value = this.avgLevel;
-        // but it can be any level
-        if (index > 0 && index < this.levelsCount) {
-            value = this.levelsData[index];
+    detectPeak() {
+        for (let i = 0; i < this.levels.length; i++) {
+            const level = this.levels[i];
+
+            // ignore if last peak happened before the min interval         
+            if (level.peakElapsed < this.peakInterval) {
+                level.peakElapsed++;
+                continue;
+            }
+
+            // new peak
+            if (level.value > level.peakLast && level.value > this.peakCutOff) {
+                level.peakLast = level.value * 1.2;
+                level.peakElapsed = 0;
+                this.emit(AppAudio.AUDIO_PEAK, level.index );
+            } else {
+                level.peakLast *= this.peakDecay;
+            }
         }
 
-        // ignore if last peak happened before the min interval
-        if (this.peakElapsed < this.peakInterval) {
-            this.peakElapsed++;
-            return;
-        }
+        /*
+        for (let i = 0; i < this.peakDetectIndices.length; i++) {
+            const index = this.peakDetectIndices[i];
 
-        // new peak
-        if (value > this.peakLast && value > this.peakCutOff) {
-            this.onPeak(value);
-            this.peakLast = value * 1.2;
-            this.peakElapsed = 0;
-        } else {
-            this.peakLast *= this.peakDecay;
+            // default is average
+            let value = this.avgLevel;
+            // but it can be any level
+            if (index > 0 && index < this.levelsCount) {
+                value = this.levels[index].value;
+            }
+
+            // ignore if last peak happened before the min interval
+            if (this.peakElapsed < this.peakInterval) {
+                this.peakElapsed++;
+                return;
+            }
+
+            // new peak
+            if (value > this.peakLast && value > this.peakCutOff) {
+                this.peakLast = value * 1.2;
+                this.peakElapsed = 0;
+                this.emit(AppAudio.AUDIO_PEAK, { index });
+            } else {
+                this.peakLast *= this.peakDecay;
+            }
         }
+        */
+    }
+
+    getLevel(index) {
+        return this.levels[index];
+    }
+
+    getValue(index) {
+        return this.levels[index].value || 0;
     }
 
     // ---------------------------------------------------------------------------------------------
     // EVENT HANDLERS
     // ---------------------------------------------------------------------------------------------
-
-    onPeak(value) {
-        this.emit(AppAudio.AUDIO_PEAK, { value });
-    }
 
     onFileDrop(file, arrayBuffer) {
         this.decode(arrayBuffer, () => {
@@ -292,8 +321,8 @@ class AppAudio extends EventEmitter {
         this.currentTime = this.duration;
 
         // reset data
-        for (let i = 0; i < this.levelsData.length; i++) { 
-            this.levelsData[i] = 0;
+        for (let i = 0; i < this.levels.length; i++) { 
+            this.levels[i].value = 0;
         }
     }
 }

@@ -15,13 +15,13 @@ export default class UIView {
         this.audioPeakDecay = this.audio.peakDecay;
         this.audioPeakInterval = this.audio.peakInterval;
         this.audioPeakCutOff = this.audio.peakCutOff;
-        this.audioPeakDetectIndex = this.audio.peakDetectIndex;
         this.audioDistributionOptions = ['linear', 'exponential'];
         this.audioDistribution = 1;
 
         this.vizKnobA = 1;
         this.vizKnobB = 1;
         this.vizKnobC = 1;
+        this.vizKnobD = 0;
 
         this.range = [0, 1];
         this.rangeKnob = [0, 5];
@@ -49,12 +49,12 @@ export default class UIView {
         .addSlider(this, 'audioPeakDecay', 'rangeDecay', { label: 'peak decay', dp: 3, onChange: () => { that.onAudioChange(); } })
         .addSlider(this, 'audioPeakInterval', 'rangeInterval', { label: 'peak interval', onChange: () => { that.onAudioChange(); } })
         .addSlider(this, 'audioPeakCutOff', 'range', { label: 'peak cutoff', onChange: () => { that.onAudioChange(); } })
-        .addSlider(this, 'audioPeakDetectIndex', 'rangeDetect', { label: 'peak index', step: 1, dp: 0, onChange: () => { that.onAudioChange(); } })
         
-        // .addGroup({ label: 'Viz', enable: true })
+        .addGroup({ label: 'Viz', enable: true })
         // .addSlider(this, 'vizKnobA', 'rangeKnob', { label: 'knob A', onChange: () => { that.onVizChange(); } })
         // .addSlider(this, 'vizKnobB', 'rangeKnob', { label: 'knob B', onChange: () => { that.onVizChange(); } })
         // .addSlider(this, 'vizKnobC', 'rangeKnob', { label: 'knob C', onChange: () => { that.onVizChange(); } })
+        .addSlider(this, 'vizKnobD', 'rangeKnob', { label: 'knob D', onChange: () => { that.onVizChange(); } })
 
         // .addCheckbox(this, 'camStoryboard', { label: 'storyboard', onChange: () => { that.onCameraChange(); } })
     }
@@ -95,7 +95,6 @@ export default class UIView {
         this.audio.peakDecay = this.audioPeakDecay;
         this.audio.peakInterval = this.audioPeakInterval;
         this.audio.peakCutOff = this.audioPeakCutOff;
-        this.audio.peakDetectIndex = floor(this.audioPeakDetectIndex);
     }
 	
     onAudioDistributionChange(index) {
@@ -104,10 +103,13 @@ export default class UIView {
     }
 
     onVizChange() {
-        const uniforms = this.view.webgl.viz.object3D.material.uniforms;
+        let uniforms = this.view.webgl.viz.bg.material.uniforms;
         
-        uniforms.uKnobA.value = this.vizKnobA;
-        uniforms.uKnobB.value = this.vizKnobB;
-        uniforms.uKnobC.value = this.vizKnobC;
+        // uniforms.uKnobA.value = this.vizKnobA;
+        // uniforms.uKnobB.value = this.vizKnobB;
+        // uniforms.uKnobC.value = this.vizKnobC;
+
+        uniforms = this.view.webgl.viz.logo.material.uniforms;
+        uniforms.uKnobD.value = this.vizKnobD * 0.01;
     }
 }
