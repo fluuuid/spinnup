@@ -256,7 +256,7 @@ class AppAudio extends EventEmitter {
             if (level.value > level.peakLast && level.value > this.peakCutOff) {
                 level.peakLast = level.value * 1.2;
                 level.peakElapsed = 0;
-                this.emit(AppAudio.AUDIO_PEAK, level.index );
+                this.emit(AppAudio.AUDIO_PEAK, { index: level.index, value: level.value });
             } else {
                 level.peakLast *= this.peakDecay;
             }

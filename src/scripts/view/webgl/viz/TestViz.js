@@ -29,8 +29,10 @@ export default class TestViz {
     }
 
     initAudio() {
-        this.kick = 0.0;
+        this.kickBg = 0.0;
         this.kickRows = 0.0;
+        this.kickStripes = 0.0;
+        this.kickRowDamp = 0.95;
 
         AppAudio.on('audio:peak', this.onAudioPeak.bind(this));
     }
@@ -72,7 +74,9 @@ export default class TestViz {
         texture.needsUpdate = true;
 
         const uniforms = {
-            uRows: { value: 30 },
+            uRows: { value: 10 },
+            uCols: { value: 20 },
+            uDisplacement: { value: 0 },
             uKnobD: { value: 0 },
             uTexture: { value: texture },
         };
@@ -100,14 +104,16 @@ export default class TestViz {
         const level = AppAudio.getValue(5);
         const elapsed = (Date.now() - this.startTime) * 0.001;
         const intensity = 1;
-        const factor = (this.kick + 1) * Math.pow(intensity, level * 10) + elapsed;
+        const factor = (this.kickBg + 1) * Math.pow(intensity, level * 10) + elapsed;
 
         this.bg.material.uniforms.uTime.value = factor;
 
-        this.kickRows *= 0.95;
-        this.logo.material.uniforms.uRows.value = this.kickRows;
+        this.kickRows *= this.kickRowDamp;
+        this.logo.material.uniforms.uRows.value = 2 + this.kickRows;
 
-        this.logo.material.uniforms.uKnobD.value = AppAudio.getValue(8) * 0.01;
+        // this.logo.material.uniforms.uKnobD.value = AppAudio.getValue(8) * 0.01;
+        this.kickStripes *= 0.95;
+        this.logo.material.uniforms.uKnobD.value = this.kickStripes;
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -133,17 +139,34 @@ export default class TestViz {
         this.logo.scale.y = this.logo.scale.x / logoAspect;
     }
 
-    onAudioPeak(index) {
-        if (index === 18) {
+    onAudioPeak(e) {
+        if (e.index === 18) {
             this.bg.material.uniforms.uKnobA.value = random(0.6, 1.0);
             this.bg.material.uniforms.uKnobB.value = random(0.6, 1.2);
             this.bg.material.uniforms.uKnobC.value = random(0.35, 0.5);
 
-            this.kick += 0.4;
+            this.kickBg += 0.4;
         }
 
-        if (index === 24) {
-            this.kickRows += random(15, 25);
+
+        if (e.index === 24) {
+            this.logo.material.uniforms.uDisplacement.value = 2;
+            this.kickStripes += e.value * 0.02;
+            this.kickRows = random(4, 16);
+            this.kickRowDamp = 0.99;
+        }
+
+        if (e.index === 2) {
+            this.logo.material.uniforms.uDisplacement.value = 1;
+            this.kickRows = random(4, 8);
+            this.kickRowDamp = 0.98;
+        }
+
+        if (e.index === 18) {
+            this.logo.material.uniforms.uDisplacement.value = 3;
+            this.kickStripes += e.value * 0.01;
+            this.kickRows = random(2, 48);
+            this.kickRowDamp = 1.0;
         }
     }
 }

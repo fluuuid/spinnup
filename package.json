@@ -19,6 +19,8 @@
     "@brunoimbrizi/controlkit": "0.1.92",
     "async-preloader": "3.0.1",
     "domready": "1.0.8",
+    "glsl-conditionals": "^1.0.0",
+    "glsl-easings": "^1.0.0",
     "glsl-noise": "0.0.0",
     "gsap": "1.18.2",
     "moment": "^2.22.1",
