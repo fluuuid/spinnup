@@ -1,4 +1,4 @@
-// Created by @brunoimbrizi
+// Created by @brunoimbrizi / brunoimbrizi.com
 // Based on https://www.shadertoy.com/view/lsl3RH by inigo quilez - iq/2013
 
 #pragma glslify: snoise2 = require(glsl-noise/simplex/2d)
