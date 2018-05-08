@@ -1,9 +1,10 @@
 import {
-    Scene,
-    OrthographicCamera,
     BoxGeometry,
-    ShaderMaterial,
     Mesh,
+    OrthographicCamera,
+    Scene,
+    ShaderMaterial,
+    WebGLRenderer
 } from 'three';
 import glsl from '../../utils/glsl';
 
@@ -16,7 +17,6 @@ export default class WebGLView {
     constructor() {
         this.view = AppView;
         this.audio = AppAudio;
-        this.renderer = this.view.renderer;
 
         this.initThree();
         this.initViz();
@@ -31,6 +31,9 @@ export default class WebGLView {
         this.hh = window.innerHeight * 0.5;
         this.camera = new OrthographicCamera(-this.hw, this.hw, this.hh, -this.hh, -10000, 10000);
         this.camera.position.z = 10;
+
+        // renderer
+        this.renderer = new WebGLRenderer({ antialias: true, alpha: true });
     }
 
     initViz() {
@@ -85,6 +88,6 @@ export default class WebGLView {
 
         this.viz.resize();
 
-        this.renderer.setSize(this.view.sketch.width, this.view.sketch.height);
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 }
