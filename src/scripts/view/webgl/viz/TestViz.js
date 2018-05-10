@@ -1,8 +1,10 @@
 import {
+    BufferAttribute,
     LinearFilter,
     Mesh,
     Object3D,
     PlaneGeometry,
+    PlaneBufferGeometry,
     RGBFormat,
     ShaderMaterial,
     Texture,
@@ -26,6 +28,7 @@ export default class TestViz {
         this.initAudio();
         this.initBackground();
         this.initLogo();
+        this.initDisplacement();
     }
 
     initAudio() {
@@ -74,26 +77,42 @@ export default class TestViz {
         texture.needsUpdate = true;
 
         const uniforms = {
+            uTime: { value: 0 },
             uRows: { value: 10 },
             uCols: { value: 20 },
             uDisplacement: { value: 0 },
             uKnobD: { value: 0 },
+            uKnobE: { value: 0 },
             uTexture: { value: texture },
         };
 
         const material = new ShaderMaterial({
-            vertexShader: glsl('default.vert'),
+            vertexShader: glsl('logo.vert'),
             fragmentShader: glsl('logo.frag'),
             uniforms,
             // wireframe: true,
             transparent: true,
         });
 
-        const geometry = new PlaneGeometry(1, 1);
+        this.segments = new Vector2(7, 2);
+
+        const geometry = new PlaneBufferGeometry(1, 1, this.segments.x, this.segments.y);
+        const displacement = new Float32Array(geometry.attributes.position.count);
+        geometry.addAttribute('displacement', new BufferAttribute(displacement, 1));
+        
         const mesh = new Mesh(geometry, material);
 
         this.logo = mesh;
         this.object3D.add(this.logo);
+    }
+
+    initDisplacement() {
+        this.displacementLevels = [];
+        this.displacementLevels.push([4, 8, 2, 16, 12, 4, 18, 24]);
+        this.displacementLevels.push([22, 7, 11, 3, 9, 10, 13, 4]);
+        this.displacementLevels.push([9, 17, 5, 18, 23, 30, 1, 16]);
+
+        this.displacementIndex = 0;
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -114,6 +133,29 @@ export default class TestViz {
         // this.logo.material.uniforms.uKnobD.value = AppAudio.getValue(8) * 0.01;
         this.kickStripes *= 0.95;
         this.logo.material.uniforms.uKnobD.value = this.kickStripes;
+
+        this.logo.material.uniforms.uTime.value = elapsed;
+
+        this.updateDisplacement();
+    }
+
+        // displacement
+    updateDisplacement() {
+        const levels = this.displacementLevels[this.displacementIndex];
+
+        const displacement = this.logo.geometry.attributes.displacement.array;
+
+        for (let i = 0; i < displacement.length; i++) {
+            const x = i % (this.segments.x + 1);
+            const y = Math.floor(i / (this.segments.x + 1));
+            
+            const level = levels[x % levels.length];
+            const intensity = 1 - (y / this.segments.y);
+
+            displacement[i] = Math.sin(AppAudio.getValue(level) * Math.PI * 1.5) * 0.25 * intensity;
+        }
+
+        this.logo.geometry.attributes.displacement.needsUpdate = true;
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -145,9 +187,11 @@ export default class TestViz {
             this.bg.material.uniforms.uKnobB.value = random(0.6, 1.2);
             this.bg.material.uniforms.uKnobC.value = random(0.35, 0.5);
 
+            this.displacementIndex++;
+            if (this.displacementIndex > this.displacementLevels.length - 1) this.displacementIndex = 0;
+
             this.kickBg += 0.4;
         }
-
 
         if (e.index === 24) {
             this.logo.material.uniforms.uDisplacement.value = 2;
@@ -164,9 +208,9 @@ export default class TestViz {
 
         if (e.index === 18) {
             this.logo.material.uniforms.uDisplacement.value = 3;
-            this.kickStripes += e.value * 0.01;
-            this.kickRows = random(2, 48);
-            this.kickRowDamp = 1.0;
+            this.kickStripes += e.value * 0.005;
+            this.kickRows = random(2, 24);
+            this.kickRowDamp = 1.02;
         }
     }
 }

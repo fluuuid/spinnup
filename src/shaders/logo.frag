@@ -4,14 +4,15 @@
 #pragma glslify: when_eq = require(glsl-conditionals/when_eq)
 
 #define PI 3.141592
-#define HALF_PI PI / 2.0
 
 varying vec2 vUv;
 
+uniform float uTime;
 uniform float uRows;
 uniform float uCols;
 uniform float uDisplacement;
 uniform float uKnobD;
+uniform float uKnobE;
 uniform sampler2D uTexture;
 
 void main() {
@@ -47,8 +48,10 @@ void main() {
 	vec4 tex = texture2D(uTexture, uvk);
 	vec4 colB = mix(vec4(0.0), vec4(1.0), tex.g);
 
-	// color = colB;
+	color = colB;
 
 	gl_FragColor = color;
+
+	// gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 
 }

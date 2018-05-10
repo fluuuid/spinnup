@@ -22,6 +22,7 @@ export default class UIView {
         this.vizKnobB = 1;
         this.vizKnobC = 1;
         this.vizKnobD = 0;
+        this.vizKnobE = 0;
 
         this.range = [0, 1];
         this.rangeKnob = [0, 5];
@@ -55,6 +56,7 @@ export default class UIView {
         // .addSlider(this, 'vizKnobB', 'rangeKnob', { label: 'knob B', onChange: () => { that.onVizChange(); } })
         // .addSlider(this, 'vizKnobC', 'rangeKnob', { label: 'knob C', onChange: () => { that.onVizChange(); } })
         .addSlider(this, 'vizKnobD', 'rangeKnob', { label: 'knob D', onChange: () => { that.onVizChange(); } })
+        .addSlider(this, 'vizKnobE', 'rangeKnob', { label: 'knob D', onChange: () => { that.onVizChange(); } })
 
         // .addCheckbox(this, 'camStoryboard', { label: 'storyboard', onChange: () => { that.onCameraChange(); } })
     }
@@ -111,5 +113,6 @@ export default class UIView {
 
         uniforms = this.view.webgl.viz.logo.material.uniforms;
         uniforms.uKnobD.value = this.vizKnobD * 0.01;
+        uniforms.uKnobE.value = this.vizKnobE;
     }
 }
