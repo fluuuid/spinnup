@@ -7,12 +7,11 @@
 
 varying vec2 vUv;
 
-uniform float uTime;
 uniform float uRows;
 uniform float uCols;
-uniform float uDisplacement;
-uniform float uKnobD;
-uniform float uKnobE;
+uniform float uDisplaceType;
+uniform float uDisplaceIntensity;
+uniform float uWireframe;
 uniform sampler2D uTexture;
 
 void main() {
@@ -32,26 +31,25 @@ void main() {
 
 	// switch / case
 	float k = 0.0;
-	k += ka * when_eq(uDisplacement, 0.0);
-	k += kb * when_eq(uDisplacement, 1.0);
-	k += kc * when_eq(uDisplacement, 2.0);
-	k += kd * when_eq(uDisplacement, 3.0);
+	k += ka * when_eq(uDisplaceType, 0.0);
+	k += kb * when_eq(uDisplaceType, 1.0);
+	k += kc * when_eq(uDisplaceType, 2.0);
+	k += kd * when_eq(uDisplaceType, 3.0);
 
 	// draw displacement map
 	vec4 colA = vec4(k, k, k, 1.0);
-	color = colA;
+	// color = colA;
 
 	// displaced uv
-	vec2 uvk = vec2(uv.x + k * uKnobD, uv.y + k * uKnobD);
+	vec2 uvk = uv + k * uDisplaceIntensity;
 
 	// logo
 	vec4 tex = texture2D(uTexture, uvk);
 	vec4 colB = mix(vec4(0.0), vec4(1.0), tex.g);
 
-	color = colB;
+	color += colB * when_eq(uWireframe, 0.0);
+	color += vec4(1.0) * when_eq(uWireframe, 1.0);
 
 	gl_FragColor = color;
-
-	// gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-
+	
 }

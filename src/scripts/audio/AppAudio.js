@@ -55,7 +55,7 @@ class AppAudio extends EventEmitter {
         // create an analyser node
         this.analyserNode = this.context.createAnalyser();
         this.analyserNode.fftSize = this.FFT_SIZE;
-        this.analyserNode.smoothingTimeConstant = 0.95;
+        this.analyserNode.smoothingTimeConstant = 0.9;
         this.analyserNode.connect(this.gainNode);
 
         this.sampleBands = [];
