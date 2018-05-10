@@ -37,6 +37,8 @@ export default class UIView {
         this.initAudioBars();
 
         this.onAudioDistributionChange(this.audioDistribution);
+
+        this.controlKit.disable();
     }
 
     initControlKit() {
