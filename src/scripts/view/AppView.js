@@ -16,6 +16,7 @@ class AppView {
 
         window.addEventListener('resize', this.onResize.bind(this));
         window.addEventListener('keyup', this.onKeyUp.bind(this));
+        document.querySelector('#container').addEventListener('click', this.onClick.bind(this));
     }
 
     initWebGL() {
@@ -69,6 +70,15 @@ class AppView {
             if (this.audio.paused) this.audio.play();
             else this.audio.pause();
         }
+    }
+
+    onClick(e) {
+        if (this.audio.context.state === 'suspended') {
+            this.audio.context.resume();
+            return;
+        }
+        if (this.audio.paused) this.audio.play();
+        else this.audio.pause();
     }
 }
 
