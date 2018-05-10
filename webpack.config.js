@@ -12,6 +12,11 @@ module.exports = {
         compress: true,
         port: 3000
     },
+    resolve: {
+      alias: {
+    		'threeX': path.resolve(__dirname, 'node_modules/three/examples/js/')
+    	}
+    },
     optimization: {
         splitChunks: {
             cacheGroups: {
@@ -25,6 +30,10 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: require.resolve('three'),
+                use: 'imports-loader?this=>window'
+            },
             {
                 test: /\.(glsl|frag|vert)$/,
                 use: ['raw-loader', 'glslify-loader'],
