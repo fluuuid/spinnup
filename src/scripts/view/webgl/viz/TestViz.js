@@ -1,7 +1,10 @@
 import {
+    BufferGeometry,
     BufferAttribute,
+    Float32BufferAttribute,
     LinearFilter,
     Mesh,
+    MeshBasicMaterial,
     Object3D,
     PlaneGeometry,
     PlaneBufferGeometry,
@@ -94,9 +97,40 @@ export default class TestViz {
             transparent: true,
         });
 
-        this.segments = new Vector2(7, 2);
+        const positions = [];
+        const indices = [];
+        const uvs = [];
+        // const cols = [0.000, 0.164, 0.302, 0.354, 0.516, 0.676, 0.830, 1.000];
+        const cols = [0.000, 0.164, 0.302, 0.472, 0.560, 0.676, 0.830, 1.000];
+        const segments = new Vector2(cols.length - 1, 8);
 
-        const geometry = new PlaneBufferGeometry(1, 1, this.segments.x, this.segments.y);
+        for (let i = 0; i <= segments.y; i++) {
+            const y = (i / segments.y) - 0.5;
+            for (let j = 0; j <= segments.x; j++) {
+                const x = cols[j] - 0.5;
+                positions.push(x, -y, 0);
+                uvs.push(cols[j]);
+                uvs.push(1 - (i / segments.y));
+            }
+        }
+
+        for (let i = 0; i < segments.y; i ++) {
+            for (let j = 0; j < segments.x; j ++) {
+                let a = i * (segments.x + 1) + (j + 1);
+                let b = i * (segments.x + 1) + j;
+                let c = (i + 1) * (segments.x + 1) + j;
+                let d = (i + 1) * (segments.x + 1) + (j + 1);
+                indices.push(a, b, d);
+                indices.push(b, c, d);
+            }
+        }
+
+        const geometry = new BufferGeometry();
+        geometry.setIndex(indices);
+        geometry.addAttribute('position', new Float32BufferAttribute(positions, 3));
+        geometry.addAttribute('uv', new Float32BufferAttribute(uvs, 2));
+
+        // const geometry = new PlaneBufferGeometry(1, 1, segments.x, segments.y);
         const equaliser = new Float32Array(geometry.attributes.position.count);
         geometry.addAttribute('equaliser', new BufferAttribute(equaliser, 1));
         
@@ -104,6 +138,7 @@ export default class TestViz {
 
         this.logo = mesh;
         this.object3D.add(this.logo);
+        this.segments = segments;
     }
 
     initDisplacement() {
@@ -131,7 +166,7 @@ export default class TestViz {
         this.logo.material.uniforms.uRows.value = 2 + this.kickRows;
 
         // logo fx
-        this.kickDisplace *= 0.95;
+        this.kickDisplace *= 0.98;
         if (AppView.ui.vizLogoDisplace) this.kickDisplace = AppView.ui.vizLogoDisplace;
         this.logo.material.uniforms.uDisplaceIntensity.value = this.kickDisplace;
 
@@ -144,7 +179,8 @@ export default class TestViz {
             const y = Math.floor(i / (this.segments.x + 1));
             
             const level = levels[x % levels.length];
-            const intensity = 1 - (y / this.segments.y);
+            // const intensity = 1 - (y / this.segments.y); // just top
+            const intensity = (y - this.segments.y / 2) / this.segments.y; // both top and bottom
 
             equaliser[i] = Math.sin(AppAudio.getValue(level) * Math.PI * 1.5) * 0.25 * intensity;
             if (!AppView.ui.vizLogoEqualiser) equaliser[i] = 0;
@@ -185,6 +221,15 @@ export default class TestViz {
             this.kickBg += 0.4;
         }
 
+        // sawtooth
+        if (e.index === 2) {
+            this.logo.material.uniforms.uDisplaceType.value = 1;
+            this.kickDisplace = e.value * 0.01;
+            this.kickRows = random(4, 8);
+            this.kickRowDamp = 0.98;
+        }
+
+        // sine
         if (e.index === 24) {
             this.logo.material.uniforms.uDisplaceType.value = 2;
             this.kickDisplace += e.value * 0.02;
@@ -192,15 +237,10 @@ export default class TestViz {
             this.kickRowDamp = 0.99;
         }
 
-        if (e.index === 2) {
-            this.logo.material.uniforms.uDisplaceType.value = 1;
-            this.kickRows = random(4, 8);
-            this.kickRowDamp = 0.98;
-        }
-
+        // quartic
         if (e.index === 18) {
             this.logo.material.uniforms.uDisplaceType.value = 3;
-            this.kickDisplace += e.value * 0.005;
+            this.kickDisplace = e.value * 0.01;
             this.kickRows = random(2, 24);
             this.kickRowDamp = 1.02;
 
