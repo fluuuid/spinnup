@@ -23,7 +23,7 @@ export default class UIView {
         this.vizLogoOptions = ['auto', 'A', 'B', 'C'];
         this.vizLogo = 0;
         this.vizLogoDisplace = 0;
-        this.vizLogoEqualiser = true;
+        this.vizLogoEqualiser = 0.5;
         this.vizLogoWireframe = false;
 
         this.range = [0, 1];
@@ -59,7 +59,7 @@ export default class UIView {
         .addSelect(this, 'vizBgOptions', { label: 'bg mix', selected: this.vizBg, onChange: (index) => { that.onVizBgChange(index); } })
         .addSelect(this, 'vizLogoOptions', { label: 'logo fx', selected: this.vizLogo, onChange: (index) => { that.onVizLogoChange(index); } })
         .addSlider(this, 'vizLogoDisplace', 'rangeDisplace', { label: 'logo fx intensity' })
-        .addCheckbox(this, 'vizLogoEqualiser', { label: 'logo equaliser' })
+        .addSlider(this, 'vizLogoEqualiser', 'range', { label: 'logo equaliser' })
         .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizChange(); } })
         // .addSlider(this, 'vizModD', 'rangeKnobA', { label: 'logo D', onChange: () => { that.onVizChange(); } })
         // .addSlider(this, 'vizModE', 'rangeKnobA', { label: 'logo E', onChange: () => { that.onVizChange(); } })

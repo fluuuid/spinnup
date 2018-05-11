@@ -181,9 +181,11 @@ export default class TestViz {
             const level = levels[x % levels.length];
             // const intensity = 1 - (y / this.segments.y); // just top
             const intensity = (y - this.segments.y / 2) / this.segments.y; // both top and bottom
+            const scale = AppView.ui.vizLogoEqualiser;
+            const value = AppAudio.getValue(level);
 
-            equaliser[i] = Math.sin(AppAudio.getValue(level) * Math.PI * 1.5) * 0.25 * intensity;
-            if (!AppView.ui.vizLogoEqualiser) equaliser[i] = 0;
+            // equaliser[i] = Math.sin(value * Math.PI * 1.8 * -Math.pow(Math.sin(value), 2)) * scale * intensity;
+            equaliser[i] = Math.sin(value * Math.PI * 1.5) * scale * intensity;
         }
 
         this.logo.geometry.attributes.equaliser.needsUpdate = true;
