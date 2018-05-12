@@ -42,7 +42,7 @@ export default class AbstractViz {
 
         const material = new ShaderMaterial({
             vertexShader: glsl('default.vert'),
-            fragmentShader: glsl(`${this.id}/bg.frag`),
+            fragmentShader: glsl(`default.frag`),
             uniforms,
         });
 
@@ -59,8 +59,8 @@ export default class AbstractViz {
         };
 
         const material = new ShaderMaterial({
-            vertexShader: glsl(`${this.id}/logo.vert`),
-            fragmentShader: glsl(`${this.id}/logo.frag`),
+            vertexShader: glsl(`default.vert`),
+            fragmentShader: glsl(`default.frag`),
             uniforms,
             transparent: true,
         });

@@ -32,6 +32,8 @@ export default class Viz06 extends AbstractViz {
         uniforms.uModB = { value: 1 };
         uniforms.uModC = { value: 0.5 };
         uniforms.uDebug = { value: 0 };
+
+        this.bg.material.fragmentShader = glsl(`${this.id}/bg.frag`);
     }
 
     initLogo() {
@@ -43,6 +45,9 @@ export default class Viz06 extends AbstractViz {
         uniforms.uDisplaceType = { value: 0 };
         uniforms.uDisplaceIntensity = { value: 0 };
         uniforms.uWireframe = { value: 0 };
+
+        this.logo.material.vertexShader = glsl(`${this.id}/logo.vert`);
+        this.logo.material.fragmentShader = glsl(`${this.id}/logo.frag`);
     }
 
     // ---------------------------------------------------------------------------------------------
