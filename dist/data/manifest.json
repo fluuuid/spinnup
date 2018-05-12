@@ -2,6 +2,7 @@
 	"items": [
 		{ "id": "track", "src": "audio/INDIGO-PALACE-FIVERS.mp3", "body": "arrayBuffer" },
 		{ "id": "logo", "src": "images/logo.png" },
-		{ "id": "Texture_06", "src": "images/Texture_06.jpg" }
+		{ "id": "Texture_06", "src": "images/Texture_06.jpg" },
+		{ "id": "Texture_10", "src": "images/Texture_10.jpg" }
 	]
 }

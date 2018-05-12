@@ -1,16 +1,16 @@
 import {
-    BoxGeometry,
-    Mesh,
     OrthographicCamera,
     Scene,
-    ShaderMaterial,
     WebGLRenderer
 } from 'three';
+
 import glsl from '../../utils/glsl';
 
 import AppAudio from '../../audio/AppAudio';
 import AppView from '../../view/AppView';
-import TestViz from './viz/TestViz';
+
+import Viz06 from './viz/Viz06';
+import Viz10 from './viz/Viz10';
 
 export default class WebGLView {
 
@@ -37,24 +37,9 @@ export default class WebGLView {
     }
 
     initViz() {
-        this.viz = new TestViz();
+        // this.viz = new Viz06();
+        this.viz = new Viz10();
         this.scene.add(this.viz.object3D);
-    }
-
-    initObject() {
-        const geometry = new BoxGeometry(100, 100, 100);
-
-        const material = new ShaderMaterial({
-            uniforms: {},
-            vertexShader: glsl('default.vert'),
-            fragmentShader: glsl('default.frag'),
-            wireframe: true
-        });
-
-        const mesh = new Mesh(geometry, material);
-        this.scene.add(mesh);
-
-        this.mesh = mesh;
     }
 
     // ---------------------------------------------------------------------------------------------
