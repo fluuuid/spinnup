@@ -16,7 +16,7 @@ uniform sampler2D uTexture;
 
 void main() {
 	vec2 uv = vUv;
-	vec4 color;
+	vec4 color = vec4(0.0);
 
 	// displacement map
 

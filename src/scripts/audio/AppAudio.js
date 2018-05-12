@@ -42,19 +42,8 @@ class AppAudio extends EventEmitter {
     }
 
     initContext() {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
         this.context = new AudioContext();
-
-        // Chrome 66 update https://goo.gl/7K7WLu
-        if (this.context.state === 'suspended') {
-            const el = document.querySelector('body');
-            const onClick = (e) => {
-                el.removeEventListener('click', this.onClickHandler);
-                this.onClickHandler = null;
-                this.context.resume();
-            };
-            this.onClickHandler = onClick.bind(this);
-            el.addEventListener('click', this.onClickHandler);
-        }
     }
 
     initGain() {

@@ -11,12 +11,50 @@ class App {
         this.initLoader();
     }
 
+    // API
+
+    pause () {
+        console.log('pause');
+    }
+
+    play () {
+        console.log('play');
+    }
+
+    changeMusic () {
+        console.log('changeMusic');
+    }
+
+    mute () {
+        console.log('mute');
+    }
+
+    changeStyle () {
+        console.log('changeStyle');
+    }
+
+    onMusicLoaded (data) {
+        window.dispatchEvent(new CustomEvent('onMusicLoaded', {detail: data}));
+    }
+
+    onMusicEnd (data) {
+        window.dispatchEvent(new CustomEvent('onMusicEnd', {detail: data}));
+    }
+
+    onFilesLoaded(data) {
+        window.dispatchEvent(new CustomEvent('onFilesLoaded', {detail: data}));
+    }
+
+    //
+
     initLoader() {
         AsyncPreloader.loadManifest('data/manifest.json')
             .then(items => {
                 this.initAudio();
                 this.initView();
                 this.initFileReader();
+
+                this.onFilesLoaded({test: 'asdasdas'});
 
                 // DEBUG
                 this.audio = AppAudio;
