@@ -4,8 +4,6 @@ import {
     WebGLRenderer
 } from 'three';
 
-import glsl from '../../utils/glsl';
-
 import AppAudio from '../../audio/AppAudio';
 import AppView from '../../view/AppView';
 
