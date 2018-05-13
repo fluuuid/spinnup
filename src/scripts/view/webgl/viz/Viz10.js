@@ -17,10 +17,7 @@ export default class Viz10 extends AbstractViz {
         this.kickOffsetLevel = 22;
         this.kickOffsetX = 0.0;
         this.kickOffsetY = 0.0;
-
-        this.targetSteps = new Vector2(2, 2);
-        this.targetOffset = new Vector2(0.1, 0.1);
-        this.targetGap = 0.5;
+        this.dampOffsetX = 0.92;
     }
 
     initBackground() {
@@ -64,7 +61,7 @@ export default class Viz10 extends AbstractViz {
         this.kickBoost *= 0.98;
         this.bg.material.uniforms.uBoost.value = this.kickBoost;
 
-        this.kickOffsetX *= 0.96;
+        this.kickOffsetX *= this.dampOffsetX;
         this.logo.material.uniforms.uOffset.value.x = this.kickOffsetX + 0.002;
         this.logo.material.uniforms.uOffset.value.y *= 0.95;
 
@@ -74,11 +71,6 @@ export default class Viz10 extends AbstractViz {
             const amount = Math.sin(value * Math.PI * 0.5) * 0.1;
             this.logo.material.uniforms.uOffset.value.y = amount + this.kickOffsetY;
         }
-
-        // this.logo.material.uniforms.uSteps.value.x += (this.targetSteps.x - this.logo.material.uniforms.uSteps.value.x) * 0.5;
-        // this.logo.material.uniforms.uSteps.value.y += (this.targetSteps.y - this.logo.material.uniforms.uSteps.value.y) * 0.5;
-        // this.logo.material.uniforms.uOffset.value.x += (this.targetOffset.x - this.logo.material.uniforms.uOffset.value.x) * 0.5;
-        // this.logo.material.uniforms.uOffset.value.y += (this.targetOffset.y - this.logo.material.uniforms.uOffset.value.y) * 0.5;
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -91,13 +83,15 @@ export default class Viz10 extends AbstractViz {
             this.kickBg += 6.5;
             this.kickBoost += random(e.value);
 
+            if (AppView.ui.vizLogoOverride) return;
+
             const rnd = Math.floor(random(3.8));
 
-            if (AppView.ui.vizLogoOverride) return;
+            this.dampOffsetX = 0.92;
 
             switch (rnd) {
                 case 0: {
-                    this.logo.material.uniforms.uSteps.value.set(5, 2);
+                    this.logo.material.uniforms.uSteps.value.set(7, 2);
                     this.logo.material.uniforms.uGapSize.value = 3.20;
                     this.kickOffsetX = 0.05;
                     break;
@@ -116,15 +110,13 @@ export default class Viz10 extends AbstractViz {
                     break;
                 }
                 case 3: {
-                    this.logo.material.uniforms.uSteps.value.set(10, 3);
-                    this.logo.material.uniforms.uGapSize.value = 3.20;
+                    this.logo.material.uniforms.uSteps.value.set(12, 3);
+                    this.logo.material.uniforms.uGapSize.value = 1.00;
                     this.kickOffsetX = 0.0;
                     this.kickOffsetY += 0.2;
                     break;
                 }
             }
-
-            // this.logo.material.uniforms.uOffset.value.y += 0.05;
         }
 
         if (e.index === 2) {
@@ -137,40 +129,8 @@ export default class Viz10 extends AbstractViz {
         if (e.index === 22) {
             this.logo.material.uniforms.uGapSize.value = 0.5;
             this.kickOffsetX += 0.1;
+            this.dampOffsetX = 0.97;
         }
 
-        return;
-
-        /*
-        if (e.index === 8) {
-            this.logo.material.uniforms.uSteps.value.set(31, 2);
-            this.logo.material.uniforms.uGapSize.value = 1.30;
-            this.kickOffsetLevel = 8;
-
-            this.logo.material.uniforms.uOffset.value.y += 0.025;
-        }
-
-        if (e.index === 12) {
-            return;
-            this.logo.material.uniforms.uSteps.value.set(25, 2);
-            this.logo.material.uniforms.uGapSize.value = 4.50;
-            this.kickOffsetLevel = 12;
-
-            this.logo.material.uniforms.uOffset.value.y += 0.025;
-        }
-        */
-
-        if (e.index === 16) {
-            this.logo.material.uniforms.uSteps.value.set(19, 2);
-            this.logo.material.uniforms.uGapSize.value = 1.15;
-            this.kickOffsetLevel = 16;
-
-            this.logo.material.uniforms.uOffset.value.y += 0.025;
-        }
-
-        if (e.index === 22) {
-            this.logo.material.uniforms.uSteps.value.set(16, 2);
-            this.logo.material.uniforms.uGapSize.value = 0.8;
-        }
     }
 }
