@@ -1,17 +1,11 @@
 /* eslint-disable no-console */
 import AsyncPreloader from 'async-preloader';
+
 import { addFileDropListener } from './utils/file.utils';
+import { assetsList } from './data/AppData';
 
 import AppAudio from './audio/AppAudio';
 import AppView from './view/AppView';
-
-const debug = {
-    visId: 'Viz06',
-    assets: [
-        { 'id': 'track', 'src': 'audio/INDIGO-PALACE-FIVERS.mp3', 'body': 'arrayBuffer' },
-        { 'id': 'Texture_06', 'src': 'images/Texture_06.jpg' }
-    ]
-};
 
 class App {
 
@@ -29,8 +23,12 @@ class App {
         console.log('play');
     }
 
-    changeVis ({assets, viewId}) {
-        this.initLoader(assets, viewId);
+    changeViz ({trackSrc, vizId}) {
+        const track = { id: 'track', src: trackSrc, body: 'arrayBuffer' };
+        const assets = assetsList[vizId];
+        assets.push(track);
+
+        this.initLoader(assets, vizId);
     }
 
     mute () {
@@ -54,7 +52,7 @@ class App {
                 if(window.parent && window.parent.onVisReady) {
                     window.parent.onVisReady();
                 } else {
-                    this.initLoader(debug.assets, debug.visId);
+                    // this.initLoader(debug.assets, debug.vizId);
                 }
             })
             .catch(err => {

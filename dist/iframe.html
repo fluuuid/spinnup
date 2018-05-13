@@ -43,27 +43,17 @@
   <script type="text/javascript">
     var iframe = document.querySelector('#vis');
     var app;
-    var vis = {
-      Viz06: {
-        assets: [
-          { "id": "track", "src": "audio/INDIGO-PALACE-FIVERS.mp3", "body": "arrayBuffer" },
-      		{ "id": "Texture_06", "src": "images/Texture_06.jpg" }
-        ]
-      },
-      VizTest: {
-        assets: [
-          { "id": "track", "src": "audio/INDIGO-PALACE-FIVERS.mp3", "body": "arrayBuffer" },
-      		{ "id": "Texture_06", "src": "images/Texture_06.jpg" }
-        ]
-      }
+    var tracks = {
+      Viz06: 'audio/INDIGO-PALACE-FIVERS.mp3',
+      Viz10: 'audio/Maes-MaesEstLiberable-PART-II.mp3',
     }
 
     function onChangeSelector(target){
       if(target.value === 'none') return;
 
-      app.changeVis({
-        assets: vis[target.value].assets,
-        viewId: target.value
+      app.changeViz({
+        trackSrc: tracks[target.value],
+        vizId: target.value
       });
     };
 
