@@ -39,9 +39,9 @@ export default class Viz10 extends AbstractViz {
         super.initLogo();
 
         const uniforms = this.logo.material.uniforms;
-        uniforms.uSteps = { value: new Vector2(16, 3) };
-        uniforms.uOffset = { value: new Vector2(0.002, 0.0) };
-        uniforms.uGapSize = { value: 0.5 };
+        uniforms.uSteps = { value: new Vector2(16, 2) };
+        uniforms.uOffset = { value: new Vector2(0.002, 0.01) };
+        uniforms.uGapSize = { value: 2.2 };
         uniforms.uWireframe = { value: 0 };
 
         this.logo.material.vertexShader = glsl(`${this.id}/logo.vert`);
@@ -99,27 +99,26 @@ export default class Viz10 extends AbstractViz {
                 case 0: {
                     this.logo.material.uniforms.uSteps.value.set(5, 2);
                     this.logo.material.uniforms.uGapSize.value = 3.20;
-                    this.kickOffsetX += 0.005;
+                    this.kickOffsetX = 0.05;
                     break;
                 }
                 case 1: {
                     this.logo.material.uniforms.uSteps.value.set(16, 2);
-                    // this.logo.material.uniforms.uGapSize.value = 2.14;
-                    this.logo.material.uniforms.uGapSize.value = 0.5;
-                    this.kickOffsetX += 0.1;
-                    // this.kickOffsetX += 0.005;
+                    this.logo.material.uniforms.uGapSize.value = 2.8;
+                    this.kickOffsetX = 0.02;
                     break;
                 }
                 case 2: {
                     this.logo.material.uniforms.uSteps.value.set(25, 2);
                     this.logo.material.uniforms.uGapSize.value = 2.30;
+                    this.kickOffsetX = 0.0;
                     this.kickOffsetY -= 0.2;
                     break;
                 }
                 case 3: {
                     this.logo.material.uniforms.uSteps.value.set(10, 3);
                     this.logo.material.uniforms.uGapSize.value = 3.20;
-                    this.kickOffsetX += 0.005;
+                    this.kickOffsetX = 0.0;
                     this.kickOffsetY += 0.2;
                     break;
                 }
@@ -131,6 +130,13 @@ export default class Viz10 extends AbstractViz {
         if (e.index === 2) {
             this.bg.material.uniforms.uModB.value = Math.floor(random(1.9));
             // this.kickBg += 4.5;
+        }
+
+        if (AppView.ui.vizLogoOverride) return;
+
+        if (e.index === 22) {
+            this.logo.material.uniforms.uGapSize.value = 0.5;
+            this.kickOffsetX += 0.1;
         }
 
         return;
