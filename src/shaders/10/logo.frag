@@ -1,13 +1,16 @@
 // Created by @brunoimbrizi / brunoimbrizi.com
 
 #pragma glslify: when_eq = require(glsl-conditionals/when_eq)
+#pragma glslify: when_lt = require(glsl-conditionals/when_lt)
+#pragma glslify: when_gt = require(glsl-conditionals/when_gt)
 
-varying float vSteps;
-varying float vGap;
 varying vec2 vScale;
 varying vec2 vUv;
 
 uniform sampler2D uTexture;
+uniform vec2 uOffset;
+uniform vec2 uSteps;
+uniform float uGapSize;
 uniform float uWireframe;
 
 float crop(float x, float min, float max) {
@@ -19,8 +22,9 @@ void main() {
 	vec4 color = vec4(0.0);
 	vec2 offset = vec2(0.0);
 
-	float steps = vSteps;
-	float step = 1.0 / (steps - 0.0);
+	float gap = uOffset.x;
+	float steps = uSteps.x;
+	float step = 1.0 / steps;
 	float i = floor(uv.x * steps);		// [0...steps]
 
 	// scale
@@ -29,13 +33,14 @@ void main() {
 
 	// offset y
 	// alternate between -1, 1
-	float alt = mod(i, 2.0) * 2.0 - 1.0;
-	float amt = 0.1;
+	float a = uSteps.y;
+	// float alt = mod(i, a) * a - a / 2.0;
+	float alt = mod(i, a) * 2.0 - 1.0;
+	float amt = uOffset.y;
 	offset.y = alt * amt;
 
 	// offset x
-	float gap = vGap;
-	offset.x = -vGap * i;
+	offset.x = -gap * i;
 	
 	vec2 uvo = uvs + offset;
 
@@ -44,23 +49,14 @@ void main() {
 	vec4 colB = mix(vec4(0.0), vec4(1.0), tex.g);
 
 
-	// if (uv.x > 0.5 / vScale.x && uv.x < 0.5 / vScale.x + vGap / vScale.x) colB.a = 0.0;
-	// if (uvs.x > 0.5 && uvs.x < 0.5 + vGap) colB.a = 0.0;
-	// colB.a -= crop(uv.x, 0.5 / vScale.x, 0.5 / vScale.x + vGap / vScale.x);
-
+	// hide gaps
 	float sstep = vScale.x / steps;
 	float j = floor((uv.x + gap) * steps);
 
-	colB.a -= crop(uvs.x, sstep * j - gap / 2.0, sstep * j + gap / 2.0);
+	float cropped = crop(uvs.x, sstep * j - gap * uGapSize, sstep * j + gap * uGapSize);
 
-	// colB = vec4(1.0 * step * i, 0.0, 0.0, 1.0);
-	// if (uvs.x > sstep * j - gap * 0.5 && uvs.x < sstep * j + gap * 0.5) colB.b = 0.5;
-
-	// float a = sstep * j;
-	// if (uvs.x > a - gap && uvs.x < a + gap) colB.b = 0.5;
-	// if (j == 0.0) colB.b = 0.0;
-	// if (j == steps) colB.b = 0.0;
-
+	// ignore edges
+	colB.a -= cropped * when_gt(j, 0.0) * when_lt(j, steps);
 
 	color += colB * when_eq(uWireframe, 0.0);
 	color += vec4(1.0) * when_eq(uWireframe, 1.0);
