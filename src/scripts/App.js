@@ -1,14 +1,22 @@
+/* eslint-disable no-console */
 import AsyncPreloader from 'async-preloader';
-
 import { addFileDropListener } from './utils/file.utils';
 
 import AppAudio from './audio/AppAudio';
 import AppView from './view/AppView';
 
+const debug = {
+    visId: 'Viz06',
+    assets: [
+        { 'id': 'track', 'src': 'audio/INDIGO-PALACE-FIVERS.mp3', 'body': 'arrayBuffer' },
+        { 'id': 'Texture_06', 'src': 'images/Texture_06.jpg' }
+    ]
+};
+
 class App {
 
     constructor() {
-        this.initLoader();
+        this.loadCoreAssets();
     }
 
     // API
@@ -21,16 +29,12 @@ class App {
         console.log('play');
     }
 
-    changeMusic () {
-        console.log('changeMusic');
+    changeVis ({assets, viewId}) {
+        this.initLoader(assets, viewId);
     }
 
     mute () {
         console.log('mute');
-    }
-
-    changeStyle () {
-        console.log('changeStyle');
     }
 
     onMusicLoaded (data) {
@@ -41,20 +45,28 @@ class App {
         window.dispatchEvent(new CustomEvent('onMusicEnd', {detail: data}));
     }
 
-    onFilesLoaded(data) {
-        window.dispatchEvent(new CustomEvent('onFilesLoaded', {detail: data}));
-    }
-
     //
 
-    initLoader() {
+    loadCoreAssets() {
         AsyncPreloader.loadManifest('data/manifest.json')
-            .then(items => {
-                this.initAudio();
-                this.initView();
+            .then(() => {
                 this.initFileReader();
+                if(window.parent && window.parent.onVisReady) {
+                    window.parent.onVisReady();
+                } else {
+                    this.initLoader(debug.assets, debug.visId);
+                }
+            })
+            .catch(err => {
+                console.log('AsyncPreloader error', err);
+            });
+    }
 
-                this.onFilesLoaded({test: 'asdasdas'});
+    initLoader(files, vizId) {
+        AsyncPreloader.loadItems(files)
+            .then(() => {
+                this.initAudio();
+                this.initView(vizId);
 
                 // DEBUG
                 this.audio = AppAudio;
@@ -72,8 +84,8 @@ class App {
         });
     }
 
-    initView() {
-        AppView.init();
+    initView(vizId) {
+        AppView.init(vizId);
     }
 
     initFileReader() {
