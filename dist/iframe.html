@@ -29,7 +29,7 @@
     </style>
   </head>
   <body>
-    <iframe id="vis" src="index.html" frameBorder="0" seamless width="100%" height="500"></iframe>
+    <iframe id="viz" src="index.html" frameBorder="0" seamless width="100%" height="500"></iframe>
     <section id="viz-controller" class="hidden">
       <h1>Change Visualisation</h1>
       <select onchange="onChangeSelector(this)">
@@ -41,7 +41,7 @@
   </body>
 
   <script type="text/javascript">
-    var iframe = document.querySelector('#vis');
+    var iframe = document.querySelector('#viz');
     var app;
     var tracks = {
       Viz06: 'audio/INDIGO-PALACE-FIVERS.mp3',
@@ -61,7 +61,7 @@
     function called from viz app when base assets are loaded
     and aplication is ready to be controlled
     */
-    function onVisReady() {
+    function onVizReady() {
       app = iframe.contentWindow.app;
       document.querySelector('#viz-controller').classList.remove('hidden');
       document.querySelector('#viz-controller').classList.add('visible');

@@ -49,8 +49,8 @@ class App {
         AsyncPreloader.loadManifest('data/manifest.json')
             .then(() => {
                 this.initFileReader();
-                if(window.parent && window.parent.onVisReady) {
-                    window.parent.onVisReady();
+                if(window.parent && window.parent.onVizReady) {
+                    window.parent.onVizReady();
                 } else {
                     // this.initLoader(debug.assets, debug.vizId);
                 }
