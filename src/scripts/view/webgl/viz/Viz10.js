@@ -22,7 +22,7 @@ export default class Viz10 extends AbstractViz {
         const uniforms = this.bg.material.uniforms;
         uniforms.uTime = { value: 0 };
         uniforms.uModA = { value: 0 };
-        uniforms.uModB = { value: 1 };
+        uniforms.uModB = { value: 0 };
         uniforms.uBoost = { value: 0 };
 
         this.bg.material.fragmentShader = glsl(`${this.id}/bg.frag`);
@@ -32,13 +32,9 @@ export default class Viz10 extends AbstractViz {
         super.initLogo();
 
         const uniforms = this.logo.material.uniforms;
-        uniforms.uRows = { value: 10 };
-        uniforms.uCols = { value: 20 };
-        uniforms.uDisplaceType = { value: 0 };
-        uniforms.uDisplaceIntensity = { value: 0 };
         uniforms.uWireframe = { value: 0 };
 
-        // this.logo.material.vertexShader = glsl(`${this.id}/logo.vert`);
+        this.logo.material.vertexShader = glsl(`${this.id}/logo.vert`);
         this.logo.material.fragmentShader = glsl(`${this.id}/logo.frag`);
     }
 
