@@ -37,12 +37,12 @@ export class Viz13 extends AbstractViz {
         uniforms.uData = { value: this.dataTexture };
         uniforms.uDataLength = { value: this.data.length };
 
-        // this.logo.material.vertexShader = glsl(`${this.id}/logo.vert`);
+        this.logo.material.vertexShader = glsl(`${this.id}/logo.vert`);
         this.logo.material.fragmentShader = glsl(`${this.id}/logo.frag`);
     }
 
     initDataBuffer() {
-        this.dataLevels = [16, 8, 2, 12, 6, 22, 14, 10];
+        this.dataLevels = [12, 8, 16, 2, 6, 22, 14, 10];
         this.data = [];
         this.dataVel = [];
         this.dataAcc = [];
@@ -95,7 +95,7 @@ export class Viz13 extends AbstractViz {
         // data
         for (let i = 0; i < this.data.length; i++) {
             this.dataVel[i] += this.dataAcc[i];
-            this.dataAcc[i] *= 0.9;
+            this.dataAcc[i] *= 0.92;
             this.dataVel[i] *= 0.95;
             this.data[i] = this.dataVel[i];
         }
