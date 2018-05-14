@@ -5,7 +5,7 @@ import AbstractViz from './AbstractViz';
 import AppAudio from '../../../audio/AppAudio';
 import AppView from '../../../view/AppView';
 
-export default class Viz06 extends AbstractViz {
+export class Viz06 extends AbstractViz {
 
     constructor() {
         super('06');
@@ -77,7 +77,7 @@ export default class Viz06 extends AbstractViz {
         for (let i = 0; i < equaliser.length; i++) {
             const x = i % (this.segments.x + 1);
             const y = Math.floor(i / (this.segments.x + 1));
-            
+
             const level = levels[x % levels.length];
             // const intensity = 1 - (y / this.segments.y); // just top
             const intensity = (y - this.segments.y / 2) / this.segments.y; // both top and bottom
