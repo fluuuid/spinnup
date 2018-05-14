@@ -30,21 +30,32 @@ export class Viz13 extends AbstractViz {
     initLogo() {
         super.initLogo();
 
-        this.initStrengthBuffer();
+        this.initDataBuffer();
 
         const uniforms = this.logo.material.uniforms;
         uniforms.uTime = { value: 0 };
-        // uniforms.uStrength = { value: 0 };
-        uniforms.uStrength = { value: this.strengthTexture };
+        uniforms.uData = { value: this.dataTexture };
+        uniforms.uDataLength = { value: this.data.length };
 
         // this.logo.material.vertexShader = glsl(`${this.id}/logo.vert`);
         this.logo.material.fragmentShader = glsl(`${this.id}/logo.frag`);
     }
 
-    initStrengthBuffer() {
+    initDataBuffer() {
+        this.dataLevels = [16, 8, 2, 12, 6, 22, 14, 10];
+        this.data = [];
+        this.dataVel = [];
+        this.dataAcc = [];
+        
+        for (let i = 0; i < this.dataLevels.length; i++) {
+            this.data[i] = 0.0;
+            this.dataVel[i] = 0.0;
+            this.dataAcc[i] = 0.0;
+        }
+
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = 8;
+        canvas.width = this.dataLevels.length;
         canvas.height = 1;
 
         const texture = new Texture(canvas);
@@ -53,8 +64,8 @@ export class Viz13 extends AbstractViz {
         texture.format = RGBFormat;
         texture.needsUpdate = true;
 
-        this.strengthBuffer = ctx;
-        this.strengthTexture = texture;
+        this.dataBuffer = ctx;
+        this.dataTexture = texture;
 
         /*
         // DEBUG
@@ -81,21 +92,28 @@ export class Viz13 extends AbstractViz {
 
         this.logo.material.uniforms.uTime.value = elapsed;
 
-        this.drawStrength();
+        // data
+        for (let i = 0; i < this.data.length; i++) {
+            this.dataVel[i] += this.dataAcc[i];
+            this.dataAcc[i] *= 0.9;
+            this.dataVel[i] *= 0.95;
+            this.data[i] = this.dataVel[i];
+        }
+
+        this.drawData();
     }
 
-    drawStrength() {
-        const ctx = this.strengthBuffer;
+    drawData() {
+        const ctx = this.dataBuffer;
         const h = ctx.canvas.height;
-        const values = [0.0, 0.2, 0.2, 0.0, 0.0, 0.2, 0.0, 0.4];
         
-        for (let i = 0; i < values.length; i++) {
-            const value = values[i];
+        for (let i = 0; i < this.data.length; i++) {
+            const value = this.data[i];
             ctx.fillStyle = `rgb(${value * 255}, ${value * 255}, ${value * 255})`;
             ctx.fillRect(i, 0, 1, h);
         }
 
-        this.strengthTexture.needsUpdate = true;
+        this.dataTexture.needsUpdate = true;
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -106,6 +124,12 @@ export class Viz13 extends AbstractViz {
         if (e.index === 6) {
             this.kickBg += 6.5;
             this.accBg += e.value * 0.1;
+        }
+
+        for (let i = 0; i < this.dataLevels.length; i++) {
+            const level = this.dataLevels[i];
+            if (e.index !== level) continue;
+            this.dataAcc[i] += e.value * 0.05;
         }
     }
 }
