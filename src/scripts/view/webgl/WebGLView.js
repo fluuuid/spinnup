@@ -6,9 +6,7 @@ import {
 
 import AppAudio from '../../audio/AppAudio';
 import AppView from '../../view/AppView';
-
-import Viz06 from './viz/Viz06';
-import Viz10 from './viz/Viz10';
+import * as Viz from './viz';
 
 export default class WebGLView {
 
@@ -17,7 +15,6 @@ export default class WebGLView {
         this.audio = AppAudio;
 
         this.initThree();
-        this.initViz();
     }
 
     initThree() {
@@ -34,9 +31,11 @@ export default class WebGLView {
         this.renderer = new WebGLRenderer({ antialias: true, alpha: true });
     }
 
-    initViz() {
-        // this.viz = new Viz06();
-        this.viz = new Viz10();
+    init(vizId) {
+        while (this.scene.children.length > 0) {
+            this.scene.remove(this.scene.children[0]);
+        }
+        this.viz = new Viz[vizId]();
         this.scene.add(this.viz.object3D);
     }
 

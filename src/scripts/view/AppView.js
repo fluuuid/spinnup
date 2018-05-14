@@ -6,17 +6,21 @@ class AppView {
 
     constructor() {
         this.audio = AppAudio;
-    }
+        this.animate = this.animate.bind(this);
 
-    init() {
-        this.initWebGL();
         this.initUI();
-        this.onResize();
-        this.animate();
+        this.initWebGL();
 
         window.addEventListener('resize', this.onResize.bind(this));
         window.addEventListener('keyup', this.onKeyUp.bind(this));
         document.querySelector('#container').addEventListener('click', this.onClick.bind(this));
+    }
+
+    init(vizId) {
+        this.kill();
+        this.webgl.init(vizId);
+        this.onResize();
+        this.animate();
     }
 
     initWebGL() {
@@ -26,15 +30,22 @@ class AppView {
         document.querySelector('#container').appendChild(this.webgl.renderer.domElement);
     }
 
+    kill() {
+        cancelAnimationFrame(this.raf);
+    }
+
     initUI() {
         this.ui = new UIView();
     }
 
     animate() {
-        requestAnimationFrame(this.animate.bind(this));
-
         this.update();
         this.draw();
+
+        // bind functions at contructor level
+        // if you have a bind inside a loop, the browser creates a new bind function on every loop
+        // also, rAf should be called after update/draw in order to avoid overlapping frames
+        this.raf = requestAnimationFrame(this.animate);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -44,12 +55,12 @@ class AppView {
     update() {
         // this.ui.stats.begin();
         this.audio.update();
-        this.webgl.update();
+        if(this.webgl) this.webgl.update();
     }
 
     draw() {
         this.ui.draw();
-        this.webgl.draw();
+        if(this.webgl) this.webgl.draw();
         // this.ui.stats.end();
     }
 
@@ -58,7 +69,7 @@ class AppView {
     // ---------------------------------------------------------------------------------------------
 
     onResize() {
-        this.webgl.resize();
+        if(this.webgl) this.webgl.resize();
     }
 
     onKeyUp(e) {
@@ -72,7 +83,7 @@ class AppView {
         }
     }
 
-    onClick(e) {
+    onClick() {
         if (this.audio.context.state === 'suspended') {
             this.audio.context.resume();
             return;
