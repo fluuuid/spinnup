@@ -42,7 +42,8 @@ export class Viz13 extends AbstractViz {
     }
 
     initDataBuffer() {
-        this.dataLevels = [12, 8, 16, 2, 6, 22, 14, 10];
+        // this.dataLevels = [12, 8, 16, 2, 6, 22, 14, 10];
+        this.dataLevels = [2, 4, 12, 8, 16, 8, 6, 4];
         this.data = [];
         this.dataVel = [];
         this.dataAcc = [];
