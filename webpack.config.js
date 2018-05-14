@@ -53,13 +53,12 @@ module.exports = {
         colors: true
     },
     output: {
-        filename: 'scripts/[name].bundle.js',
+        filename: 'scripts/[name]-bundle-[chunkhash].js',
         path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: 'src/template/index.html',
-            hash: true,
         }),
         new webpack.DefinePlugin({
             'process.env' : {
