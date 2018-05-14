@@ -52,7 +52,8 @@ class App {
                 if(window.parent && window.parent.onVizReady) {
                     window.parent.onVizReady();
                 } else {
-                    // this.initLoader(debug.assets, debug.vizId);
+                    // DEBUG
+                    this.changeViz({ trackSrc: 'audio/INDIGO-PALACE-FIVERS.mp3', vizId: 'Viz06'})
                 }
             })
             .catch(err => {
