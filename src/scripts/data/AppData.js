@@ -5,6 +5,10 @@ const assetsList = {
 
     Viz10: [
         { id: 'Texture_10', src: 'images/Texture_10.jpg' }
+    ],
+
+    Viz13: [
+        { id: 'Texture_13', src: 'images/Texture_13.jpg' }
     ]
 }
 

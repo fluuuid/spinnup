@@ -54,7 +54,8 @@ class App {
                 } else {
                     // DEBUG
                     // this.changeViz({ trackSrc: 'audio/INDIGO-PALACE-FIVERS.mp3', vizId: 'Viz06'})
-                    this.changeViz({ trackSrc: 'audio/Maes-MaesEstLiberable-PART-II.mp3', vizId: 'Viz10'})
+                    // this.changeViz({ trackSrc: 'audio/Maes-MaesEstLiberable-PART-II.mp3', vizId: 'Viz10'})
+                    this.changeViz({ trackSrc: 'audio/Ben-Esser-Love-You-More.mp3', vizId: 'Viz13'})
                 }
             })
             .catch(err => {
