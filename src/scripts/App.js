@@ -53,7 +53,8 @@ class App {
                     window.parent.onVizReady();
                 } else {
                     // DEBUG
-                    this.changeViz({ trackSrc: 'audio/INDIGO-PALACE-FIVERS.mp3', vizId: 'Viz06'})
+                    // this.changeViz({ trackSrc: 'audio/INDIGO-PALACE-FIVERS.mp3', vizId: 'Viz06'})
+                    this.changeViz({ trackSrc: 'audio/Maes-MaesEstLiberable-PART-II.mp3', vizId: 'Viz10'})
                 }
             })
             .catch(err => {

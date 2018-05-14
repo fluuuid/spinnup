@@ -7,7 +7,7 @@ import AbstractViz from './AbstractViz';
 import AppAudio from '../../../audio/AppAudio';
 import AppView from '../../../view/AppView';
 
-export default class Viz10 extends AbstractViz {
+export class Viz10 extends AbstractViz {
 
     constructor() {
         super('10');
