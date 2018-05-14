@@ -25,9 +25,18 @@ export default class UIView {
         this.vizLogoDisplace = 0;
         this.vizLogoEqualiser = 0.5;
         this.vizLogoWireframe = false;
+        this.vizLogoStepsX = 2.0;
+        this.vizLogoStepsY = 2.0;
+        this.vizLogoOffsetX = 0.002;
+        this.vizLogoOffsetY = 0.1;
+        this.vizLogoGapSize = 0.5;
+        this.vizLogoOverride = false;
 
         this.range = [0, 1];
         this.rangeDisplace = [0, 0.04];
+        this.rangeSteps = [1, 40];
+        this.rangeOffset = [-0.05, 0.05];
+        this.rangeGap = [0, 10];
         this.rangeDecay = [0.9, 1.0];
         this.rangeInterval = [0, 60];
         this.rangeDetect = [-1, this.audio.levelsCount - 1];
@@ -55,14 +64,23 @@ export default class UIView {
         .addSlider(this, 'audioPeakInterval', 'rangeInterval', { label: 'peak interval', onChange: () => { that.onAudioChange(); } })
         .addSlider(this, 'audioPeakCutOff', 'range', { label: 'peak cutoff', onChange: () => { that.onAudioChange(); } })
         
-        .addGroup({ label: 'Viz', enable: true })
+        /*
+        .addGroup({ label: 'Viz 06', enable: true })
         .addSelect(this, 'vizBgOptions', { label: 'bg mix', selected: this.vizBg, onChange: (index) => { that.onVizBgChange(index); } })
         .addSelect(this, 'vizLogoOptions', { label: 'logo fx', selected: this.vizLogo, onChange: (index) => { that.onVizLogoChange(index); } })
         .addSlider(this, 'vizLogoDisplace', 'rangeDisplace', { label: 'logo fx intensity' })
         .addSlider(this, 'vizLogoEqualiser', 'range', { label: 'logo equaliser' })
         .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizChange(); } })
-        // .addSlider(this, 'vizModD', 'rangeKnobA', { label: 'logo D', onChange: () => { that.onVizChange(); } })
-        // .addSlider(this, 'vizModE', 'rangeKnobA', { label: 'logo E', onChange: () => { that.onVizChange(); } })
+        */
+
+        .addGroup({ label: 'Viz 10', enable: true })
+        .addCheckbox(this, 'vizLogoOverride', { label: 'logo override' })
+        .addSlider(this, 'vizLogoStepsX', 'rangeSteps', { label: 'logo steps x', step: 1, dp: 0, onChange: () => { that.onVizChange(); } })
+        .addSlider(this, 'vizLogoStepsY', 'rangeSteps', { label: 'logo steps y', step: 1, dp: 0, onChange: () => { that.onVizChange(); } })
+        .addSlider(this, 'vizLogoOffsetX', 'rangeOffset', { label: 'logo offset x', dp: 3, onChange: () => { that.onVizChange(); } })
+        .addSlider(this, 'vizLogoOffsetY', 'rangeOffset', { label: 'logo offset y', dp: 3, onChange: () => { that.onVizChange(); } })
+        .addSlider(this, 'vizLogoGapSize', 'rangeGap', { label: 'logo gap', onChange: () => { that.onVizChange(); } })
+        .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizChange(); } })
 
     }
 
@@ -110,17 +128,14 @@ export default class UIView {
     }
 
     onVizChange() {
-        // let uniforms = this.view.webgl.viz.bg.material.uniforms;
-        // uniforms.uKnobA.value = this.vizModA;
-        // uniforms.uKnobB.value = this.vizModB;
-        // uniforms.uKnobC.value = this.vizModC;
-
-        // uniforms = this.view.webgl.viz.logo.material.uniforms;
-        // uniforms.uKnobD.value = this.vizModD * 0.01;
-        // uniforms.uKnobE.value = this.vizModE;
-
         this.view.webgl.viz.logo.material.uniforms.uWireframe.value = (this.vizLogoWireframe) ? 1 : 0;
         this.view.webgl.viz.logo.material.wireframe = this.vizLogoWireframe;
+
+        this.view.webgl.viz.logo.material.uniforms.uSteps.value.x = this.vizLogoStepsX;
+        this.view.webgl.viz.logo.material.uniforms.uSteps.value.y = this.vizLogoStepsY;
+        this.view.webgl.viz.logo.material.uniforms.uOffset.value.x = this.vizLogoOffsetX;
+        this.view.webgl.viz.logo.material.uniforms.uOffset.value.y = this.vizLogoOffsetY;
+        this.view.webgl.viz.logo.material.uniforms.uGapSize.value = this.vizLogoGapSize;
     }
 
     onVizBgChange(index) {

@@ -145,7 +145,9 @@ export default class AbstractViz {
             this.bg.scale.y = window.innerWidth / bgAspect;
         }
 
-        this.logo.scale.x = window.innerWidth * 0.5;
+        const logoScale = (screenAspect > 1) ? 0.5 : 0.8;
+
+        this.logo.scale.x = window.innerWidth * logoScale;
         this.logo.scale.y = this.logo.scale.x / logoAspect;
     }
 
