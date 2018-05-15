@@ -1,3 +1,5 @@
+import { Vector2 } from 'three';
+
 import glsl from '../../../utils/glsl';
 import { random } from '../../../utils/math.utils';
 
@@ -31,6 +33,7 @@ export class Viz06 extends AbstractViz {
         uniforms.uModA = { value: 1 };
         uniforms.uModB = { value: 1 };
         uniforms.uModC = { value: 0.5 };
+        uniforms.uModD = { value: new Vector2(-0.8, 0.6) };
         uniforms.uDebug = { value: 0 };
 
         this.bg.material.fragmentShader = glsl(`${this.id}/bg.frag`);

@@ -3,6 +3,9 @@
 
 #pragma glslify: snoise2 = require(glsl-noise/simplex/2d)
 #pragma glslify: when_eq = require(glsl-conditionals/when_eq)
+#pragma glslify: when_lt = require(glsl-conditionals/when_lt)
+#pragma glslify: when_gt = require(glsl-conditionals/when_gt)
+
 
 varying vec2 vUv;
 
@@ -10,6 +13,7 @@ uniform float uTime;
 uniform float uModA;
 uniform float uModB;
 uniform float uModC;
+uniform vec2 uModD;
 uniform float uDebug;
 uniform sampler2D uTexture;
 
@@ -77,6 +81,12 @@ float func(vec2 q) {
     return f;
 }
 
+vec2 mirror(vec2 v) {
+    v += -v * 2.0 * when_lt(v, vec2(0.0));
+    v += (2.0 - v * 2.0) * when_gt(v, vec2(1.0));
+    return v;
+}
+
 void main() {
     vec2 uv = vUv;
 
@@ -99,7 +109,7 @@ void main() {
     q *= 0.1;
     float f = func(q);
     vec2 uvB = uv * uModA + (1.0 - uModA) / 2.0;
-    vec3 colB = texture2D(uTexture, uvB * -0.8 + 0.6 + f).rgb;
+    vec3 colB = texture2D(uTexture, mirror(uvB * uModD.x + uModD.y + f)).rgb;
 
     // mixed colors
     vec3 colC = mix(colA, colB, (t + 1.0) / 2.0);

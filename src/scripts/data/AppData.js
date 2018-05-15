@@ -1,4 +1,9 @@
 const assetsList = {
+    Viz04: [
+        { id: 'logo', src: 'images/logo.png' },
+        { id: 'texture', src: 'images/Texture_04.jpg' }
+    ],
+
     Viz06: [
         { id: 'logo', src: 'images/logo.png' },
         { id: 'texture', src: 'images/Texture_06.jpg' }

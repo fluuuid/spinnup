@@ -45,7 +45,7 @@ void main() {
 
 	// logo
 	vec4 tex = texture2D(uTexture, uvk);
-	vec4 colB = mix(vec4(0.0), vec4(1.0), tex.g);
+	vec4 colB = vec4(vec3(1.0), tex.g);
 
 	color += colB * when_eq(uWireframe, 0.0);
 	color += vec4(1.0) * when_eq(uWireframe, 1.0);

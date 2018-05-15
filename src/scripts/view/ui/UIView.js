@@ -63,9 +63,9 @@ export default class UIView {
 
         const that = this;
 
-        if (this.vizId === 'Viz06') {
+        if (this.vizId === 'Viz06' || this.vizId === 'Viz04') {
             this.panel
-            .addGroup({ label: 'Viz 06', enable: true })
+            .addGroup({ label: this.vizId, enable: true })
             .addSelect(this, 'vizBgOptions', { label: 'bg mix', selected: this.vizBg, onChange: (index) => { that.onViz06BgChange(index); } })
             .addSelect(this, 'vizLogoOptions', { label: 'logo fx', selected: this.vizLogo, onChange: (index) => { that.onViz06LogoChange(index); } })
             .addSlider(this, 'vizLogoDisplace', 'rangeDisplace', { label: 'logo fx intensity' })
