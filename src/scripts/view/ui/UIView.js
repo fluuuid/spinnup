@@ -65,7 +65,7 @@ export default class UIView {
 
         if (this.vizId === 'Viz06') {
             this.panel
-            .addGroup({ label: 'Viz 06', enable: true })
+            .addGroup({ label: this.vizId, enable: true })
             .addSelect(this, 'vizBgOptions', { label: 'bg mix', selected: this.vizBg, onChange: (index) => { that.onViz06BgChange(index); } })
             .addSelect(this, 'vizLogoOptions', { label: 'logo fx', selected: this.vizLogo, onChange: (index) => { that.onViz06LogoChange(index); } })
             .addSlider(this, 'vizLogoDisplace', 'rangeDisplace', { label: 'logo fx intensity' })
@@ -75,7 +75,7 @@ export default class UIView {
 
         if (this.vizId === 'Viz10') {
             this.panel
-            .addGroup({ label: 'Viz 10', enable: true })
+            .addGroup({ label: this.vizId, enable: true })
             .addCheckbox(this, 'vizLogoOverride', { label: 'logo override' })
             .addSlider(this, 'vizLogoStepsX', 'rangeSteps', { label: 'logo steps x', step: 1, dp: 0, onChange: () => { that.onViz10Change(); } })
             .addSlider(this, 'vizLogoStepsY', 'rangeSteps', { label: 'logo steps y', step: 1, dp: 0, onChange: () => { that.onViz10Change(); } })
@@ -85,9 +85,9 @@ export default class UIView {
             .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizDefaultChange(); } })
         }
 
-        if (this.vizId === 'Viz13') {
+        if (this.vizId === 'Viz13' || this.vizId === 'Viz02') {
             this.panel
-            .addGroup({ label: 'Viz 13', enable: true })
+            .addGroup({ label: this.vizId, enable: true })
             .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizDefaultChange(); } })
         }
     }
