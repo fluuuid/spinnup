@@ -22,7 +22,7 @@ export class Viz13 extends AbstractViz {
 
         const uniforms = this.bg.material.uniforms;
         uniforms.uTime = { value: 0 };
-        // uniforms.uModA = { value: 0 };
+        uniforms.uModA = { value: new Vector2(0, 0) };
 
         this.bg.material.fragmentShader = glsl(`${this.id}/bg.frag`);
     }
@@ -43,8 +43,8 @@ export class Viz13 extends AbstractViz {
     }
 
     initDataBuffer() {
-        // this.dataLevels = [12, 8, 16, 2, 6, 22, 14, 10];
-        this.dataLevels = [2, 4, 12, 8, 16, 8, 6, 4];
+        // this.dataLevels = [12, 8, 16, 2, 22, 6, 14, 10];
+        this.dataLevels = [4, 8, 10, 4, 8, 12, 4, 14];
         this.data = [];
         this.dataVel = [];
         this.dataAcc = [];
@@ -97,7 +97,7 @@ export class Viz13 extends AbstractViz {
         // data
         for (let i = 0; i < this.data.length; i++) {
             this.dataVel[i] += this.dataAcc[i];
-            this.dataAcc[i] *= 0.92;
+            this.dataAcc[i] *= 0.8;
             this.dataVel[i] *= 0.95;
             this.data[i] = this.dataVel[i];
         }
@@ -131,7 +131,7 @@ export class Viz13 extends AbstractViz {
         for (let i = 0; i < this.dataLevels.length; i++) {
             const level = this.dataLevels[i];
             if (e.index !== level) continue;
-            this.dataAcc[i] += e.value * 0.05;
+            this.dataAcc[i] += e.value * 0.1;
         }
     }
 }
