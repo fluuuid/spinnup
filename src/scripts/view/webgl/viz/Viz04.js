@@ -6,6 +6,8 @@ export class Viz04 extends Viz06 {
         // use parent's id
         super('Viz06');
         this.id = id;
+
+        this.equaliserMode = 1;
     }
 
     initBackground() {

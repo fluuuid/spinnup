@@ -18,6 +18,7 @@ export class Viz06 extends AbstractViz {
         this.equaliserLevels.push([9, 17, 5, 18, 23, 30, 1, 16]);
 
         this.equaliserIndex = 0;
+        this.equaliserMode = 0;
 
         this.kickBg = 0.0;
         this.kickRows = 0.0;
@@ -87,8 +88,9 @@ export class Viz06 extends AbstractViz {
             const scale = AppView.ui.vizLogoEqualiser;
             const value = AppAudio.getValue(level);
 
-            // equaliser[i] = Math.sin(value * Math.PI * 1.8 * -Math.pow(Math.sin(value), 2)) * scale * intensity;
-            equaliser[i] = Math.sin(value * Math.PI * 1.5) * scale * intensity;
+            // alternative functions
+            if (!this.equaliserMode) equaliser[i] = Math.sin(value * Math.PI * 1.5) * scale * intensity;
+            else equaliser[i] = Math.sin(value * Math.PI * 1.8 * -Math.pow(Math.sin(value), 3)) * scale * intensity;
         }
 
         this.logo.geometry.attributes.equaliser.needsUpdate = true;
