@@ -7,8 +7,8 @@ import AppView from '../../../view/AppView';
 
 export class Viz06 extends AbstractViz {
 
-    constructor() {
-        super('06');
+    constructor(id) {
+        super(id);
 
         this.equaliserLevels = [];
         this.equaliserLevels.push([4, 8, 2, 16, 12, 4, 18, 24]);
