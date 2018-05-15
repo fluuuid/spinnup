@@ -12,6 +12,7 @@
   "scripts": {
     "start": "webpack-dev-server",
     "serve:local": "http-server dist",
+    "prebuild": "rm -rf dist/scripts && mkdir dist/scripts",
     "test": "eslint ./src --fix",
     "build": "NODE_ENV=production webpack"
   },
