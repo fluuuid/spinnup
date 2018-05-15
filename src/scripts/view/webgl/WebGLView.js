@@ -35,7 +35,7 @@ export default class WebGLView {
         while (this.scene.children.length > 0) {
             this.scene.remove(this.scene.children[0]);
         }
-        this.viz = new Viz[vizId]();
+        this.viz = new Viz[vizId](vizId);
         this.scene.add(this.viz.object3D);
     }
 

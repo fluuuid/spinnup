@@ -18,6 +18,7 @@ export default class UIView {
         this.audioDistributionOptions = ['linear', 'exponential'];
         this.audioDistribution = 1;
 
+        // Viz06
         this.vizBgOptions = ['all', 'only A', 'only B', 'none'];
         this.vizBg = 0;
         this.vizLogoOptions = ['auto', 'A', 'B', 'C'];
@@ -26,14 +27,13 @@ export default class UIView {
         this.vizLogoEqualiser = 0.5;
         this.vizLogoWireframe = false;
         
+        // Viz10
         this.vizLogoStepsX = 2.0;
         this.vizLogoStepsY = 2.0;
         this.vizLogoOffsetX = 0.002;
         this.vizLogoOffsetY = 0.1;
         this.vizLogoGapSize = 0.5;
         this.vizLogoOverride = false;
-
-        this.vizLogoStrength = 0;
 
         this.range = [0, 1];
         this.rangeDisplace = [0, 0.04];
@@ -53,11 +53,50 @@ export default class UIView {
         this.controlKit.disable();
     }
 
+    init(view, vizId) {
+        // hack to remove old panel
+        const el = document.querySelectorAll('#controlKit .group-list .group')[1];
+        if (el) el.parentElement.removeChild(el);
+
+        this.view = view;
+        this.vizId = vizId;
+
+        const that = this;
+
+        if (this.vizId === 'Viz06') {
+            this.panel
+            .addGroup({ label: 'Viz 06', enable: true })
+            .addSelect(this, 'vizBgOptions', { label: 'bg mix', selected: this.vizBg, onChange: (index) => { that.onViz06BgChange(index); } })
+            .addSelect(this, 'vizLogoOptions', { label: 'logo fx', selected: this.vizLogo, onChange: (index) => { that.onViz06LogoChange(index); } })
+            .addSlider(this, 'vizLogoDisplace', 'rangeDisplace', { label: 'logo fx intensity' })
+            .addSlider(this, 'vizLogoEqualiser', 'range', { label: 'logo equaliser' })
+            .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizDefaultChange(); } })
+        }
+
+        if (this.vizId === 'Viz10') {
+            this.panel
+            .addGroup({ label: 'Viz 10', enable: true })
+            .addCheckbox(this, 'vizLogoOverride', { label: 'logo override' })
+            .addSlider(this, 'vizLogoStepsX', 'rangeSteps', { label: 'logo steps x', step: 1, dp: 0, onChange: () => { that.onViz10Change(); } })
+            .addSlider(this, 'vizLogoStepsY', 'rangeSteps', { label: 'logo steps y', step: 1, dp: 0, onChange: () => { that.onViz10Change(); } })
+            .addSlider(this, 'vizLogoOffsetX', 'rangeOffset', { label: 'logo offset x', dp: 3, onChange: () => { that.onViz10Change(); } })
+            .addSlider(this, 'vizLogoOffsetY', 'rangeOffset', { label: 'logo offset y', dp: 3, onChange: () => { that.onViz10Change(); } })
+            .addSlider(this, 'vizLogoGapSize', 'rangeGap', { label: 'logo gap', onChange: () => { that.onViz10Change(); } })
+            .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizDefaultChange(); } })
+        }
+
+        if (this.vizId === 'Viz13') {
+            this.panel
+            .addGroup({ label: 'Viz 13', enable: true })
+            .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizDefaultChange(); } })
+        }
+    }
+
     initControlKit() {
         const that = this;
 
         this.controlKit = new ControlKit();
-        this.controlKit.addPanel({ width: 300, enable: true })
+        this.panel = this.controlKit.addPanel({ width: 300, enable: true })
 
         .addGroup({ label: 'Audio', enable: true })
         .addSelect(this, 'audioDistributionOptions', { label: 'distribution', selected: this.audioDistribution, onChange: (index) => { that.onAudioDistributionChange(index); } })
@@ -65,28 +104,7 @@ export default class UIView {
         .addSlider(this, 'audioSmoothing', 'range', { label: 'smoothing', onChange: () => { that.onAudioChange(); } })
         .addSlider(this, 'audioPeakDecay', 'rangeDecay', { label: 'peak decay', dp: 3, onChange: () => { that.onAudioChange(); } })
         .addSlider(this, 'audioPeakInterval', 'rangeInterval', { label: 'peak interval', onChange: () => { that.onAudioChange(); } })
-        .addSlider(this, 'audioPeakCutOff', 'range', { label: 'peak cutoff', onChange: () => { that.onAudioChange(); } })
-        
-        /*
-        .addGroup({ label: 'Viz 06', enable: true })
-        .addSelect(this, 'vizBgOptions', { label: 'bg mix', selected: this.vizBg, onChange: (index) => { that.onVizBgChange(index); } })
-        .addSelect(this, 'vizLogoOptions', { label: 'logo fx', selected: this.vizLogo, onChange: (index) => { that.onVizLogoChange(index); } })
-        .addSlider(this, 'vizLogoDisplace', 'rangeDisplace', { label: 'logo fx intensity' })
-        .addSlider(this, 'vizLogoEqualiser', 'range', { label: 'logo equaliser' })
-        .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizChange(); } })
-
-        .addGroup({ label: 'Viz 10', enable: true })
-        .addCheckbox(this, 'vizLogoOverride', { label: 'logo override' })
-        .addSlider(this, 'vizLogoStepsX', 'rangeSteps', { label: 'logo steps x', step: 1, dp: 0, onChange: () => { that.onViz10Change(); } })
-        .addSlider(this, 'vizLogoStepsY', 'rangeSteps', { label: 'logo steps y', step: 1, dp: 0, onChange: () => { that.onViz10Change(); } })
-        .addSlider(this, 'vizLogoOffsetX', 'rangeOffset', { label: 'logo offset x', dp: 3, onChange: () => { that.onViz10Change(); } })
-        .addSlider(this, 'vizLogoOffsetY', 'rangeOffset', { label: 'logo offset y', dp: 3, onChange: () => { that.onViz10Change(); } })
-        .addSlider(this, 'vizLogoGapSize', 'rangeGap', { label: 'logo gap', onChange: () => { that.onViz10Change(); } })
-        .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onViz10Change(); } })
-        */
-
-        .addGroup({ label: 'Viz 13', enable: true })
-        .addSlider(this, 'vizLogoStrength', 'range', { label: 'logo strength', onChange: () => { that.onViz13Change(); } })
+        .addSlider(this, 'audioPeakCutOff', 'range', { label: 'peak cutoff', onChange: () => { that.onAudioChange(); } });
     }
 
     initStats() {
@@ -132,10 +150,16 @@ export default class UIView {
         this.audio.levelsDistribution = index || 0;
     }
 
-    onViz10Change() {
-        this.view.webgl.viz.logo.material.uniforms.uWireframe.value = (this.vizLogoWireframe) ? 1 : 0;
-        this.view.webgl.viz.logo.material.wireframe = this.vizLogoWireframe;
+    onViz06BgChange(index) {
+        this.vizBg = index || 0;
+        this.view.webgl.viz.bg.material.uniforms.uDebug.value = this.vizBg;
+    }
 
+    onViz06LogoChange(index) {
+        this.vizLogo = index || 0;
+    }
+
+    onViz10Change() {
         this.view.webgl.viz.logo.material.uniforms.uSteps.value.x = this.vizLogoStepsX;
         this.view.webgl.viz.logo.material.uniforms.uSteps.value.y = this.vizLogoStepsY;
         this.view.webgl.viz.logo.material.uniforms.uOffset.value.x = this.vizLogoOffsetX;
@@ -143,16 +167,9 @@ export default class UIView {
         this.view.webgl.viz.logo.material.uniforms.uGapSize.value = this.vizLogoGapSize;
     }
 
-    onViz13Change() {
-        this.view.webgl.viz.logo.material.uniforms.uStrength.value = this.vizLogoStrength;
+    onVizDefaultChange() {
+        this.view.webgl.viz.logo.material.uniforms.uWireframe.value = (this.vizLogoWireframe) ? 1 : 0;
+        this.view.webgl.viz.logo.material.wireframe = this.vizLogoWireframe;
     }
 
-    onVizBgChange(index) {
-        this.vizBg = index || 0;
-        this.view.webgl.viz.bg.material.uniforms.uDebug.value = this.vizBg;
-    }
-
-    onVizLogoChange(index) {
-        this.vizLogo = index || 0;
-    }
 }

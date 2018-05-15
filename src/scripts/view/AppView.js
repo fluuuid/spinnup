@@ -19,7 +19,7 @@ class AppView {
     init(vizId) {
         this.kill();
         this.webgl.init(vizId);
-        this.ui.view = this;
+        this.ui.init(this, vizId);
         this.onResize();
         this.animate();
     }
