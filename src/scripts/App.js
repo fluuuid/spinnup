@@ -54,7 +54,7 @@ class App {
                 } else {
                     // DEBUG
                     // this.changeViz({ trackSrc: 'audio/MADANII-WVTCHMEN.mp3', vizId: 'Viz02'})
-                    this.changeViz({ trackSrc: 'audio/INDIGO-PALACE-FIVERS.mp3', vizId: 'Viz04'})
+                    this.changeViz({ trackSrc: 'audio/Mezzanine-Above-The-Sun.mp3', vizId: 'Viz04'})
                     // this.changeViz({ trackSrc: 'audio/INDIGO-PALACE-FIVERS.mp3', vizId: 'Viz06'})
                     // this.changeViz({ trackSrc: 'audio/Maes-MaesEstLiberable-PART-II.mp3', vizId: 'Viz10'})
                     // this.changeViz({ trackSrc: 'audio/Ben-Esser-Love-You-More.mp3', vizId: 'Viz13'})
