@@ -9,8 +9,8 @@ import AppView from '../../../view/AppView';
 
 export class Viz10 extends AbstractViz {
 
-    constructor() {
-        super('10');
+    constructor(id) {
+        super(id);
 
         this.kickBg = 0.0;
         this.kickBoost = 0.0;
