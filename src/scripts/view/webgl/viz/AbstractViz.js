@@ -37,7 +37,7 @@ export default class AbstractViz {
 
     initBackground(textureId) {
         const uniforms = {
-            uTexture: { value: this.getTexture(`Texture_${this.id}`) },
+            uTexture: { value: this.getTexture('texture') },
         };
 
         const material = new ShaderMaterial({
