@@ -36,6 +36,7 @@ export class Viz13 extends AbstractViz {
         uniforms.uTime = { value: 0 };
         uniforms.uData = { value: this.dataTexture };
         uniforms.uDataLength = { value: this.data.length };
+        uniforms.uWireframe = { value: 0 };
 
         this.logo.material.vertexShader = glsl(`${this.id}/logo.vert`);
         this.logo.material.fragmentShader = glsl(`${this.id}/logo.frag`);
