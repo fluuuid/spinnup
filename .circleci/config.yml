@@ -51,6 +51,8 @@ jobs:
       - deploy:
           name: "Deploy to S3"
           command: |
-            export PATH="./node_modules/.bin/:$PATH"
-            yarn build
-            aws s3 sync dist s3://fluuu.id/projects/spinnup --exclude \"*.git/*\" --exclude \"*/node_modules/*\" --exclude \"npm-debug.log\" --exclude \"*/jspm_packages/*\" --delete
+            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              export PATH="./node_modules/.bin/:$PATH"
+              yarn build
+              aws s3 sync dist s3://fluuu.id/projects/spinnup --exclude \"*.git/*\" --exclude \"*/node_modules/*\" --exclude \"npm-debug.log\" --exclude \"*/jspm_packages/*\" --delete
+            fi
