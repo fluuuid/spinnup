@@ -11,6 +11,7 @@
 varying vec2 vUv;
 
 uniform float uTime;
+uniform vec2 uModA;
 uniform sampler2D uTexture;
 
 float w1 = 3.0;
@@ -67,7 +68,7 @@ void main() {
 
     float n = snoise2(uv + r + t);
     
-    vec2 uva = mirror(uv + vec2(pow(g, R), pow(r, R) * 1.8) * 0.2);
+    vec2 uva = mirror(uv + vec2(pow(g, R), pow(r, R) * 1.8) * 0.2 + uModA);
 	vec4 colA = texture2D(uTexture, uva);
 
 	vec2 uvb = mirror(uv - vec2(pow(r, 0.2) + 0.25, pow(g, R) * 0.1));

@@ -9,6 +9,14 @@ export class Viz02 extends Viz13 {
         this.id = id;
     }
 
+    initBackground() {
+        super.initBackground();
+
+        const uniforms = this.bg.material.uniforms;
+        uniforms.uModA.value.set(0.0, -0.15);
+    }
+
+
     // ---------------------------------------------------------------------------------------------
     // PUBLIC
     // ---------------------------------------------------------------------------------------------

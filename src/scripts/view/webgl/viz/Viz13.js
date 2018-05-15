@@ -22,7 +22,7 @@ export class Viz13 extends AbstractViz {
 
         const uniforms = this.bg.material.uniforms;
         uniforms.uTime = { value: 0 };
-        // uniforms.uModA = { value: 0 };
+        uniforms.uModA = { value: new Vector2(0, 0) };
 
         this.bg.material.fragmentShader = glsl(`${this.id}/bg.frag`);
     }
