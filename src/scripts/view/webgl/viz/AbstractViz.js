@@ -130,8 +130,8 @@ export default class AbstractViz {
     // EVENT HANDLERS
     // ---------------------------------------------------------------------------------------------
 
-    resize() {
-        const bgAspect = 2;
+    resize(bgAspect = 2) {
+        // const bgAspect = 2;
         const logoAspect = 4;
         const screenAspect = window.innerWidth / window.innerHeight;
 
