@@ -72,13 +72,7 @@ export class Viz07 extends AbstractViz {
 
     update() {
         // background
-        this.velBg += this.accBg;
-        this.accBg *= 0.95;
-
         const elapsed = (Date.now() - this.startTime) * 0.001;
-        const factor = (this.kickBg + 1) * Math.pow(1, AppAudio.getValue(5) * 10) + elapsed + this.velBg;
-
-        // this.bg.material.uniforms.uTime.value = factor;
         this.bg.material.uniforms.uTime.value = elapsed;
         
         this.kickBg *= 0.95;
@@ -113,7 +107,6 @@ export class Viz07 extends AbstractViz {
     onAudioPeak(e) {
         if (e.index === 16) {
             this.kickBg += e.value;
-            // this.accBg += e.value * 0.1;
         }
     }
 }
