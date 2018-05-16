@@ -24,7 +24,7 @@ export class Viz07 extends AbstractViz {
 
         const uniforms = this.bg.material.uniforms;
         uniforms.uTime = { value: 0 };
-        uniforms.uIntensity = { value: 4.0 };
+        uniforms.uIntensity = { value: 1.0 };
         uniforms.uData = { value: this.dataTexture };
         uniforms.uAspect = { value: new Vector2(1.0, 1.0 / (4961 / 3508)) }; // original image size
         uniforms.uDataLength = { value: this.dataBuffer.canvas.width };
@@ -56,13 +56,13 @@ export class Viz07 extends AbstractViz {
         this.dataBuffer = ctx;
         this.dataTexture = texture;
 
-        
+        /*
         // DEBUG
         canvas.style.position = 'absolute';
         canvas.style.left = 10;
         canvas.style.top = 10;
         document.querySelector('body').appendChild(canvas);
-        
+        */
     }
 
 
@@ -82,7 +82,7 @@ export class Viz07 extends AbstractViz {
         this.bg.material.uniforms.uTime.value = elapsed;
         
         this.kickBg *= 0.95;
-        // this.bg.material.uniforms.uIntensity.value = 1.0 + this.kickBg;
+        this.bg.material.uniforms.uIntensity.value = this.kickBg;
 
         this.drawData(elapsed);
     }
