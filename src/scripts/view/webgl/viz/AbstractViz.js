@@ -44,6 +44,7 @@ export default class AbstractViz {
             vertexShader: glsl('default.vert'),
             fragmentShader: glsl(`default.frag`),
             uniforms,
+            depthWrite: false,
         });
 
         const geometry = new PlaneBufferGeometry(1, 1);
@@ -63,6 +64,7 @@ export default class AbstractViz {
             fragmentShader: glsl(`default.frag`),
             uniforms,
             transparent: true,
+            depthWrite: false,
         });
 
         const positions = [];

@@ -28,7 +28,8 @@ export default class WebGLView {
         this.camera.position.z = 10;
 
         // renderer
-        this.renderer = new WebGLRenderer({ antialias: true, alpha: true });
+        this.renderer = new WebGLRenderer({ antialias: true, alpha: false });
+        this.renderer.autoClear = false;
     }
 
     init(vizId) {
@@ -48,7 +49,9 @@ export default class WebGLView {
     }
 
     draw() {
+        this.renderer.clear();
         this.renderer.render(this.scene, this.camera);
+        if (this.viz.scene) this.renderer.render(this.viz.scene, this.viz.camera);
     }
 
     // ---------------------------------------------------------------------------------------------

@@ -1,4 +1,15 @@
-import { LinearFilter, RGBFormat, Texture, Vector2 } from 'three';
+import {
+    LinearFilter,
+    MeshBasicMaterial,
+    PerspectiveCamera,
+    RGBFormat,
+    Scene,
+    Texture,
+    Vector2 
+} from 'three';
+
+import GLTFLoader from 'imports-loader?THREE=three!exports-loader?THREE.GLTFLoader!threeX/loaders/GLTFLoader';
+import AsyncPreloader from 'async-preloader';
 
 import glsl from '../../../utils/glsl';
 import { random } from '../../../utils/math.utils';
@@ -15,6 +26,9 @@ export class Viz07 extends AbstractViz {
         this.kickBg = 0.0;
         this.accBg = 0.0;
         this.velBg = 0.0;
+
+        this.initPerspective();
+        this.initLogoGLTF();
     }
 
     initBackground() {
@@ -39,6 +53,7 @@ export class Viz07 extends AbstractViz {
         uniforms.uWireframe = { value: 0 };
 
         this.logo.material.fragmentShader = glsl(`${this.id}/logo.frag`);
+        this.logo.visible = false;
     }
 
     initDataBuffer() {
@@ -65,6 +80,36 @@ export class Viz07 extends AbstractViz {
         */
     }
 
+    initPerspective() {
+        this.scene = new Scene();
+        this.camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
+        this.camera.position.z = 100;
+    }
+
+    initLogoGLTF() {
+        const loader = new GLTFLoader();
+        const buffer = AsyncPreloader.items.get('gltf');
+
+        loader.parse(buffer, null, (gltf) => {
+            this.gltf = gltf.scene.children[0].children[0];
+            
+            this.gltf.material = new MeshBasicMaterial({
+                color: 0xFFFFFF,
+                // wireframe: true,
+                depthWrite: false,
+                // side: DoubleSide,
+            })
+
+            this.gltf.scale.multiplyScalar(590);
+            this.gltf.position.x = -1;
+            this.gltf.position.y = -0.5;
+
+            this.scene.add(this.gltf);
+            // this.object3D.add(this.gltf);
+            // console.log(this.gltf);
+        });
+    }
+
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC
@@ -79,6 +124,9 @@ export class Viz07 extends AbstractViz {
         this.bg.material.uniforms.uIntensity.value = this.kickBg;
 
         this.drawData(elapsed);
+
+        if (this.gltf) this.gltf.rotation.x -= 0.01;
+        if (this.gltf) this.gltf.rotation.z += 0.01;
     }
 
     drawData(t) {

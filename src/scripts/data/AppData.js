@@ -11,6 +11,7 @@ const assetsList = {
 
     Viz07: [
         { id: 'logo', src: 'images/logo.png' },
+        { id: 'gltf', src: 'images/spinnup-outline.gltf' },
         { id: 'texture', src: 'images/Texture_07.jpg' }
     ],
 
