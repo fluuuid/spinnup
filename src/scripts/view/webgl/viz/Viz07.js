@@ -1,7 +1,11 @@
 import {
+    Group,
     LinearFilter,
+    Mesh,
     MeshBasicMaterial,
+    MeshStandardMaterial,
     PerspectiveCamera,
+    PointLight,
     RGBFormat,
     Scene,
     Texture,
@@ -27,7 +31,7 @@ export class Viz07 extends AbstractViz {
         this.accBg = 0.0;
         this.velBg = 0.0;
 
-        this.initPerspective();
+        this.initScene();
         this.initLogoGLTF();
     }
 
@@ -44,6 +48,7 @@ export class Viz07 extends AbstractViz {
         uniforms.uDataLength = { value: this.dataBuffer.canvas.width };
 
         this.bg.material.fragmentShader = glsl(`${this.id}/bg.frag`);
+        this.bg.visible = false;
     }
 
     initLogo() {
@@ -80,36 +85,47 @@ export class Viz07 extends AbstractViz {
         */
     }
 
-    initPerspective() {
+    initScene() {
         this.scene = new Scene();
+
         this.camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
         this.camera.position.z = 100;
+
+        this.lightA = new PointLight();
+        this.lightA.position.set(10, 50, 50);
+        this.scene.add(this.lightA);
     }
 
     initLogoGLTF() {
         const loader = new GLTFLoader();
         const buffer = AsyncPreloader.items.get('gltf');
 
+        // const material = new MeshBasicMaterial({
+        const material = new MeshStandardMaterial({
+            color: 0xFFFFFF,
+            wireframe: true,
+            // depthWrite: false,
+        });
+
         loader.parse(buffer, null, (gltf) => {
-            this.gltf = gltf.scene.children[0].children[0];
+            const group = gltf.scene.children[0];
             
-            this.gltf.material = new MeshBasicMaterial({
-                color: 0xFFFFFF,
-                // wireframe: true,
-                depthWrite: false,
-                // side: DoubleSide,
-            })
+            for (let i = 0; i < group.children.length; i++) {
+                const mesh = group.children[i];
+                mesh.material = material;
+                mesh.scale.z = 1;
+            }
 
-            this.gltf.scale.multiplyScalar(590);
-            this.gltf.position.x = -1;
-            this.gltf.position.y = -0.5;
+            // align with logo
+            group.rotation.set(0, 0, 0);
+            group.scale.multiplyScalar(740);
+            // group.scale.z = 1;
 
+            this.gltf = group;
             this.scene.add(this.gltf);
-            // this.object3D.add(this.gltf);
-            // console.log(this.gltf);
+            // console.log(gltf);
         });
     }
-
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC
@@ -125,8 +141,21 @@ export class Viz07 extends AbstractViz {
 
         this.drawData(elapsed);
 
-        if (this.gltf) this.gltf.rotation.x -= 0.01;
-        if (this.gltf) this.gltf.rotation.z += 0.01;
+        if (!this.gltf) return;
+
+        for (let i = 0; i < this.gltf.children.length; i++) {
+            const mesh = this.gltf.children[i];
+            const value = AppAudio.getValue(i) || 0;
+
+            // mesh.rotation.x += value * 0.01;
+            // mesh.rotation.y += value * 0.01;
+
+            if (value) mesh.scale.z = value * 20;
+            mesh.position.z = mesh.scale.z * 0.002;
+        }
+
+        // this.gltf.rotation.x -= 0.01;
+        // this.gltf.rotation.z += 0.01;
     }
 
     drawData(t) {
@@ -150,6 +179,9 @@ export class Viz07 extends AbstractViz {
 
     resize() {
         super.resize(1.414);
+
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
     }
 
     onAudioPeak(e) {
