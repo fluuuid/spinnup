@@ -1,18 +1,27 @@
 import {
-    Group,
+    Color,
     LinearFilter,
-    Mesh,
     MeshBasicMaterial,
     MeshStandardMaterial,
     PerspectiveCamera,
     PointLight,
     RGBFormat,
+    RGBAFormat,
     Scene,
     Texture,
-    Vector2 
+    Vector2,
+    WebGLRenderTarget,
 } from 'three';
 
 import GLTFLoader from 'imports-loader?THREE=three!exports-loader?THREE.GLTFLoader!threeX/loaders/GLTFLoader';
+
+import CopyShader from 'imports-loader?THREE=three!exports-loader?THREE.CopyShader!threeX/shaders/CopyShader';
+import SobelOperatorShader from 'imports-loader?THREE=three!exports-loader?THREE.SobelOperatorShader!threeX/shaders/SobelOperatorShader';
+
+import EffectComposer from 'imports-loader?THREE=three!exports-loader?THREE.EffectComposer!threeX/postprocessing/EffectComposer';
+import RenderPass from 'imports-loader?THREE=three!exports-loader?THREE.RenderPass!threeX/postprocessing/RenderPass';
+import ShaderPass from 'imports-loader?THREE=three!exports-loader?THREE.ShaderPass!threeX/postprocessing/ShaderPass';
+
 import AsyncPreloader from 'async-preloader';
 
 import glsl from '../../../utils/glsl';
@@ -32,6 +41,7 @@ export class Viz07 extends AbstractViz {
         this.velBg = 0.0;
 
         this.initScene();
+        this.initPostProcessing();
         this.initLogoGLTF();
     }
 
@@ -46,9 +56,10 @@ export class Viz07 extends AbstractViz {
         uniforms.uData = { value: this.dataTexture };
         uniforms.uAspect = { value: new Vector2(1.0, 1.0 / (4961 / 3508)) }; // original image size
         uniforms.uDataLength = { value: this.dataBuffer.canvas.width };
+        uniforms.uLogoScale = { value: new Vector2(1, 1) };
 
         this.bg.material.fragmentShader = glsl(`${this.id}/bg.frag`);
-        this.bg.visible = false;
+        // this.bg.visible = false;
     }
 
     initLogo() {
@@ -96,6 +107,23 @@ export class Viz07 extends AbstractViz {
         this.scene.add(this.lightA);
     }
 
+    initPostProcessing() {
+        // const params = { minFilter: LinearFilter, magFilter: LinearFilter, format: RGBFormat, stencilBuffer: false };
+        // const renderTarget = new WebGLRenderTarget( window.innerWidth, window.innerHeight, params );
+
+        this.composer = new EffectComposer(AppView.webgl.renderer);
+
+        const renderPass = new RenderPass(this.scene, this.camera);
+        this.composer.addPass(renderPass);
+
+        const sobelPass = new ShaderPass(SobelOperatorShader);
+        sobelPass.needsSwap = false;
+        this.composer.addPass(sobelPass);
+        this.sobelPass = sobelPass;
+
+        this.bg.material.uniforms.uLogoTexture = { value: this.composer.renderTarget1.texture };
+    }
+
     initLogoGLTF() {
         const loader = new GLTFLoader();
         const buffer = AsyncPreloader.items.get('gltf');
@@ -103,7 +131,7 @@ export class Viz07 extends AbstractViz {
         // const material = new MeshBasicMaterial({
         const material = new MeshStandardMaterial({
             color: 0xFFFFFF,
-            wireframe: true,
+            // wireframe: true,
             // depthWrite: false,
         });
 
@@ -118,7 +146,8 @@ export class Viz07 extends AbstractViz {
 
             // align with logo
             group.rotation.set(0, 0, 0);
-            group.scale.multiplyScalar(740);
+            // group.scale.multiplyScalar(648);
+            group.scale.multiplyScalar(388);
             // group.scale.z = 1;
 
             this.gltf = group;
@@ -154,8 +183,8 @@ export class Viz07 extends AbstractViz {
             mesh.position.z = mesh.scale.z * 0.002;
         }
 
-        // this.gltf.rotation.x -= 0.01;
-        // this.gltf.rotation.z += 0.01;
+        this.gltf.rotation.x -= 0.01;
+        this.gltf.rotation.z += 0.01;
     }
 
     drawData(t) {
@@ -180,8 +209,14 @@ export class Viz07 extends AbstractViz {
     resize() {
         super.resize(1.414);
 
-        this.camera.aspect = window.innerWidth / window.innerHeight;
+        // this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.aspect = this.bg.scale.x / this.bg.scale.y;
         this.camera.updateProjectionMatrix();
+
+        this.composer.setSize(this.bg.scale.x, this.bg.scale.y);
+
+        this.sobelPass.uniforms.resolution.value.x = this.bg.scale.x;
+        this.sobelPass.uniforms.resolution.value.y = this.bg.scale.y;
     }
 
     onAudioPeak(e) {

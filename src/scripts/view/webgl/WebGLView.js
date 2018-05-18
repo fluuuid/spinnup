@@ -50,8 +50,13 @@ export default class WebGLView {
 
     draw() {
         this.renderer.clear();
+        if (this.viz.composer) this.viz.composer.render();
         this.renderer.render(this.scene, this.camera);
-        if (this.viz.scene) this.renderer.render(this.viz.scene, this.viz.camera);
+        
+        // if (this.viz.scene) {
+            // if (this.viz.composer) this.viz.composer.render();
+            // else this.renderer.render(this.viz.scene, this.viz.camera);
+        // }
     }
 
     // ---------------------------------------------------------------------------------------------
