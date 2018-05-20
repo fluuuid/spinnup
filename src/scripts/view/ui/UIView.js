@@ -26,6 +26,9 @@ export default class UIView {
         this.vizLogoDisplace = 0;
         this.vizLogoEqualiser = 0.5;
         this.vizLogoWireframe = false;
+
+        // Viz07
+        this.vizLogoRotateAll = false;
         
         // Viz10
         this.vizLogoStepsX = 2.0;
@@ -71,6 +74,12 @@ export default class UIView {
             .addSlider(this, 'vizLogoDisplace', 'rangeDisplace', { label: 'logo fx intensity' })
             .addSlider(this, 'vizLogoEqualiser', 'range', { label: 'logo equaliser' })
             .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizDefaultChange(); } })
+        }
+
+        if (this.vizId === 'Viz07') {
+            this.panel
+            .addGroup({ label: this.vizId, enable: true })
+            .addCheckbox(this, 'vizLogoRotateAll', { label: 'logo rotate all' })
         }
 
         if (this.vizId === 'Viz10') {

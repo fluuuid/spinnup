@@ -23,6 +23,7 @@ import RenderPass from 'imports-loader?THREE=three!exports-loader?THREE.RenderPa
 import ShaderPass from 'imports-loader?THREE=three!exports-loader?THREE.ShaderPass!threeX/postprocessing/ShaderPass';
 
 import AsyncPreloader from 'async-preloader';
+import TweenMax from 'gsap';
 
 import glsl from '../../../utils/glsl';
 import { random } from '../../../utils/math.utils';
@@ -37,8 +38,11 @@ export class Viz07 extends AbstractViz {
         super(id);
 
         this.kickBg = 0.0;
-        this.accBg = 0.0;
-        this.velBg = 0.0;
+        this.velRotation = 0.0;
+        this.rotateLetter = 0;
+        this.rotateAll = 0;
+        this.dataLevels = [4, 8, 10, 12, 5, 7, 9];
+        this.letterScale = 20;
 
         this.initScene();
         this.initPostProcessing();
@@ -103,7 +107,7 @@ export class Viz07 extends AbstractViz {
         this.camera.position.z = 100;
 
         this.lightA = new PointLight();
-        this.lightA.position.set(10, 50, 50);
+        this.lightA.position.set(10, 10, 100);
         this.scene.add(this.lightA);
     }
 
@@ -141,7 +145,10 @@ export class Viz07 extends AbstractViz {
             for (let i = 0; i < group.children.length; i++) {
                 const mesh = group.children[i];
                 mesh.material = material;
-                mesh.scale.z = 1;
+                // mesh.scale.z = 1;
+
+                // store rotation
+                mesh.lastRotation = mesh.rotation.clone();
             }
 
             // align with logo
@@ -172,19 +179,26 @@ export class Viz07 extends AbstractViz {
 
         if (!this.gltf) return;
 
+        this.velRotation *= 0.99;
+
         for (let i = 0; i < this.gltf.children.length; i++) {
             const mesh = this.gltf.children[i];
-            const value = AppAudio.getValue(i) || 0;
+            // const value = AppAudio.getValue(i) || 0;
+            const value = AppAudio.getValue(this.dataLevels[i]) || 0;
 
-            // mesh.rotation.x += value * 0.01;
-            // mesh.rotation.y += value * 0.01;
+            if (this.rotateLetter === 1) mesh.rotation.x = value * this.velRotation * 50;
+            if (this.rotateLetter === 2) mesh.rotation.y = value * this.velRotation * 50;
 
-            if (value) mesh.scale.z = value * 20;
-            mesh.position.z = mesh.scale.z * 0.002;
+            if (this.rotateLetter) mesh.lastRotation.copy(mesh.rotation);
+
+            if (value) mesh.scale.z = value * this.letterScale;
+            // mesh.position.z = mesh.scale.z * 0.002;
         }
 
-        this.gltf.rotation.x -= 0.01;
-        this.gltf.rotation.z += 0.01;
+        if (this.rotateAll && AppView.ui.vizLogoRotateAll) {
+            this.gltf.rotation.x -= 0.01;
+            this.gltf.rotation.z += 0.001;
+        }
     }
 
     drawData(t) {
@@ -222,6 +236,55 @@ export class Viz07 extends AbstractViz {
     onAudioPeak(e) {
         if (e.index === 16) {
             this.kickBg += e.value;
+        }
+
+        if (e.index === 6) {
+            const rnd = Math.floor(random(3.8));
+
+            // reset letter rotation and scale
+            this.rotateLetter = 0;
+            this.letterScale = 20;
+
+            for (let i = 0; i < this.gltf.children.length; i++) {
+                const mesh = this.gltf.children[i];
+                mesh.rotation.set(0, 0, 0);
+            
+                // update data levels
+                this.dataLevels[i] = Math.floor(random(1, 22));
+            }
+
+            this.rotateAll = Math.round(random());
+
+            switch (rnd) {
+                case 0: {
+                    this.gltf.rotation.set(random(-0.8, -1.2), 0.0, 0.4);
+                    this.lightA.position.set(100, 150, 50);
+                    break;
+                }
+                case 1: {
+                    this.gltf.rotation.set(0, 0, 0);
+                    this.lightA.position.set(10, 10, 100);
+                    break;
+                }
+                case 2: {
+                    this.gltf.rotation.set(0.4, random(-0.2, -0.8), 0.0);
+                    this.lightA.position.set(-100, 20, 240);
+                    break;
+                }
+                case 3: {
+                    // this.rotateLetter = Math.floor(random(1, 2.9));
+                    this.rotateLetter = 1;
+                    this.velRotation = 0.08;
+                    this.letterScale = random(3, 6);
+                    for (let i = 0; i < this.gltf.children.length; i++) {
+                        const mesh = this.gltf.children[i];
+                        mesh.rotation.copy(mesh.lastRotation);
+                        // mesh.scale.z = 2;
+                    }
+                    break;
+                }
+            }
+            
         }
     }
 }
