@@ -244,7 +244,7 @@ export class Viz07 extends AbstractViz {
             this.kickBg += e.value;
         }
 
-        if (e.index === 6) {
+        if (e.index === 10) {
             const rnd = Math.floor(random(3.8));
 
             // reset letter rotation and scale
