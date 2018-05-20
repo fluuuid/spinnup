@@ -106,7 +106,7 @@ export class Viz07 extends AbstractViz {
         this.camera = new PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
         this.camera.position.z = 100;
 
-        this.lightA = new PointLight();
+        this.lightA = new PointLight(0xFFFFFF, 2);
         this.lightA.position.set(10, 10, 100);
         this.scene.add(this.lightA);
     }
@@ -118,9 +118,11 @@ export class Viz07 extends AbstractViz {
         this.composer = new EffectComposer(AppView.webgl.renderer);
 
         const renderPass = new RenderPass(this.scene, this.camera);
+        // renderPass.renderToScreen = true;
         this.composer.addPass(renderPass);
 
         const sobelPass = new ShaderPass(SobelOperatorShader);
+        // sobelPass.renderToScreen = true;
         sobelPass.needsSwap = false;
         this.composer.addPass(sobelPass);
         this.sobelPass = sobelPass;
@@ -186,8 +188,8 @@ export class Viz07 extends AbstractViz {
             // const value = AppAudio.getValue(i) || 0;
             const value = AppAudio.getValue(this.dataLevels[i]) || 0;
 
-            if (this.rotateLetter === 1) mesh.rotation.x = value * this.velRotation * 50;
-            if (this.rotateLetter === 2) mesh.rotation.y = value * this.velRotation * 50;
+            if (this.rotateLetter === 1) mesh.rotation.x -= value * this.velRotation;
+            if (this.rotateLetter === 2) mesh.rotation.y += value * this.velRotation;
 
             if (this.rotateLetter) mesh.lastRotation.copy(mesh.rotation);
 
@@ -272,7 +274,7 @@ export class Viz07 extends AbstractViz {
                 }
                 case 2: {
                     this.gltf.rotation.set(0.4, random(-0.2, -0.8), 0.0);
-                    this.lightA.position.set(-100, 20, 240);
+                    this.lightA.position.set(-100, 20, 50);
                     break;
                 }
                 case 3: {
