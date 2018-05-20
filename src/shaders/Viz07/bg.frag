@@ -61,9 +61,9 @@ void main() {
     // draw displacement
     // color.rgb = vec3(c);
 
-    vec2 o = vec2(0.5, 0.5);        // TODO pass logo scale
-    vec2 uvo = uv / o - (1.0 - o);  // TODO calculate offset properly
-    uvo = uvo * 0.6 + 0.2;          // arbitrary scale up
+    vec2 scl = uLogoScale;
+    vec2 uvo = uv / scl - ((1.0 / scl) / 2.0 - 0.5);    // scale and offset
+    uvo = uvo * 0.6 + 0.2;                              // arbitrary scale up
     color += texture2D(uLogoTexture, uvo);
     // color += texture2D(uLogoTexture, uv);
 

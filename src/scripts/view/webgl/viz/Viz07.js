@@ -60,7 +60,7 @@ export class Viz07 extends AbstractViz {
         uniforms.uData = { value: this.dataTexture };
         uniforms.uAspect = { value: new Vector2(1.0, 1.0 / (4961 / 3508)) }; // original image size
         uniforms.uDataLength = { value: this.dataBuffer.canvas.width };
-        uniforms.uLogoScale = { value: new Vector2(1, 1) };
+        uniforms.uLogoScale = { value: new Vector2(0.5, 0.5) };
 
         this.bg.material.fragmentShader = glsl(`${this.id}/bg.frag`);
         // this.bg.visible = false;
@@ -231,6 +231,10 @@ export class Viz07 extends AbstractViz {
 
         this.sobelPass.uniforms.resolution.value.x = this.bg.scale.x;
         this.sobelPass.uniforms.resolution.value.y = this.bg.scale.y;
+
+        const logoScale = this.logo.scale.x / window.innerWidth;
+        const scl = (logoScale > 0.5) ? 0.35 : 0.5;
+        this.bg.material.uniforms.uLogoScale.value.set(scl, scl);
     }
 
     onAudioPeak(e) {
