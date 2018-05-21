@@ -58,7 +58,8 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'src/template/index.html',
+            template: 'src/template/viz.html',
+            filename: 'viz.html'
         }),
         new webpack.DefinePlugin({
             'process.env' : {
