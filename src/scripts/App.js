@@ -15,12 +15,18 @@ class App {
 
     // API
 
+    get isPaused() {
+        return this.audio.paused;
+    }
+
     pause () {
-        console.log('pause');
+        if(this.isPaused) return;
+        this.audio.pause();
     }
 
     play () {
-        console.log('play');
+        if(!this.isPaused) return;
+        this.audio.play();
     }
 
     changeViz ({trackSrc, vizId}) {
@@ -57,7 +63,7 @@ class App {
                     // this.changeViz({ trackSrc: 'audio/Maes-MaesEstLiberable-PART-II.mp3', vizId: 'Viz10'})
                     // this.changeViz({ trackSrc: 'audio/Ben-Esser-Love-You-More.mp3', vizId: 'Viz13'})
                     // this.changeViz({ trackSrc: 'audio/MADANII-WVTCHMEN.mp3', vizId: 'Viz02'})
-                    this.changeViz({ trackSrc: 'audio/Chuchoter-Pieces.mp3', vizId: 'Viz07'})
+                    this.changeViz({ trackSrc: 'audio/Chuchoter-Pieces.mp3', vizId: 'Viz07'});
                 }
             })
             .catch(err => {
@@ -84,6 +90,10 @@ class App {
         // play loaded track
         AppAudio.decode(AsyncPreloader.items.get('track'), () => {
             AppAudio.play();
+
+            if(window.parent && window.parent.onVizReady) {
+                window.parent.onFilesLoaded();
+            }
         });
     }
 

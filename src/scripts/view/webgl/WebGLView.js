@@ -52,7 +52,7 @@ export default class WebGLView {
         this.renderer.clear();
         if (this.viz.composer) this.viz.composer.render();
         this.renderer.render(this.scene, this.camera);
-        
+
         // if (this.viz.scene) {
             // if (this.viz.composer) this.viz.composer.render();
             // else this.renderer.render(this.viz.scene, this.viz.camera);
@@ -76,7 +76,7 @@ export default class WebGLView {
         this.camera.bottom = -this.hh;
         this.camera.updateProjectionMatrix();
 
-        this.viz.resize();
+        if(this.viz) this.viz.resize();
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
