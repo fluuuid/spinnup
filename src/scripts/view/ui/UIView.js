@@ -24,7 +24,7 @@ export default class UIView {
         this.vizLogoOptions = ['auto', 'A', 'B', 'C'];
         this.vizLogo = 0;
         this.vizLogoDisplace = 0;
-        this.vizLogoEqualiser = 0.5;
+        this.vizLogoEqualiser = 0.3;
         this.vizLogoWireframe = false;
         
         // Viz10
