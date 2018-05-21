@@ -44,6 +44,7 @@ export default class AbstractViz {
             vertexShader: glsl('default.vert'),
             fragmentShader: glsl(`default.frag`),
             uniforms,
+            depthWrite: false,
         });
 
         const geometry = new PlaneBufferGeometry(1, 1);
@@ -63,6 +64,7 @@ export default class AbstractViz {
             fragmentShader: glsl(`default.frag`),
             uniforms,
             transparent: true,
+            depthWrite: false,
         });
 
         const positions = [];
@@ -130,8 +132,8 @@ export default class AbstractViz {
     // EVENT HANDLERS
     // ---------------------------------------------------------------------------------------------
 
-    resize() {
-        const bgAspect = 2;
+    resize(bgAspect = 2) {
+        // const bgAspect = 2;
         const logoAspect = 4;
         const screenAspect = window.innerWidth / window.innerHeight;
 
