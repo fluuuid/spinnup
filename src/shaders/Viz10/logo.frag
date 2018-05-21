@@ -46,7 +46,7 @@ void main() {
 
 	// logo
 	vec4 tex = texture2D(uTexture, uvo);
-	vec4 colB = mix(vec4(0.0), vec4(1.0), tex.g);
+	vec4 colB = vec4(vec3(1.0), tex.g);
 
 
 	// hide gaps
