@@ -1,5 +1,5 @@
 node_modules/
 dist/scripts/*.js
 dist/scripts/*.js.map
-dist/index.html
+dist/viz.html
 yarn-error.log
