@@ -68,7 +68,7 @@ export class Viz10 extends AbstractViz {
         this.kickOffsetY *= 0.92;
         if (this.kickOffsetLevel) {
             const value = AppAudio.getValue(this.kickOffsetLevel);
-            const amount = Math.sin(value * Math.PI * 0.5) * 0.1;
+            const amount = Math.sin(value * Math.PI * 0.5) * 0.2;
             this.logo.material.uniforms.uOffset.value.y = amount + this.kickOffsetY;
         }
     }
@@ -128,8 +128,8 @@ export class Viz10 extends AbstractViz {
 
         if (e.index === 22) {
             this.logo.material.uniforms.uGapSize.value = 0.5;
-            this.kickOffsetX += 0.1;
-            this.dampOffsetX = 0.97;
+            this.kickOffsetX += 0.01;
+            // this.dampOffsetX = 0.97;
         }
 
     }

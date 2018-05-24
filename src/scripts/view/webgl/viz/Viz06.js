@@ -79,8 +79,8 @@ export class Viz06 extends AbstractViz {
             const y = Math.floor(i / (this.segments.x + 1));
 
             const level = levels[x % levels.length];
-            const intensity = 1 - (y / this.segments.y); // just top
-            // const intensity = (y - this.segments.y / 2) / this.segments.y; // both top and bottom
+            // const intensity = 1 - (y / this.segments.y); // just top
+            const intensity = (y - this.segments.y / 2) / this.segments.y; // both top and bottom
             const scale = AppView.ui.vizLogoEqualiser;
             const value = AppAudio.getValue(level);
 
