@@ -20,6 +20,11 @@ const assetsList = {
         { id: 'texture', src: 'images/Texture_10.jpg' }
     ],
 
+    Viz11: [
+        { id: 'logo', src: 'images/logo.png' },
+        { id: 'texture', src: 'images/Texture_11.jpg' }
+    ],
+
     Viz13: [
         { id: 'logo', src: 'images/logo.png' },
         { id: 'texture', src: 'images/Texture_13.jpg' }
