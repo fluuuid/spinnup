@@ -49,6 +49,17 @@ export class Viz07 extends AbstractViz {
         this.initLogoGLTF();
     }
 
+    initAudio() {
+        super.initAudio();
+
+        AppView.ui.audioSmoothing = 0.79;
+        AppView.ui.audioPeakDecay = 0.92;
+        AppView.ui.audioPeakInterval = 11;
+        AppView.ui.audioPeakCutOff = 0.29;
+        AppView.ui.onAudioChange();
+        AppView.ui.controlKit.update();
+    }
+
     initBackground() {
         super.initBackground();
 
@@ -245,7 +256,7 @@ export class Viz07 extends AbstractViz {
         }
 
         if (e.index === 10) {
-            const rnd = Math.floor(random(3.8));
+            const rnd = Math.floor(random(2.8));
 
             // reset letter rotation and scale
             this.rotateLetter = 0;

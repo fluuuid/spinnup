@@ -17,6 +17,17 @@ export class Viz13 extends AbstractViz {
         this.velBg = 0.0;
     }
 
+    initAudio() {
+        super.initAudio();
+
+        AppView.ui.audioSmoothing = 0.5;
+        AppView.ui.audioPeakDecay = 0.93;
+        AppView.ui.audioPeakInterval = 36;
+        AppView.ui.audioPeakCutOff = 0.32;
+        AppView.ui.onAudioChange();
+        AppView.ui.controlKit.update();
+    }
+
     initBackground() {
         super.initBackground();
 

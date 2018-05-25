@@ -141,6 +141,20 @@ export default class UIView {
     toggle() {
         if (this.controlKit._enabled) this.controlKit.disable();
         else this.controlKit.enable();
+
+        // hack to reset sliders after new groups are added
+        if (this.controlKit._enabled) {
+            for (let i = 0; i < this.controlKit._panels[0]._groups.length; i++) {
+                const group = this.controlKit._panels[0]._groups[i];
+                for (let j = 0; j < group._components.length; j++) {
+                    const component = group._components[j];
+                    if (component.constructor.name == 'Slider') {
+                        if (component._slider) component._slider.resetOffset();
+                    }
+                }
+            }
+            this.controlKit.update();
+        }
     }
 
     // ---------------------------------------------------------------------------------------------

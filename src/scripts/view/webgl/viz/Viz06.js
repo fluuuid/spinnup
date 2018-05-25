@@ -23,6 +23,17 @@ export class Viz06 extends AbstractViz {
         this.kickRowDamp = 0.95;
     }
 
+    initAudio() {
+        super.initAudio();
+
+        AppView.ui.audioSmoothing = 0.7;
+        AppView.ui.audioPeakDecay = 0.93;
+        AppView.ui.audioPeakInterval = 12;
+        AppView.ui.audioPeakCutOff = 0.55;
+        AppView.ui.onAudioChange();
+        AppView.ui.controlKit.update();
+    }
+
     initBackground() {
         super.initBackground();
 
@@ -79,8 +90,8 @@ export class Viz06 extends AbstractViz {
             const y = Math.floor(i / (this.segments.x + 1));
 
             const level = levels[x % levels.length];
-            const intensity = 1 - (y / this.segments.y); // just top
-            // const intensity = (y - this.segments.y / 2) / this.segments.y; // both top and bottom
+            // const intensity = 1 - (y / this.segments.y); // just top
+            const intensity = (y - this.segments.y / 2) / this.segments.y; // both top and bottom
             const scale = AppView.ui.vizLogoEqualiser;
             const value = AppAudio.getValue(level);
 
