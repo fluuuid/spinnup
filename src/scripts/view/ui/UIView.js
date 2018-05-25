@@ -153,6 +153,7 @@ export default class UIView {
                     }
                 }
             }
+            this.controlKit.update();
         }
     }
 

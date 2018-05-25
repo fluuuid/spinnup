@@ -20,6 +20,17 @@ export class Viz10 extends AbstractViz {
         this.dampOffsetX = 0.92;
     }
 
+    initAudio() {
+        super.initAudio();
+
+        AppView.ui.audioSmoothing = 0.23;
+        AppView.ui.audioPeakDecay = 0.92;
+        AppView.ui.audioPeakInterval = 22;
+        AppView.ui.audioPeakCutOff = 0.59;
+        AppView.ui.onAudioChange();
+        AppView.ui.controlKit.update();
+    }
+
     initBackground() {
         super.initBackground();
 

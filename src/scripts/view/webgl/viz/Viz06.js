@@ -23,6 +23,17 @@ export class Viz06 extends AbstractViz {
         this.kickRowDamp = 0.95;
     }
 
+    initAudio() {
+        super.initAudio();
+
+        AppView.ui.audioSmoothing = 0.7;
+        AppView.ui.audioPeakDecay = 0.93;
+        AppView.ui.audioPeakInterval = 12;
+        AppView.ui.audioPeakCutOff = 0.55;
+        AppView.ui.onAudioChange();
+        AppView.ui.controlKit.update();
+    }
+
     initBackground() {
         super.initBackground();
 
