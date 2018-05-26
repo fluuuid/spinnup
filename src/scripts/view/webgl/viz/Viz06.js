@@ -26,10 +26,7 @@ export class Viz06 extends AbstractViz {
     initAudio() {
         super.initAudio();
 
-        AppView.ui.audioSmoothing = 0.7;
-        AppView.ui.audioPeakDecay = 0.93;
-        AppView.ui.audioPeakInterval = 12;
-        AppView.ui.audioPeakCutOff = 0.55;
+        AppView.ui.audioSmoothing = 0.8;
         AppView.ui.onAudioChange();
         AppView.ui.controlKit.update();
     }
@@ -96,7 +93,9 @@ export class Viz06 extends AbstractViz {
             const value = AppAudio.getValue(level);
 
             // equaliser[i] = Math.sin(value * Math.PI * 1.8 * -Math.pow(Math.sin(value), 2)) * scale * intensity;
-            equaliser[i] = Math.sin(value * Math.PI * 1.5) * scale * intensity;
+            // equaliser[i] = Math.sin(value * Math.PI * 1.5) * scale * intensity * -1.5;
+            // equaliser[i] = (Math.sin(value * Math.PI * 1.2) + Math.sin(value / 1.8 - 0.1)) * scale * intensity * -1.0;
+            equaliser[i] = (Math.sin(value * Math.PI * 1.2)) * scale * intensity * -1.2;
         }
 
         this.logo.geometry.attributes.equaliser.needsUpdate = true;
