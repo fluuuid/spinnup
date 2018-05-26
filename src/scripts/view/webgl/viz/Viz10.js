@@ -14,7 +14,7 @@ export class Viz10 extends AbstractViz {
 
         this.kickBg = 0.0;
         this.kickBoost = 0.0;
-        this.kickOffsetLevel = 22;
+        this.kickOffsetLevel = 18;
         this.kickOffsetX = 0.0;
         this.kickOffsetY = 0.0;
         this.dampOffsetX = 0.92;
@@ -23,7 +23,7 @@ export class Viz10 extends AbstractViz {
     initAudio() {
         super.initAudio();
 
-        AppView.ui.audioSmoothing = 0.23;
+        AppView.ui.audioSmoothing = 0.8;
         AppView.ui.audioPeakDecay = 0.92;
         AppView.ui.audioPeakInterval = 22;
         AppView.ui.audioPeakCutOff = 0.59;
@@ -79,7 +79,7 @@ export class Viz10 extends AbstractViz {
         this.kickOffsetY *= 0.92;
         if (this.kickOffsetLevel) {
             const value = AppAudio.getValue(this.kickOffsetLevel);
-            const amount = Math.sin(value * Math.PI * 0.5) * 0.2;
+            const amount = Math.sin(value * Math.PI * 0.5) * 0.15;
             this.logo.material.uniforms.uOffset.value.y = amount + this.kickOffsetY;
         }
     }
@@ -99,30 +99,31 @@ export class Viz10 extends AbstractViz {
             const rnd = Math.floor(random(3.8));
 
             this.dampOffsetX = 0.92;
+            this.kickOffsetLevel = 18;
 
             switch (rnd) {
                 case 0: {
                     this.logo.material.uniforms.uSteps.value.set(7, 2);
-                    this.logo.material.uniforms.uGapSize.value = 3.20;
-                    this.kickOffsetX = 0.05;
+                    this.logo.material.uniforms.uGapSize.value = 0.50;
+                    this.kickOffsetX = 0.00;
                     break;
                 }
                 case 1: {
-                    this.logo.material.uniforms.uSteps.value.set(16, 2);
-                    this.logo.material.uniforms.uGapSize.value = 2.8;
+                    this.logo.material.uniforms.uSteps.value.set(15, 2);
+                    this.logo.material.uniforms.uGapSize.value = 2.9;
                     this.kickOffsetX = 0.02;
                     break;
                 }
                 case 2: {
-                    this.logo.material.uniforms.uSteps.value.set(25, 2);
-                    this.logo.material.uniforms.uGapSize.value = 2.30;
+                    this.logo.material.uniforms.uSteps.value.set(20, 2);
+                    this.logo.material.uniforms.uGapSize.value = 4.50;
                     this.kickOffsetX = 0.0;
                     this.kickOffsetY -= 0.2;
                     break;
                 }
                 case 3: {
-                    this.logo.material.uniforms.uSteps.value.set(12, 3);
-                    this.logo.material.uniforms.uGapSize.value = 1.00;
+                    this.logo.material.uniforms.uSteps.value.set(12, 2);
+                    this.logo.material.uniforms.uGapSize.value = 8.00;
                     this.kickOffsetX = 0.0;
                     this.kickOffsetY += 0.2;
                     break;
@@ -138,9 +139,12 @@ export class Viz10 extends AbstractViz {
         if (AppView.ui.vizLogoOverride) return;
 
         if (e.index === 22) {
-            this.logo.material.uniforms.uGapSize.value = 0.5;
-            this.kickOffsetX += 0.01;
-            // this.dampOffsetX = 0.97;
+            this.kickOffsetLevel = 30;
+            this.logo.material.uniforms.uSteps.value.set(40, 2);
+            this.logo.material.uniforms.uGapSize.value = 2.0;
+            this.kickOffsetX = 0.0;
+            this.kickOffsetY += 0.05;
+            // this.dampOffsetX = 0.87;
         }
 
     }
