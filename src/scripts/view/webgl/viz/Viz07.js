@@ -54,7 +54,7 @@ export class Viz07 extends AbstractViz {
 
         AppView.ui.audioSmoothing = 0.79;
         AppView.ui.audioPeakDecay = 0.92;
-        AppView.ui.audioPeakInterval = 11;
+        AppView.ui.audioPeakInterval = 60;
         AppView.ui.audioPeakCutOff = 0.29;
         AppView.ui.onAudioChange();
         AppView.ui.controlKit.update();
@@ -204,7 +204,7 @@ export class Viz07 extends AbstractViz {
 
             if (this.rotateLetter) mesh.lastRotation.copy(mesh.rotation);
 
-            if (value) mesh.scale.z = value * this.letterScale;
+            if (value) mesh.scale.z = value * this.letterScale + 2;
             // mesh.position.z = mesh.scale.z * 0.002;
         }
 
