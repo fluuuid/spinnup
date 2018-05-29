@@ -101,7 +101,14 @@ export default class UIView {
         if (this.vizId === 'Viz11') {
             this.panel
             .addGroup({ label: this.vizId, enable: true })
-            .addSlider(this, 'vizBgModA', 'range', { label: 'bg modA', onChange: () => { that.onViz11Change(); } })
+            // .addSlider(this, 'vizBgModA', 'range', { label: 'bg modA', onChange: () => { that.onViz11Change(); } })
+            .addCheckbox(this, 'vizLogoOverride', { label: 'logo override' })
+            .addSlider(this, 'vizLogoStepsX', 'rangeSteps', { label: 'logo steps x', step: 1, dp: 0, onChange: () => { that.onViz11Change(); } })
+            .addSlider(this, 'vizLogoStepsY', 'rangeSteps', { label: 'logo steps y', step: 1, dp: 0, onChange: () => { that.onViz11Change(); } })
+            .addSlider(this, 'vizLogoOffsetX', 'rangeOffset', { label: 'logo offset x', dp: 3, onChange: () => { that.onViz11Change(); } })
+            .addSlider(this, 'vizLogoOffsetY', 'rangeOffset2', { label: 'logo offset y', dp: 3, onChange: () => { that.onViz11Change(); } })
+            .addSlider(this, 'vizLogoGapSize', 'rangeGap', { label: 'logo gap', onChange: () => { that.onViz11Change(); } })
+            .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizDefaultChange(); } })
         }
 
         if (this.vizId === 'Viz13' || this.vizId === 'Viz02') {
@@ -201,7 +208,12 @@ export default class UIView {
     }
 
     onViz11Change() {
-        this.view.webgl.viz.bg.material.uniforms.uModA.value = this.vizBgModA;
+        // this.view.webgl.viz.bg.material.uniforms.uModA.value = this.vizBgModA;
+        this.view.webgl.viz.logo.material.uniforms.uSteps.value.x = this.vizLogoStepsX;
+        this.view.webgl.viz.logo.material.uniforms.uSteps.value.y = this.vizLogoStepsY;
+        this.view.webgl.viz.logo.material.uniforms.uOffset.value.x = this.vizLogoOffsetX;
+        this.view.webgl.viz.logo.material.uniforms.uOffset.value.y = this.vizLogoOffsetY;
+        this.view.webgl.viz.logo.material.uniforms.uGapSize.value = this.vizLogoGapSize;
     }
 
     onVizDefaultChange() {

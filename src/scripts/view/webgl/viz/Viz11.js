@@ -2,6 +2,7 @@ import {
     LinearFilter,
     RGBFormat,
     Texture,
+    Vector2,
 } from 'three';
 
 import glsl from '../../../utils/glsl';
@@ -48,9 +49,12 @@ export class Viz11 extends AbstractViz {
         super.initLogo();
 
         const uniforms = this.logo.material.uniforms;
+        uniforms.uSteps = { value: new Vector2(2, 6) };
+        uniforms.uOffset = { value: new Vector2(0.005, 0.01) };
+        uniforms.uGapSize = { value: 2.2 };
         uniforms.uWireframe = { value: 0 };
 
-        // this.logo.material.vertexShader = glsl(`${this.id}/logo.vert`);
+        this.logo.material.vertexShader = glsl(`${this.id}/logo.vert`);
         this.logo.material.fragmentShader = glsl(`${this.id}/logo.frag`);
         // this.logo.visible = false;
     }

@@ -1,6 +1,5 @@
 // Created by @brunoimbrizi / brunoimbrizi.com
 // https://www.shadertoy.com/view/Md2GDw by kusma
-// https://www.shadertoy.com/view/XtK3W3 by dyvoid
 
 #pragma glslify: snoise2 = require(glsl-noise/simplex/2d)
 #pragma glslify: when_lt = require(glsl-conditionals/when_lt)
@@ -19,14 +18,8 @@ uniform sampler2D uData;
 uniform float uDataLength;
 
 // IQ's noise value 2D
-float hash( vec2 p )
-{
+float hash(vec2 p) {
     float h = dot(p + uTime * 0.0001,vec2(127.1,311.7));
-    return fract(sin(h)*43758.5453123);
-}
-float hash2( vec2 p )
-{
-    float h = dot(p ,vec2(127.1,311.7));
     return fract(sin(h)*43758.5453123);
 }
 
@@ -40,8 +33,7 @@ float noise(float p) {
     return mix(rand(fl), rand(fl + 1.0), fc);
 }
 
-float noise( in vec2 p )
-{
+float noise( in vec2 p ) {
     vec2 i = floor( p );
     vec2 f = fract( p );
         
@@ -76,8 +68,7 @@ void main(void){
     vec2 uv = vUv;
     vec4 color = vec4(0.0);
 
-    
-    // split the screen in vertical bands
+    // split the screen in horizontal bands
     float steps = 18.0;
     float size = 1.0 / steps;
     float i = floor(uv.y / size) * 0.1;
@@ -94,12 +85,6 @@ void main(void){
     // vec2 uvn = mirrored(uv + uve);
     
     // color += texture2D(uTexture, uvn);
-    // color.rgb *= texture2D(uTexture, uvm).rgb;
-    // color.r *= texture2D(uTexture, uvm).r;
-
-    // if (snoise2(vec2(w, rand(uv.y))) < pow(fract(uTime * 16.0453), 2.0) * 0.2)
-        // color.rgb = color.rrr * 0.5;
-    
 
     float y = floor(uv.y * uDataLength) / uDataLength;
     float a = texture2D(uData, vec2(y, 0.5)).r;
@@ -108,12 +93,13 @@ void main(void){
     uva.y -= uModB;
     // vec2 uva = vec2(0.0, 1.0) * a;
     // uva.y += uTimeRoll * 0.05;
+    // uva.y += uModB;
 
     vec2 uvm = mirrored(uv + uva);
     color += texture2D(uTexture, uvm);
 
     color.r *= texture2D(uTexture, uvn).r;
-    // color.rgb *= texture2D(uTexture, uvn).rbb;
+    color.rgb *= texture2D(uTexture, uvn).rbb;
 
     float block_thresh = pow(fract(uTime * 12.0453), 2.0) * 0.2;
     color.rgb += (-color.rgb + color.rrr) * when_lt(snoise2(vec2(uModA, rand(uv.y))), block_thresh);
