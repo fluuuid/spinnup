@@ -34,7 +34,8 @@ void main() {
 	// offset x
 	// alternate between -1, 1
 	float a = uSteps.x;
-	float alt = mod(i, a) * 2.0 - 1.0;
+	float alt = mod(i, a) * a - a / 2.0;
+	// float alt = mod(i, a) * 2.0 - 1.0;
 	float amt = uOffset.x;
 	offset.x = alt * amt;
 

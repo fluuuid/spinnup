@@ -18,12 +18,14 @@ export class Viz11 extends AbstractViz {
         super(id);
 
         this.kickBg = 0.0;
+        this.kickOffsetLevel = 18;
+        this.kickOffsetX = 0.0;
     }
 
     initAudio() {
         super.initAudio();
 
-        AppView.ui.audioSmoothing = 0.97;
+        AppView.ui.audioSmoothing = 0.9;
         AppView.ui.audioPeakCutOff = 0.45;
         AppView.ui.onAudioChange();
         AppView.ui.controlKit.update();
@@ -43,13 +45,14 @@ export class Viz11 extends AbstractViz {
         uniforms.uDataLength = { value: this.dataBuffer.canvas.width };
 
         this.bg.material.fragmentShader = glsl(`${this.id}/bg.frag`);
+        // this.bg.visible = false;
     }
 
     initLogo() {
         super.initLogo();
 
         const uniforms = this.logo.material.uniforms;
-        uniforms.uSteps = { value: new Vector2(2, 6) };
+        uniforms.uSteps = { value: new Vector2(2, 2) };
         uniforms.uOffset = { value: new Vector2(0.005, 0.01) };
         uniforms.uGapSize = { value: 2.2 };
         uniforms.uWireframe = { value: 0 };
@@ -101,6 +104,13 @@ export class Viz11 extends AbstractViz {
         // this.bg.material.uniforms.uModB.value *= 0.95;
 
         this.drawData(elapsed);
+
+        this.kickOffsetX *= 0.92;
+        if (this.kickOffsetLevel) {
+            const value = AppAudio.getValue(this.kickOffsetLevel);
+            const amount = Math.sin(value * Math.PI * 0.5) * 0.008;
+            this.logo.material.uniforms.uOffset.value.x = amount + this.kickOffsetX;
+        }
     }
 
     drawData(t) {
@@ -133,6 +143,48 @@ export class Viz11 extends AbstractViz {
 
         if (e.index === 12) {
             this.bg.material.uniforms.uModB.value = random();
+
+            if (AppView.ui.vizLogoOverride) return;
+
+            const rnd = Math.floor(random(0.8));
+
+            this.dampOffsetX = 0.92;
+            this.kickOffsetLevel = 6;
+
+            const sign = (random() > 0.5) ? 1 : -1;
+
+            switch (rnd) {
+                case 0: {
+                    this.logo.material.uniforms.uSteps.value.set(2, Math.floor(random(3, 7)));
+                    this.logo.material.uniforms.uOffset.value.y = 0.01;
+                    this.logo.material.uniforms.uGapSize.value = random(0.5, 5.2);
+                    this.kickOffsetX += 0.15 * sign; 
+                    break;
+                }
+                /*
+                case 1: {
+                    this.logo.material.uniforms.uSteps.value.set(3, Math.floor(random(14, 22)));
+                    this.logo.material.uniforms.uOffset.value.y = 0.15;
+                    this.logo.material.uniforms.uGapSize.value = 1.50;
+                    this.kickOffsetX -= 0.015;
+                    break;
+                }
+                case 2: {
+                    this.logo.material.uniforms.uSteps.value.set(3, 4);
+                    this.logo.material.uniforms.uOffset.value.y = 0.004;
+                    this.logo.material.uniforms.uGapSize.value = 3.20;
+                    this.kickOffsetX += 0.015;
+                    break;
+                }
+                case 3: {
+                    this.logo.material.uniforms.uSteps.value.set(2, Math.floor(random(12, 28)));
+                    this.logo.material.uniforms.uOffset.value.y = 0.001;
+                    this.logo.material.uniforms.uGapSize.value = 3.50;
+                    this.kickOffsetX += 0.015;
+                    break;
+                }
+                */
+            }
         }
     }
 }
