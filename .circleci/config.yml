@@ -55,4 +55,5 @@ jobs:
               export PATH="./node_modules/.bin/:$PATH"
               yarn build
               aws s3 sync dist s3://fluuu.id/projects/spinnup --exclude \"*.git/*\" --exclude \"*/node_modules/*\" --exclude \"npm-debug.log\" --exclude \"*/jspm_packages/*\" --delete
+              aws cloudfront create-invalidation --distribution-id E1VQPKJ3HV2UQ2 --paths /projects/spinnup/viz.html /projects/spinnup/index.html
             fi
