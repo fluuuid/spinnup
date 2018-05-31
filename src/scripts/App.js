@@ -63,7 +63,8 @@ class App {
                     // this.changeViz({ trackSrc: 'audio/Maes-MaesEstLiberable-PART-II.mp3', vizId: 'Viz10'})
                     // this.changeViz({ trackSrc: 'audio/Ben-Esser-Love-You-More.mp3', vizId: 'Viz13'})
                     // this.changeViz({ trackSrc: 'audio/MADANII-WVTCHMEN.mp3', vizId: 'Viz02'})
-                    this.changeViz({ trackSrc: 'audio/Chuchoter-Pieces.mp3', vizId: 'Viz07'});
+                    // this.changeViz({ trackSrc: 'audio/Chuchoter-Pieces.mp3', vizId: 'Viz07'})
+                    this.changeViz({ trackSrc: 'audio/Kiiara-Gold-feat-Lil-Wayne-Remix.mp3', vizId: 'Viz11'})
                 }
             })
             .catch(err => {
