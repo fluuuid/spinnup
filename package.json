@@ -24,6 +24,7 @@
     "glsl-easings": "^1.0.0",
     "glsl-hash-blur": "^1.0.3",
     "glsl-noise": "0.0.0",
+    "glsl-y-repeat": "^1.0.0",
     "gsap": "1.18.2",
     "moment": "^2.22.1",
     "stats.js": "0.17.0",
