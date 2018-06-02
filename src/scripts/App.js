@@ -11,6 +11,10 @@ class App {
 
     constructor() {
         this.loadCoreAssets();
+
+        // DEBUG
+        this.audio = AppAudio;
+        this.view = AppView;
     }
 
     // API
@@ -32,9 +36,23 @@ class App {
     changeViz ({trackSrc, vizId}) {
         const track = { id: 'track', src: trackSrc, body: 'arrayBuffer' };
         const assets = assetsList[vizId];
-        assets.push(track);
 
-        this.initLoader(assets, vizId);
+        // load assets first
+        AsyncPreloader.loadItems(assets).then(() => {
+            this.initView(vizId);
+            // then load audio track 
+            AsyncPreloader.loadItems([track]).then(() => {
+                this.initAudio();
+                AppView.webgl.viz.show();
+            });
+        })
+        .catch(err => {
+            console.log('AsyncPreloader error', err);
+        });
+
+        // stop previous viz
+        AppAudio.stop();
+        if (AppView.webgl.viz) AppView.webgl.viz.hide();
     }
 
     mute () {
@@ -66,21 +84,6 @@ class App {
                     // this.changeViz({ trackSrc: 'audio/Chuchoter-Pieces.mp3', vizId: 'Viz07'})
                     this.changeViz({ trackSrc: 'audio/Kiiara-Gold-feat-Lil-Wayne-Remix.mp3', vizId: 'Viz11'})
                 }
-            })
-            .catch(err => {
-                console.log('AsyncPreloader error', err);
-            });
-    }
-
-    initLoader(files, vizId) {
-        AsyncPreloader.loadItems(files)
-            .then(() => {
-                this.initAudio();
-                this.initView(vizId);
-
-                // DEBUG
-                this.audio = AppAudio;
-                this.view = AppView;
             })
             .catch(err => {
                 console.log('AsyncPreloader error', err);

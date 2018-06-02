@@ -10,6 +10,8 @@
 varying vec2 vUv;
 
 uniform float uTime;
+uniform float uAlpha;
+uniform float uSaturation;
 uniform float uTimeRoll;
 uniform float uModA;
 uniform float uModB;
@@ -104,11 +106,10 @@ void main(void){
     float block_thresh = pow(fract(uTime * 12.0453), 2.0) * 0.2;
     color.rgb += (-color.rgb + color.rrr) * when_lt(snoise2(vec2(uModA, rand(uv.y))), block_thresh);
 
-    // color.gb += texture2D(uTexture, uvm).gb * when_lt(snoise2(vec2(uModB, rand(uv.y))), block_thresh);
-    // color.gb *= texture2D(uTexture, uvn).gb * rand(uv.y * w);
-    // color.gb -= texture2D(uTexture, uvm).gb * when_lt(snoise2(vec2(0.15, rand(uv.y))), block_thresh) * 0.2;
-    
     // color.gb *= 0.0; // just red, it looks great
+
+    color.rgb = mix(vec3(0.4), color.rgb, uAlpha);
+    color.rgb = mix(color.rrr, color.rgb, uSaturation);
 
     gl_FragColor = color;
 }

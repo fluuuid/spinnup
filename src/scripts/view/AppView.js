@@ -26,6 +26,7 @@ class AppView {
 
     initWebGL() {
         this.webgl = new WebGLView();
+        this.onResize();
 
         // move canvas to container
         document.querySelector('#container').appendChild(this.webgl.renderer.domElement);

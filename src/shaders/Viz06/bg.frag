@@ -7,6 +7,8 @@
 varying vec2 vUv;
 
 uniform float uTime;
+uniform float uAlpha;
+uniform float uSaturation;
 uniform float uModA;
 uniform float uModB;
 uniform float uModC;
@@ -109,6 +111,9 @@ void main() {
     color += colA * when_eq(uDebug, 1.0);
     color += colB * when_eq(uDebug, 2.0);
     color += texture2D(uTexture, uv).rgb * when_eq(uDebug, 3.0);
+
+    color.rgb = mix(vec3(0.4), color.rgb, uAlpha);
+    color.rgb = mix(color.rrr, color.rgb, uSaturation);
 
     gl_FragColor = vec4(color, 1.0);
 }

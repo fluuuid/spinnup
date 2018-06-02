@@ -11,6 +11,8 @@
 varying vec2 vUv;
 
 uniform float uTime;
+uniform float uAlpha;
+uniform float uSaturation;
 uniform vec2 uModA;
 uniform sampler2D uTexture;
 
@@ -79,6 +81,10 @@ void main() {
     vec4 colC = mix(colA, colB, (n + 1.0) / 2.0);
 
 	color = colC;
+
+    // color.rgb *= uAlpha;
+    color.rgb = mix(vec3(0.4), color.rgb, uAlpha);
+    color.rgb = mix(color.rrr, color.rgb, uSaturation);
 
     gl_FragColor = color;
 }

@@ -14,6 +14,8 @@ uniform sampler2D uData;
 uniform sampler2D uLogoTexture;
 uniform float uDataLength;
 uniform float uTime;
+uniform float uAlpha;
+uniform float uSaturation;
 uniform float uIntensity;
 uniform vec2 uAspect;
 uniform vec2 uLogoScale;
@@ -60,6 +62,9 @@ void main() {
 
     // draw displacement
     // color.rgb = vec3(c);
+
+    color.rgb = mix(vec3(0.4), color.rgb, uAlpha);
+    color.rgb = mix(color.rrr, color.rgb, uSaturation);
 
     vec2 scl = uLogoScale;
     vec2 uvo = uv / scl - ((1.0 / scl) / 2.0 - 0.5);    // scale and offset
