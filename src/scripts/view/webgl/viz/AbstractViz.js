@@ -13,6 +13,7 @@ import {
 } from 'three';
 
 import AsyncPreloader from 'async-preloader';
+import TweenLite from 'gsap';
 
 import glsl from '../../../utils/glsl';
 
@@ -47,6 +48,8 @@ export default class AbstractViz {
     initBackground(textureId) {
         const uniforms = {
             uTexture: { value: this.getTexture('texture') },
+            uAlpha: { value: 0.0 },
+            uSaturation: { value: 0.0 },
         };
 
         const material = new ShaderMaterial({
@@ -61,6 +64,9 @@ export default class AbstractViz {
 
         this.bg = mesh;
         this.object3D.add(this.bg);
+
+        // fade in
+        TweenLite.to(this.bg.material.uniforms.uAlpha, 0.3, { value: 0.2, ease: Quart.easeOut });
     }
 
     initLogo() {
@@ -135,6 +141,16 @@ export default class AbstractViz {
 
     update() {
         // override
+    }
+
+    show() {
+        TweenLite.to(this.bg.material.uniforms.uAlpha, 1.0, { value: 1.0 });
+        TweenLite.to(this.bg.material.uniforms.uSaturation, 0.5, { value: 1.0 });
+    }
+
+    hide() {
+        TweenLite.to(this.bg.material.uniforms.uAlpha, 0.5, { value: 0.2 });
+        TweenLite.to(this.bg.material.uniforms.uSaturation, 0.5, { value: 0.0 });
     }
 
     // ---------------------------------------------------------------------------------------------

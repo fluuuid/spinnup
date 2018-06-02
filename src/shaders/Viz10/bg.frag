@@ -8,6 +8,8 @@
 varying vec2 vUv;
 
 uniform float uTime;
+uniform float uAlpha;
+uniform float uSaturation;
 uniform float uModA;
 uniform float uModB;
 uniform float uBoost;
@@ -90,6 +92,9 @@ void main() {
     float dx = sampleSize;
     vec4 colA = mix(downsample(uTexture, uvm * 0.9 - vec2(dx, 0.0), sampleSize), downsample(uTexture, uvm * 0.9 + vec2(dx, 0.0), sampleSize), mod(uvm.x, dx) / dx);
     color += (-color + colA) * when_eq(uModB, 1.0);
+
+    color.rgb = mix(vec3(0.4), color.rgb, uAlpha);
+    color.rgb = mix(color.rrr, color.rgb, uSaturation);
 
     gl_FragColor = color;
 }

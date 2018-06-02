@@ -23,7 +23,6 @@ import RenderPass from 'imports-loader?THREE=three!exports-loader?THREE.RenderPa
 import ShaderPass from 'imports-loader?THREE=three!exports-loader?THREE.ShaderPass!threeX/postprocessing/ShaderPass';
 
 import AsyncPreloader from 'async-preloader';
-import TweenMax from 'gsap';
 
 import glsl from '../../../utils/glsl';
 import { random } from '../../../utils/math.utils';
