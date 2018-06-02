@@ -66,7 +66,7 @@ export default class AbstractViz {
         this.object3D.add(this.bg);
 
         // fade in
-        TweenLite.to(this.bg.material.uniforms.uAlpha, 0.3, { value: 0.2, ease: Quart.easeOut });
+        TweenLite.to(this.bg.material.uniforms.uAlpha, 0.3, { value: 0.2 });
     }
 
     initLogo() {
