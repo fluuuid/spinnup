@@ -25,7 +25,7 @@ export class Viz11 extends AbstractViz {
     initAudio() {
         super.initAudio();
 
-        AppView.ui.audioSmoothing = 0.9;
+        AppView.ui.audioSmoothing = 0.95;
         AppView.ui.audioPeakCutOff = 0.45;
         AppView.ui.onAudioChange();
         // AppView.ui.controlKit.update();
@@ -52,7 +52,7 @@ export class Viz11 extends AbstractViz {
         super.initLogo();
 
         const uniforms = this.logo.material.uniforms;
-        uniforms.uSteps = { value: new Vector2(2, 2) };
+        uniforms.uSteps = { value: new Vector2(2, 3) };
         uniforms.uOffset = { value: new Vector2(0.005, 0.01) };
         uniforms.uGapSize = { value: 2.2 };
         uniforms.uWireframe = { value: 0 };
@@ -101,7 +101,8 @@ export class Viz11 extends AbstractViz {
         this.bg.material.uniforms.uTimeRoll.value = factor;
 
         this.bg.material.uniforms.uModA.value *= 0.85;
-        // this.bg.material.uniforms.uModB.value *= 0.95;
+        
+        if (!this.started) return;
 
         this.drawData(elapsed);
 
@@ -161,29 +162,6 @@ export class Viz11 extends AbstractViz {
                     this.kickOffsetX += 0.15 * sign; 
                     break;
                 }
-                /*
-                case 1: {
-                    this.logo.material.uniforms.uSteps.value.set(3, Math.floor(random(14, 22)));
-                    this.logo.material.uniforms.uOffset.value.y = 0.15;
-                    this.logo.material.uniforms.uGapSize.value = 1.50;
-                    this.kickOffsetX -= 0.015;
-                    break;
-                }
-                case 2: {
-                    this.logo.material.uniforms.uSteps.value.set(3, 4);
-                    this.logo.material.uniforms.uOffset.value.y = 0.004;
-                    this.logo.material.uniforms.uGapSize.value = 3.20;
-                    this.kickOffsetX += 0.015;
-                    break;
-                }
-                case 3: {
-                    this.logo.material.uniforms.uSteps.value.set(2, Math.floor(random(12, 28)));
-                    this.logo.material.uniforms.uOffset.value.y = 0.001;
-                    this.logo.material.uniforms.uGapSize.value = 3.50;
-                    this.kickOffsetX += 0.015;
-                    break;
-                }
-                */
             }
         }
     }

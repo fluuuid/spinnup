@@ -25,6 +25,7 @@ export default class AbstractViz {
     constructor(id) {
         this.id = id;
 
+        this.started = false;
         this.startTime = Date.now();
         this.object3D = new Object3D();
 
@@ -35,6 +36,7 @@ export default class AbstractViz {
 
     initAudio() {
         AppAudio.on('audio:peak', this.onAudioPeak.bind(this));
+        AppAudio.on('audio:play', this.onAudioPlay.bind(this));
 
         // default params
         AppView.ui.audioSmoothing = 0.9;
@@ -180,5 +182,9 @@ export default class AbstractViz {
 
     onAudioPeak() {
         // override
+    }
+
+    onAudioPlay() {
+        this.started = true;
     }
 }

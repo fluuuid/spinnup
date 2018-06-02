@@ -108,7 +108,7 @@ void main(void){
 
     // color.gb *= 0.0; // just red, it looks great
 
-    color.rgb = mix(vec3(0.4), color.rgb, uAlpha);
+    color.rgb = mix(vec3(0.2), color.rgb, uAlpha);
     color.rgb = mix(color.rrr, color.rgb, uSaturation);
 
     gl_FragColor = color;

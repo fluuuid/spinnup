@@ -67,7 +67,7 @@ export class Viz10 extends AbstractViz {
 
         this.bg.material.uniforms.uTime.value = factor;
 
-        // this.kickBg *= 0.98;
+        if (!this.started) return;
         
         this.kickBoost *= 0.98;
         this.bg.material.uniforms.uBoost.value = this.kickBoost;
