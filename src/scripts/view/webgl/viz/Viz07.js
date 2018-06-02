@@ -1,21 +1,16 @@
 import {
-    Color,
     LinearFilter,
-    MeshBasicMaterial,
     MeshStandardMaterial,
     PerspectiveCamera,
     PointLight,
     RGBFormat,
-    RGBAFormat,
     Scene,
     Texture,
     Vector2,
-    WebGLRenderTarget,
 } from 'three';
 
 import GLTFLoader from 'imports-loader?THREE=three!exports-loader?THREE.GLTFLoader!threeX/loaders/GLTFLoader';
 
-import CopyShader from 'imports-loader?THREE=three!exports-loader?THREE.CopyShader!threeX/shaders/CopyShader';
 import SobelOperatorShader from 'imports-loader?THREE=three!exports-loader?THREE.SobelOperatorShader!threeX/shaders/SobelOperatorShader';
 
 import EffectComposer from 'imports-loader?THREE=three!exports-loader?THREE.EffectComposer!threeX/postprocessing/EffectComposer';

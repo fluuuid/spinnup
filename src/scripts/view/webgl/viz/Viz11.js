@@ -113,9 +113,9 @@ export class Viz11 extends AbstractViz {
         }
     }
 
-    drawData(t) {
+    drawData() {
         const ctx = this.dataBuffer;
-        const w = ctx.canvas.width;
+        // const w = ctx.canvas.width;
         const h = ctx.canvas.height;
 
         for (let i = 0; i < AppAudio.levelsCount; i++) {

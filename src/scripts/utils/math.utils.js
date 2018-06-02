@@ -44,4 +44,4 @@ const random = (min, max) => {
 };
 
 
-export { PI, HALF_PI, QUARTER_PI, TWO_PI, DEG_TO_RAD, clamp, lerp, map, random };
+export { PI, HALF_PI, QUARTER_PI, TWO_PI, DEG_TO_RAD, RAD_TO_DEG, clamp, lerp, map, random };

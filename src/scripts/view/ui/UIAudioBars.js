@@ -85,7 +85,7 @@ export default class UIAudioBars {
         this.peakDetectColor = this.peakDefaultColor;
     }
 
-    onAudioPeak(e) {
+    onAudioPeak() {
         // this.peakDetectColor = this.peakDetectedColor;
     }
 }

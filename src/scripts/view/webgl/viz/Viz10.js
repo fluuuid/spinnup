@@ -1,4 +1,4 @@
-import { RepeatWrapping, Vector2 } from 'three';
+import { Vector2 } from 'three';
 
 import glsl from '../../../utils/glsl';
 import { random } from '../../../utils/math.utils';

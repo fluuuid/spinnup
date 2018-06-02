@@ -45,7 +45,7 @@ export default class AbstractViz {
         AppView.ui.controlKit.update();
     }
 
-    initBackground(textureId) {
+    initBackground() {
         const uniforms = {
             uTexture: { value: this.getTexture('texture') },
             uAlpha: { value: 0.0 },
@@ -178,7 +178,7 @@ export default class AbstractViz {
         this.logo.scale.y = this.logo.scale.x / logoAspect;
     }
 
-    onAudioPeak(e) {
+    onAudioPeak() {
         // override
     }
 }

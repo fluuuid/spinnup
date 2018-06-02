@@ -311,7 +311,7 @@ class AppAudio extends EventEmitter {
         });
     }
 
-    onSourceEnded(e) {
+    onSourceEnded() {
         // console.log('AppAudio.onSourceEnded');
         if (this.paused) return;
 
