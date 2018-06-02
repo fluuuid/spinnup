@@ -42,7 +42,7 @@ export default class AbstractViz {
         AppView.ui.audioPeakInterval = 30;
         AppView.ui.audioPeakCutOff = 0.52;
         AppView.ui.onAudioChange();
-        AppView.ui.controlKit.update();
+        // AppView.ui.controlKit.update();
     }
 
     initBackground() {

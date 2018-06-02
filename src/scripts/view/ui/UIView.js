@@ -1,5 +1,5 @@
-import ControlKit from '@brunoimbrizi/controlkit';
-import Stats from 'stats.js';
+// import ControlKit from '@brunoimbrizi/controlkit';
+// import Stats from 'stats.js';
 
 import AppAudio from '../../audio/AppAudio';
 import AppView from '../../view/AppView';
@@ -51,16 +51,17 @@ export default class UIView {
         this.rangeInterval = [0, 60];
         this.rangeDetect = [-1, this.audio.levelsCount - 1];
 
-        this.initControlKit();
+        // this.initControlKit();
         // this.initStats();
-        this.initAudioBars();
+        // this.initAudioBars();
 
         this.onAudioDistributionChange(this.audioDistribution);
 
-        this.controlKit.disable();
+        // this.controlKit.disable();
     }
 
     init(view, vizId) {
+        return;
         // hack to remove old panel
         const el = document.querySelectorAll('#controlKit .group-list .group')[1];
         if (el) el.parentElement.removeChild(el);
@@ -151,11 +152,15 @@ export default class UIView {
     // ---------------------------------------------------------------------------------------------
 
     draw() {
+        return;
+        
         if (!this.controlKit._enabled) return;
         this.audioBars.draw();
     }
 
     toggle() {
+        return;
+        
         if (this.controlKit._enabled) this.controlKit.disable();
         else this.controlKit.enable();
 

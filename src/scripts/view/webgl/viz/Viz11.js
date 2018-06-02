@@ -28,7 +28,7 @@ export class Viz11 extends AbstractViz {
         AppView.ui.audioSmoothing = 0.9;
         AppView.ui.audioPeakCutOff = 0.45;
         AppView.ui.onAudioChange();
-        AppView.ui.controlKit.update();
+        // AppView.ui.controlKit.update();
     }
 
     initBackground() {

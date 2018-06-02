@@ -25,7 +25,7 @@ export class Viz13 extends AbstractViz {
         AppView.ui.audioPeakInterval = 36;
         AppView.ui.audioPeakCutOff = 0.32;
         AppView.ui.onAudioChange();
-        AppView.ui.controlKit.update();
+        // AppView.ui.controlKit.update();
     }
 
     initBackground() {
