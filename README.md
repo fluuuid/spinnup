@@ -18,6 +18,20 @@ npm run start
 ```
 Open a web browser and go to [http://localhost:3000/](http://localhost:3000/)
 
+API
+----
+
+**isPaused()** - Returns Boolean.
+
+**pause()** - Pauses the audio track.
+
+**play()** - Starts playing the audio track.
+
+**changeViz({ trackSrc, vizId })** - Changes the visualisation and the audio track.
+`trackSrc` - String. Path to the audio file.
+`vizId` - String. Name of the visualisation. (i.e. 'Viz02' or 'Viz10')
+
+
 Develop
 -----
 

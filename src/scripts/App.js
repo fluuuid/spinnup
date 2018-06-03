@@ -55,24 +55,12 @@ class App {
         if (AppView.webgl.viz) AppView.webgl.viz.hide();
     }
 
-    mute () {
-        console.log('mute');
-    }
-
-    onMusicLoaded (data) {
-        window.dispatchEvent(new CustomEvent('onMusicLoaded', {detail: data}));
-    }
-
-    onMusicEnd (data) {
-        window.dispatchEvent(new CustomEvent('onMusicEnd', {detail: data}));
-    }
-
     //
 
     loadCoreAssets() {
         AsyncPreloader.loadManifest('data/manifest.json')
             .then(() => {
-                this.initFileReader();
+                // this.initFileReader();
                 if(window.parent && window.parent.onVizReady) {
                     window.parent.onVizReady();
                 } else {
