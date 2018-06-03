@@ -61,7 +61,7 @@ export default class UIView {
     }
 
     init(view, vizId) {
-        return;
+        /*
         // hack to remove old panel
         const el = document.querySelectorAll('#controlKit .group-list .group')[1];
         if (el) el.parentElement.removeChild(el);
@@ -117,9 +117,11 @@ export default class UIView {
             .addGroup({ label: this.vizId, enable: true })
             .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizDefaultChange(); } })
         }
+        */
     }
 
     initControlKit() {
+        /*
         const that = this;
 
         this.controlKit = new ControlKit();
@@ -132,11 +134,14 @@ export default class UIView {
         .addSlider(this, 'audioPeakDecay', 'rangeDecay', { label: 'peak decay', dp: 3, onChange: () => { that.onAudioChange(); } })
         .addSlider(this, 'audioPeakInterval', 'rangeInterval', { label: 'peak interval', onChange: () => { that.onAudioChange(); } })
         .addSlider(this, 'audioPeakCutOff', 'range', { label: 'peak cutoff', onChange: () => { that.onAudioChange(); } });
+        */
     }
 
     initStats() {
+        /*
         this.stats = new Stats();
         document.body.appendChild(this.stats.dom);
+        */
     }
 
     initAudioBars() {
@@ -152,15 +157,14 @@ export default class UIView {
     // ---------------------------------------------------------------------------------------------
 
     draw() {
-        return;
-        
+        /*
         if (!this.controlKit._enabled) return;
         this.audioBars.draw();
+        */
     }
 
     toggle() {
-        return;
-        
+        /*
         if (this.controlKit._enabled) this.controlKit.disable();
         else this.controlKit.enable();
 
@@ -177,6 +181,7 @@ export default class UIView {
             }
             this.controlKit.update();
         }
+        */
     }
 
     // ---------------------------------------------------------------------------------------------
