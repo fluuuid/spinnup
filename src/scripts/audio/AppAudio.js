@@ -144,6 +144,7 @@ class AppAudio extends EventEmitter {
         if (!this.sourceNode) return;
 
         this.pausedAt = 0;
+        this.paused = true;
         this.sourceNode.onended = null;
         if (this.sourceNode.stop) this.sourceNode.stop();
         this.sourceNode.disconnect();
