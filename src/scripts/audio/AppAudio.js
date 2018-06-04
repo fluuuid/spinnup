@@ -23,6 +23,7 @@ class AppAudio extends EventEmitter {
         this.currentTime = 0;
         this.lastTime = 0;
         this.duration = 0;
+        this.paused = true;
 
         this.initContext();
         this.initGain();
@@ -110,8 +111,6 @@ class AppAudio extends EventEmitter {
     }
 
     play() {
-        // if (this.ended) window.dispatchEvent(new Event(this.EVENT_AUDIO_RESTARTED));
-		
         if (!this.sourceNode) this.pausedAt = 0;
         if (!this.audioBuffer) return;
         if (this.micStream) return;
@@ -311,7 +310,7 @@ class AppAudio extends EventEmitter {
         });
     }
 
-    onSourceEnded(e) {
+    onSourceEnded() {
         // console.log('AppAudio.onSourceEnded');
         if (this.paused) return;
 

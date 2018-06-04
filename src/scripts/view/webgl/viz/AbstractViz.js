@@ -25,6 +25,7 @@ export default class AbstractViz {
     constructor(id) {
         this.id = id;
 
+        this.started = false;
         this.startTime = Date.now();
         this.object3D = new Object3D();
 
@@ -35,6 +36,7 @@ export default class AbstractViz {
 
     initAudio() {
         AppAudio.on('audio:peak', this.onAudioPeak.bind(this));
+        AppAudio.on('audio:play', this.onAudioPlay.bind(this));
 
         // default params
         AppView.ui.audioSmoothing = 0.9;
@@ -42,10 +44,10 @@ export default class AbstractViz {
         AppView.ui.audioPeakInterval = 30;
         AppView.ui.audioPeakCutOff = 0.52;
         AppView.ui.onAudioChange();
-        AppView.ui.controlKit.update();
+        // AppView.ui.controlKit.update();
     }
 
-    initBackground(textureId) {
+    initBackground() {
         const uniforms = {
             uTexture: { value: this.getTexture('texture') },
             uAlpha: { value: 0.0 },
@@ -178,7 +180,11 @@ export default class AbstractViz {
         this.logo.scale.y = this.logo.scale.x / logoAspect;
     }
 
-    onAudioPeak(e) {
+    onAudioPeak() {
         // override
+    }
+
+    onAudioPlay() {
+        this.started = true;
     }
 }

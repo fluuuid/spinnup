@@ -28,7 +28,7 @@ export class Viz06 extends AbstractViz {
 
         AppView.ui.audioSmoothing = 0.8;
         AppView.ui.onAudioChange();
-        AppView.ui.controlKit.update();
+        // AppView.ui.controlKit.update();
     }
 
     initBackground() {

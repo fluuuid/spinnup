@@ -1,4 +1,4 @@
-import { RepeatWrapping, Vector2 } from 'three';
+import { Vector2 } from 'three';
 
 import glsl from '../../../utils/glsl';
 import { random } from '../../../utils/math.utils';
@@ -28,7 +28,7 @@ export class Viz10 extends AbstractViz {
         AppView.ui.audioPeakInterval = 22;
         AppView.ui.audioPeakCutOff = 0.59;
         AppView.ui.onAudioChange();
-        AppView.ui.controlKit.update();
+        // AppView.ui.controlKit.update();
     }
 
     initBackground() {
@@ -67,7 +67,7 @@ export class Viz10 extends AbstractViz {
 
         this.bg.material.uniforms.uTime.value = factor;
 
-        // this.kickBg *= 0.98;
+        if (!this.started) return;
         
         this.kickBoost *= 0.98;
         this.bg.material.uniforms.uBoost.value = this.kickBoost;

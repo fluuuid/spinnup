@@ -1,5 +1,5 @@
-import ControlKit from '@brunoimbrizi/controlkit';
-import Stats from 'stats.js';
+// import ControlKit from '@brunoimbrizi/controlkit';
+// import Stats from 'stats.js';
 
 import AppAudio from '../../audio/AppAudio';
 import AppView from '../../view/AppView';
@@ -51,16 +51,17 @@ export default class UIView {
         this.rangeInterval = [0, 60];
         this.rangeDetect = [-1, this.audio.levelsCount - 1];
 
-        this.initControlKit();
+        // this.initControlKit();
         // this.initStats();
-        this.initAudioBars();
+        // this.initAudioBars();
 
         this.onAudioDistributionChange(this.audioDistribution);
 
-        this.controlKit.disable();
+        // this.controlKit.disable();
     }
 
     init(view, vizId) {
+        /*
         // hack to remove old panel
         const el = document.querySelectorAll('#controlKit .group-list .group')[1];
         if (el) el.parentElement.removeChild(el);
@@ -116,9 +117,11 @@ export default class UIView {
             .addGroup({ label: this.vizId, enable: true })
             .addCheckbox(this, 'vizLogoWireframe', { label: 'logo wireframe', onChange: () => { that.onVizDefaultChange(); } })
         }
+        */
     }
 
     initControlKit() {
+        /*
         const that = this;
 
         this.controlKit = new ControlKit();
@@ -131,11 +134,14 @@ export default class UIView {
         .addSlider(this, 'audioPeakDecay', 'rangeDecay', { label: 'peak decay', dp: 3, onChange: () => { that.onAudioChange(); } })
         .addSlider(this, 'audioPeakInterval', 'rangeInterval', { label: 'peak interval', onChange: () => { that.onAudioChange(); } })
         .addSlider(this, 'audioPeakCutOff', 'range', { label: 'peak cutoff', onChange: () => { that.onAudioChange(); } });
+        */
     }
 
     initStats() {
+        /*
         this.stats = new Stats();
         document.body.appendChild(this.stats.dom);
+        */
     }
 
     initAudioBars() {
@@ -151,11 +157,14 @@ export default class UIView {
     // ---------------------------------------------------------------------------------------------
 
     draw() {
+        /*
         if (!this.controlKit._enabled) return;
         this.audioBars.draw();
+        */
     }
 
     toggle() {
+        /*
         if (this.controlKit._enabled) this.controlKit.disable();
         else this.controlKit.enable();
 
@@ -172,6 +181,7 @@ export default class UIView {
             }
             this.controlKit.update();
         }
+        */
     }
 
     // ---------------------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 import { LinearFilter, RGBFormat, Texture, Vector2 } from 'three';
 
 import glsl from '../../../utils/glsl';
-import { random } from '../../../utils/math.utils';
+// import { random } from '../../../utils/math.utils';
 
 import AbstractViz from './AbstractViz';
 import AppAudio from '../../../audio/AppAudio';
@@ -25,7 +25,7 @@ export class Viz13 extends AbstractViz {
         AppView.ui.audioPeakInterval = 36;
         AppView.ui.audioPeakCutOff = 0.32;
         AppView.ui.onAudioChange();
-        AppView.ui.controlKit.update();
+        // AppView.ui.controlKit.update();
     }
 
     initBackground() {
