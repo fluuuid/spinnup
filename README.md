@@ -28,8 +28,8 @@ API
 **play()** - Starts playing the audio track.
 
 **changeViz({ trackSrc, vizId })** - Changes the visualisation and the audio track.
-`trackSrc` - String. Path to the audio file.
-`vizId` - String. Name of the visualisation. (i.e. 'Viz02' or 'Viz10')
+- `trackSrc` - String. Path to the audio file.
+- `vizId` - String. Name of the visualisation. (i.e. 'Viz02' or 'Viz10')
 
 
 Develop
