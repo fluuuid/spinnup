@@ -61,15 +61,15 @@ export class Viz13 extends AbstractViz {
         this.dataAcc = [];
         
         for (let i = 0; i < this.dataLevels.length; i++) {
-            this.data[i] = 0.0;
-            this.dataVel[i] = 0.0;
-            this.dataAcc[i] = 0.0;
+            this.data.push(0.0);
+            this.dataVel.push(0.0);
+            this.dataAcc.push(0.0);
         }
 
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = this.dataLevels.length;
-        canvas.height = 1;
+        canvas.height = 2;
 
         const texture = new Texture(canvas);
         texture.minFilter = LinearFilter;
@@ -122,7 +122,8 @@ export class Viz13 extends AbstractViz {
         
         for (let i = 0; i < this.data.length; i++) {
             const value = this.data[i];
-            ctx.fillStyle = `rgb(${value * 255}, ${value * 255}, ${value * 255})`;
+            const round = Math.round(value * 255);
+            ctx.fillStyle = `rgb(${round}, ${round}, ${round})`;
             ctx.fillRect(i, 0, 1, h);
         }
 

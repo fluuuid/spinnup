@@ -121,7 +121,8 @@ export class Viz11 extends AbstractViz {
 
         for (let i = 0; i < AppAudio.levelsCount; i++) {
             const value = AppAudio.getValue(i);
-            ctx.fillStyle = `rgb(${value * 255}, 0.0, 0.0)`;
+            const round = Math.round(value * 255);
+            ctx.fillStyle = `rgb(${round}, 0.0, 0.0)`;
             ctx.fillRect(i, 0, 1, h);    
         }
 
