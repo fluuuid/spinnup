@@ -69,7 +69,7 @@ class AppAudio extends EventEmitter {
         this.levels = [];
         for (let i = 0; i < this.levelsCount; i++) { this.levels.push(new AudioLevel(i)); }
 
-        this.binCount = this.analyserNode.frequencyBinCount; // FFT_SIZE / 2 
+        this.binCount = this.analyserNode.frequencyBinCount; // FFT_SIZE / 2
         this.binsPerLevel = Math.floor(this.binCount / this.levelsCount);
 
         // frequency domain
@@ -247,7 +247,7 @@ class AppAudio extends EventEmitter {
         for (let i = 0; i < this.levels.length; i++) {
             const level = this.levels[i];
 
-            // ignore if last peak happened before the min interval         
+            // ignore if last peak happened before the min interval
             if (level.peakElapsed < this.peakInterval) {
                 level.peakElapsed++;
                 continue;
@@ -322,7 +322,7 @@ class AppAudio extends EventEmitter {
         this.currentTime = this.duration;
 
         // reset data
-        for (let i = 0; i < this.levels.length; i++) { 
+        for (let i = 0; i < this.levels.length; i++) {
             this.levels[i].value = 0;
         }
     }
