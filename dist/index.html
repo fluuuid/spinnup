@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+
+    body {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      height: 100%;
+    }
+
+    iframe {
+      z-index: 10;
+      border: 0;
+    }
+
+    iframe.fullscreen {
+      position: fixed;
+      height: 100%;
+    }
+
+    h1, h3 {
+      margin: 25px 0 20px 0;
+    }
+
+    section#viz-controller {
+      padding: 10px 20px;
+    }
+
+    button, select {
+      margin: 0 10px 0 0;
+      padding: 10px 20px;
+      border: 1px solid black;
+      font-size: 1.1rem;
+      outline: none;
+      cursor: pointer;
+      border-radius: 7px;
+      transition: all .2s;
+    }
+
+    button:hover {
+      background-color: black;
+      color: white;
+    }
+
+    #controls > button {
+      min-width: 120px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .visible {
+      display: block;
+    }
+
+    .disabled {
+      opacity: .5;
+      pointer-events: none;
+    }
+
+    #controllers {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      z-index: 20;
+    }
+
+    #controllers > button {
+      font-size: .75rem;
+      padding: 5px 10px;
+    }
+
+    </style>
+  </head>
+  <body>
+    <iframe id="viz" src="./viz.html" frameBorder="0" seamless width="100%" height="700"></iframe>
+    <div id="controllers">
+      <button onclick="onToggleControls()">Toggle Controls</button>
+    </div>
+    <section id="viz-controller" class="hidden">
+      <h1>Change Visualisation</h1>
+
+      <select id="select" onchange="onChangeSelector()">
+        <option value="none">-- Select one --</option>
+        <option selected value="Viz02">Visualisation 02</option>
+        <option value="Viz06">Visualisation 06</option>
+        <option value="Viz07">Visualisation 07</option>
+        <option value="Viz10">Visualisation 10</option>
+        <option value="Viz11">Visualisation 11</option>
+        <option value="Viz13">Visualisation 13</option>
+      </select>
+      <div id="controls" class="hidden">
+        <h3>Controls</h3>
+        <button onclick="onPrevTrack()">Previous</button>
+        <button id="togglePlayButton" onclick="onTogglePlay()">Play</button>
+        <button onclick="onNextTrack()">Next</button>
+      </div>
+    </section>
+  </body>
+
+  <script type="text/javascript">
+    function el(val) {
+      return document.querySelector(val);
+    }
+
+    var iframe = el('#viz');
+    var showControls = true;
+    var app;
+    var currentTrack = null;
+    var tracks = {
+      Viz02: 'audio/MADANII-WVTCHMEN.mp3',
+      Viz06: 'audio/INDIGO-PALACE-FIVERS.mp3',
+      Viz07: 'audio/Chuchoter-Pieces.mp3',
+      Viz10: 'audio/NELICK-VILLA-FEAT-ANDY-LUIDJE.mp3',
+      Viz11: 'audio/Kiiara-Gold-feat-Lil-Wayne-Remix.mp3',
+      Viz13: 'audio/Ben-Esser-Love-You-More.mp3',
+    }
+
+    function onToggleControls() {
+      showControls = !showControls;
+      iframe.classList.remove('fullscreen');
+      if(!showControls) {
+        iframe.classList.add('fullscreen');
+      }
+    }
+
+    function onNextTrack(event) {
+      var trackIndex = Object.keys(tracks).indexOf(currentTrack) + 1;
+      trackIndex %= Object.keys(tracks).length;
+      initSong(Object.keys(tracks)[trackIndex]);
+    }
+
+    function onPrevTrack() {
+      var trackIndex = Object.keys(tracks).indexOf(currentTrack) - 1;
+      if(trackIndex < 0) {
+        trackIndex = Object.keys(tracks).length - 1;
+      }
+      initSong(Object.keys(tracks)[trackIndex]);
+    }
+
+    function initSong(value) {
+      currentTrack = value || el('#select').value;
+
+      if(!currentTrack || currentTrack === 'none') return;
+
+      el('#controls').classList.remove('hidden');
+      el('#controls').classList.add('visible');
+
+      el('#select').selectedIndex = Object.keys(tracks).indexOf(currentTrack) + 1;
+
+      el('#viz-controller').classList.add('disabled')
+
+      app.changeViz({
+        trackSrc: tracks[currentTrack],
+        vizId: currentTrack
+      });
+    }
+
+    function onTogglePlay() {
+      app[app.isPaused ? 'play' : 'pause']();
+      changeToggleButtonState();
+    }
+
+    function changeToggleButtonState() {
+      el('#togglePlayButton').innerText = !app.isPaused ? 'Pause' : 'Play';
+    }
+
+    function onChangeSelector(){
+      if(el('#select').value === 'none') return;
+      initSong();
+    };
+
+    /** APP INTERFACE **/
+
+    /**
+    function called from viz app when song assets are loaded, audio and webgl context are ready
+    */
+    function onFilesLoaded() {
+      changeToggleButtonState();
+      el('#viz-controller').classList.remove('disabled')
+    }
+
+    /**
+    function called from viz app when base assets are loaded
+    and aplication is ready to be controlled
+    */
+    function onVizReady() {
+      app = iframe.contentWindow.app;
+      el('#viz-controller').classList.remove('hidden');
+      el('#viz-controller').classList.add('visible');
+
+      initSong();
+
+      // iframe.contentWindow.addEventListener('onTrackEnd', onEvent, false);
+      // iframe.contentWindow.addEventListener('onTrackLoaded', onEvent, false);
+
+    }
+
+  </script>
+</html>

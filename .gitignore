@@ -1,0 +1,5 @@
+node_modules/
+dist/scripts/*.js
+dist/scripts/*.js.map
+dist/viz.html
+yarn-error.log
