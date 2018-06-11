@@ -1,5 +1,5 @@
 {
-  "presets": ["env", {
+  "presets": [["env", {
       "targets": {
         "browsers": [
           "Chrome >= 52",
@@ -10,5 +10,5 @@
         ]
       },
       "useBuiltIns": true
-    }]
+    }]]
 }
