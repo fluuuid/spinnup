@@ -16,7 +16,18 @@ Run
 ```shell
 npm run start
 ```
+
 Open a web browser and go to [http://localhost:3000/](http://localhost:3000/)
+
+Build
+-----
+
+```shell
+npm run build
+```
+
+Everything should be in your `dist` folder
+
 
 API
 ----
@@ -44,4 +55,4 @@ They can be found inside `/view/webgl/viz/Viz[Number]` and their corresponding s
 - Create `bg.frag` and `logo.frag` inside `/shaders/VizXX`
 - Define assets to be loaded for VizXX in `/data/AppData`
 - Append `<option value="VizXX">Visualisation XX</option>` to `index.html`
-- For quick access during development, append the new viz to the fallback of `loadCoreAssets()` in `App.js` 
+- For quick access during development, append the new viz to the fallback of `loadCoreAssets()` in `App.js`
