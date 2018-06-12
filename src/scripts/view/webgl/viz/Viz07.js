@@ -218,7 +218,8 @@ export class Viz07 extends AbstractViz {
         
         // const value = this.kickBg;
         const value = AppAudio.getValue(22);
-        ctx.fillStyle = `rgb(${value * 255}, 0.0, 0.0)`;
+        const round = Math.round(value * 255);
+        ctx.fillStyle = `rgb(${round}, 0.0, 0.0)`;
         ctx.fillRect(i, 0, 1, h);
 
         this.dataTexture.needsUpdate = true;
