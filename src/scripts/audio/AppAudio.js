@@ -146,7 +146,10 @@ class AppAudio extends EventEmitter {
         this.pausedAt = 0;
         this.paused = true;
         this.sourceNode.onended = null;
-        if (this.sourceNode.stop) this.sourceNode.stop();
+        // according to https://stackoverflow.com/questions/32563298/audiocontext-issue-with-safari
+        // you dont need to call stop if you're disconnecting the node
+        // so the .stop() call is redundant
+        // if (this.sourceNode.stop) this.sourceNode.stop();
         this.sourceNode.disconnect();
     }
 
