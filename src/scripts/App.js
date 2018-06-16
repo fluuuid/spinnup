@@ -42,7 +42,7 @@ class App {
             this.initView(vizId);
             // then load audio track 
             AsyncPreloader.loadItems([track]).then(() => {
-                this.initAudio();
+                this.initAudio(trackSrc);
                 AppView.webgl.viz.show();
             });
         })
@@ -65,12 +65,12 @@ class App {
                     window.parent.onVizReady();
                 } else {
                     // DEBUG
-                    // this.changeViz({ trackSrc: 'audio/INDIGO-PALACE-FIVERS.mp3', vizId: 'Viz06'})
+                    this.changeViz({ trackSrc: 'audio/INDIGO-PALACE-FIVERS.mp3', vizId: 'Viz06'})
                     // this.changeViz({ trackSrc: 'audio/Maes-MaesEstLiberable-PART-II.mp3', vizId: 'Viz10'})
                     // this.changeViz({ trackSrc: 'audio/Ben-Esser-Love-You-More.mp3', vizId: 'Viz13'})
                     // this.changeViz({ trackSrc: 'audio/MADANII-WVTCHMEN.mp3', vizId: 'Viz02'})
                     // this.changeViz({ trackSrc: 'audio/Chuchoter-Pieces.mp3', vizId: 'Viz07'})
-                    this.changeViz({ trackSrc: 'audio/Kiiara-Gold-feat-Lil-Wayne-Remix.mp3', vizId: 'Viz11'})
+                    // this.changeViz({ trackSrc: 'audio/Kiiara-Gold-feat-Lil-Wayne-Remix.mp3', vizId: 'Viz11'})
                 }
             })
             .catch(err => {
@@ -78,9 +78,9 @@ class App {
             });
     }
 
-    initAudio() {
+    initAudio(src) {
         // play loaded track
-        AppAudio.decode(AsyncPreloader.items.get('track'), () => {
+        AppAudio.decode(AsyncPreloader.items.get('track'), src, () => {
             // AppAudio.play();
 
             if(window.parent && window.parent.onVizReady) {
