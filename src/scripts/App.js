@@ -2,6 +2,7 @@
 import AsyncPreloader from 'async-preloader';
 
 import { addFileDropListener } from './utils/file.utils';
+import { supportsWebAudio } from './utils/feature.utils';
 import { assetsList } from './data/AppData';
 
 import AppAudio from './audio/AppAudio';
@@ -40,11 +41,14 @@ class App {
         // load assets first
         AsyncPreloader.loadItems(assets).then(() => {
             this.initView(vizId);
+
             // then load audio track 
-            AsyncPreloader.loadItems([track]).then(() => {
-                this.initAudio(trackSrc);
-                AppView.webgl.viz.show();
-            });
+            if (supportsWebAudio()) {
+                AsyncPreloader.loadItems([track]).then(() => {
+                    this.initAudio(trackSrc);
+                });
+            }
+            else this.initAudio(trackSrc);
         })
         .catch(err => {
             console.log('AsyncPreloader error', err);
@@ -79,10 +83,9 @@ class App {
     }
 
     initAudio(src) {
-        // play loaded track
+        // init loaded track
         AppAudio.decode(AsyncPreloader.items.get('track'), src, () => {
-            // AppAudio.play();
-
+            AppView.webgl.viz.show();
             if(window.parent && window.parent.onVizReady) {
                 window.parent.onFilesLoaded();
             }

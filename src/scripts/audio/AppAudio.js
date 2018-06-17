@@ -4,6 +4,8 @@ import WebAudio from './WebAudio';
 import DOMAudio from './DOMAudio';
 import AudioLevel from './AudioLevel';
 
+import { supportsWebAudio } from '../utils/feature.utils';
+
 class AppAudio extends EventEmitter {
 
     get FFT_SIZE() { return 1024; }
@@ -37,8 +39,7 @@ class AppAudio extends EventEmitter {
         super();
 
         // web audio or dom <audio>
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        this.audio = (AudioContext) ? new WebAudio() : new DOMAudio();
+        this.audio = (supportsWebAudio()) ? new WebAudio() : new DOMAudio();
 
         this.audio.on(this.AUDIO_PLAY, this.onAudioPlay.bind(this));
         this.audio.on(this.AUDIO_PAUSE, this.onAudioPause.bind(this));
