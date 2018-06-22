@@ -91,9 +91,10 @@
 			app.changeViz({ trackSrc: tracks[id], vizId: id, });
 
 			document.querySelector('.controls').classList.add('disabled');
+			updatePlayButton();
 		}
 
-		function togglePlayButton() {
+		function updatePlayButton() {
 			if (!app) return;
 
 			var target = document.querySelector('.bt.play');
@@ -118,7 +119,7 @@
 
 			if (!app) return;
 			app[app.isPaused ? 'play' : 'pause']();
-			togglePlayButton();
+			updatePlayButton();
 		}
 
 		function onVizReady() {
@@ -135,7 +136,7 @@
 		}
 
 		function onAudioPlayPause(e) {
-			togglePlayButton();
+			updatePlayButton();
 		}
 
 		document.querySelector('.bt.prev').addEventListener('click', onPrevClick);
