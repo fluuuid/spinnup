@@ -75,6 +75,15 @@
 			Viz11: 'audio/Kiiara-Gold-feat-Lil-Wayne-Remix.mp3',
 		}
 
+		function getParam(name) {
+			name = name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
+			const regexS = '[\\?&]' + name + '=([^&#]*)';
+			const regex = new RegExp(regexS);
+			const results = regex.exec(window.location.search);
+			if (!results) return '';
+			return decodeURIComponent(results[1].replace(/\+/g, ' '));
+		}
+
 		function goto(index) {
 			currIndex = index;
 
@@ -114,7 +123,11 @@
 
 		function onVizReady() {
 			app = document.querySelector('#viz').contentWindow.app;
-			goto(0);
+			var index = 0;
+			var qindex = Object.keys(tracks).indexOf(getParam('id'));
+			if (qindex > -1) index = qindex;
+			
+			goto(index);
 		}
 
 		function onFilesLoaded() {
