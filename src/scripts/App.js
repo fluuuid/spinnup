@@ -12,6 +12,9 @@ class App {
     constructor() {
         this.loadCoreAssets();
 
+        AppAudio.on('audio:play', this.onAudioPlayPause.bind(this));
+        AppAudio.on('audio:pause', this.onAudioPlayPause.bind(this));
+
         // DEBUG
         this.audio = AppAudio;
         this.view = AppView;
@@ -101,6 +104,12 @@ class App {
     onFileDrop(file, result) {
         console.log('App.onFileDrop', file, result);
         AppAudio.onFileDrop(file, result);
+    }
+
+    onAudioPlayPause() {
+        if (window.parent) {
+            window.parent.onAudioPlayPause();
+        }
     }
 }
 
