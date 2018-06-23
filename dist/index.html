@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SPINNUP</title>
+
 	<style type="text/css">
 		body {
 			margin: 0;
@@ -11,26 +14,31 @@
 		}
 		.controls-wrapper {
 			position: absolute;
-			bottom: 10px;
+			bottom: 5%;
 			width: 100%;
 			text-align: center;
 		}
 		.controls {
-			transform: scale(0.6, 0.6);
+			transform: scale(1.0, 1.0);
 			transition: all .2s;
+		}
+		@media only screen and (max-width: 760px), screen and (max-height: 420px) {
+			.controls {
+				transform: scale(0.7, 0.7);
+			}
 		}
 		.controls.disabled {
 			opacity: 0.5;
 			pointer-events: none;
 		}
 		.controls .bt {
-			width: 140px;
-			height: 90px;
+			width: 90px;
+			height: 58px;
 			display: inline-block;
 			text-indent: 1000px;
 			overflow: hidden;
 			background-image: url("images/controls.png");
-			opacity: 0.6;
+			opacity: 0.5;
 		}
 		.controls .bt:hover {
 			opacity: 1.0;
@@ -39,13 +47,13 @@
 			background-position: 0px 0px;
 		}
 		.controls .play {
-			background-position: -280px 0px;
+			background-position: -180px 0px;
 		}
 		.controls .paused {
-			background-position: -140px 0px;
+			background-position: -90px 0px;
 		}
 		.controls .next {
-			background-position: -420px 0px;
+			background-position: -270px 0px;
 		}
 		#viz {
 			position: fixed;
