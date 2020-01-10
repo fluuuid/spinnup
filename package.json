@@ -12,9 +12,8 @@
   "scripts": {
     "start": "webpack-dev-server",
     "serve:local": "http-server dist",
-    "prebuild": "rm -rf dist/scripts && mkdir dist/scripts",
     "test": "eslint ./src --fix",
-    "build": "NODE_ENV=production webpack"
+    "build": "webpack -p"
   },
   "dependencies": {
     "@brunoimbrizi/controlkit": "0.1.92",
@@ -37,6 +36,7 @@
     "babel-loader": "7.1.4",
     "babel-polyfill": "6.7.4",
     "babel-preset-env": "^1.6.1",
+    "clean-webpack-plugin": "^0.1.19",
     "eslint": "^4.19.1",
     "exports-loader": "^0.7.0",
     "glslify": "^6.1.1",
