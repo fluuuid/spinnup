@@ -102,6 +102,16 @@
 			updatePlayButton();
 		}
 
+		function prev() {
+			if (currIndex > 0) goto(currIndex - 1);
+			else goto(Object.keys(tracks).length - 1);
+		}
+
+		function next() {
+			if (currIndex < Object.keys(tracks).length - 1) goto(currIndex + 1);
+			else goto(0);
+		}
+
 		function updatePlayButton() {
 			if (!app) return;
 
@@ -112,14 +122,12 @@
 
 		function onPrevClick(e) {
 			e.preventDefault();
-			if (currIndex > 0) goto(currIndex - 1);
-			else goto(Object.keys(tracks).length - 1);
+			prev();
 		}
 
 		function onNextClick(e) {
 			e.preventDefault();
-			if (currIndex < Object.keys(tracks).length - 1) goto(currIndex + 1);
-			else goto(0);
+			next();
 		}
 
 		function onPlayPauseClick(e) {
@@ -132,8 +140,9 @@
 
 		function onVizReady() {
 			app = document.querySelector('#viz').contentWindow.app;
-			var index = 0;
-			var qindex = Object.keys(tracks).indexOf(getParam('id'));
+			var keys = Object.keys(tracks);
+			var index = ~~(Math.random() * keys.length);
+			var qindex = keys.indexOf(getParam('id'));
 			if (qindex > -1) index = qindex;
 			
 			goto(index);

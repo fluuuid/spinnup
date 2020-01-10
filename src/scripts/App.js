@@ -84,7 +84,7 @@ class App {
     initAudio() {
         // play loaded track
         AppAudio.decode(AsyncPreloader.items.get('track'), () => {
-            // AppAudio.play();
+            AppAudio.play();
 
             if(window.parent && window.parent.onVizReady) {
                 window.parent.onFilesLoaded();

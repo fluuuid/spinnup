@@ -83,6 +83,16 @@ class AppView {
             if (this.audio.paused) this.audio.play();
             else this.audio.pause();
         }
+
+        // left
+        if (e.keyCode == 37) {
+            if (window.parent && window.parent.prev) window.parent.prev();
+        }
+
+        // right
+        if (e.keyCode == 39) {
+            if (window.parent && window.parent.next) window.parent.next();
+        }
     }
 
     onClick() {
